@@ -483,7 +483,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 		Current->Task->Notification->ExpireAndFadeout();
 		
 		void* PipeWrite = nullptr;
-		FString WorkingDir = FPaths::Combine(FPaths::ProjectPluginsDir(), IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() + "/ThirdParty/Web");
+		FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() + "/ThirdParty/Web");
 		FProcHandle Proc = FPlatformProcess::CreateProc(
 		TEXT("C:\\Windows\\System32\\cmd.exe"),
 		TEXT("/c \"set port=3012 && npm start\""),
