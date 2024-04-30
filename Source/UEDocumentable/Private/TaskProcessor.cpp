@@ -19,6 +19,7 @@
 #include "Widgets/Notifications/SNotificationList.h"
 #include "Framework/Notifications/NotificationManager.h"
 #include "ThreadingHelpers.h"
+#include "UEDocumentable.h"
 #include "Interfaces/IPluginManager.h"
 #include "HAL/FileManager.h"
 #include "HAL/PlatformProcess.h"
@@ -472,8 +473,9 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	FJsonObject* Nodes = new FJsonObject;
 	Nodes->SetArrayField("nodes", Classes);
 	FJsonSerializer::Serialize(MakeShared<FJsonObject>(*Nodes), TJsonWriterFactory<>::Create(&JsonString, 0));
-	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(FPaths::ProjectPluginsDir(), "/UEDocumentable/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
+
 	
+	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(FPaths::ProjectPluginsDir(), IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
 	UEDocumentable::RunOnGameThread([this]
 	{
 		Current->Task->Notification->SetText(LOCTEXT("DocConversionSuccessful", "Generation complete!"));
@@ -481,7 +483,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 		Current->Task->Notification->ExpireAndFadeout();
 		
 		void* PipeWrite = nullptr;
-		FString WorkingDir = FPaths::Combine(FPaths::ProjectPluginsDir(), "/UEDocumentable/ThirdParty/Web");
+		FString WorkingDir = FPaths::Combine(FPaths::ProjectPluginsDir(), IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() + "/ThirdParty/Web");
 		FProcHandle Proc = FPlatformProcess::CreateProc(
 		TEXT("C:\\Windows\\System32\\cmd.exe"),
 		TEXT("/c \"set port=3012 && npm start\""),
