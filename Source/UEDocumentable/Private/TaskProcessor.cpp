@@ -475,7 +475,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	FJsonSerializer::Serialize(MakeShared<FJsonObject>(*Nodes), TJsonWriterFactory<>::Create(&JsonString, 0));
 
 	
-	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(FPaths::ProjectPluginsDir(), IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
+	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
 	UEDocumentable::RunOnGameThread([this]
 	{
 		Current->Task->Notification->SetText(LOCTEXT("DocConversionSuccessful", "Generation complete!"));
