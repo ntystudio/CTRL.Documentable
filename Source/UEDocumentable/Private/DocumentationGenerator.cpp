@@ -292,7 +292,7 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 		CreateDirectoryRecursively(State.ClassDocsPath / TEXT("functions"));
 	}
 	State.RelImageBasePath = TEXT("../img/");
-	const FString ImageBasePath = FPaths::Combine(FPaths::ProjectPluginsDir(), IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() + "/ThirdParty/Web/public/") / TEXT("img/");
+	const FString ImageBasePath = FPaths::Combine(IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() + "/ThirdParty/Web/public/") / TEXT("img/");
 	FString ImgFilename = FString::Printf(TEXT("nd_img_%s.png"), *NodeName);
 	FString ScreenshotSaveName = ImageBasePath / ImgFilename;
 
