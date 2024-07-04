@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import {TreeView} from '@mui/x-tree-view/TreeView';
 import {TreeItem} from '@mui/x-tree-view/TreeItem';
 import {Icon} from '@iconify/react';
-import {TreeItemConfig} from '../../types/types';
-import {useSelectedClass} from '../../providers/SelectedClassContextProvider';
+import {TreeItemConfig} from '../types/types';
+import {useSelectedClass} from '../providers/SelectedClassContextProvider';
 import {useNavigate} from 'react-router-dom';
 
 interface TreeViewerItemProps {
@@ -88,14 +88,12 @@ const TreeViewerItemComponent: React.FC<TreeViewerItemProps> = ({ item }) => {
     const { setSelectedClass } = useSelectedClass();
 
     const handleClick = () => {
-       // if (item.functions.length > 0) {
-            navigate('class/' + item.path);
-            setSelectedClass(item);
-        //}
+        navigate('class/' + item.path);
+        setSelectedClass(item);
     };
 
     const customLabel = (
-        <span className="text-xs font-sans">{item.name}</span> // Consider moving to CSS classes
+        <span className="text-xs font-sans">{item.name}</span>
     );
 
     return (
