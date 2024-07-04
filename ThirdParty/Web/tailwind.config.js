@@ -1,93 +1,77 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  mode: 'jit',
-  darkMode: 'class',
+  darkMode: ["class"],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
+  prefix: "",
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
-      fontFamily: {
-        sans: ['"Geist Variable"', 'sans-serif'],
-        mono: ['"Geist Mono Variable"', 'monospace'],
-      },
-      typography: {
-        DEFAULT: {
-          css: {
-            maxWidth: "100ch", // add required value here
-          },
-        },
-      },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
       colors: {
-        base: {
-          black: "#100F0F",
-          950: "#1C1B1A",
-          900: "#282726",
-          850: "#343331",
-          800: "#403E3C",
-          700: "#575653",
-          600: "#6F6E69",
-          500: "#878580",
-          300: "#B7B5AC",
-          200: "#CECDC3",
-          150: "#DAD8CE",
-          100: "#E6E4D9",
-          50: "#F2F0E5",
-          paper: "#FFFCF0",
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
-        light: {
-          "color-red": "#AF3029",
-          "color-orange": "#BC5215",
-          "color-yellow": "#AD8301",
-          "color-green": "#66800B",
-          "color-cyan": "#24837B",
-          "color-blue": "#205EA6",
-          "color-purple": "#5E409D",
-          "color-pink": "#A02F6F",
-
-          "color-base-00": "#FFFCF0",
-          "color-base-05": "#FFFCF0",
-          "color-base-10": "#F2F0E5",
-          "color-base-20": "#F2F0E5",
-          "color-base-25": "#E6E4D9",
-          "color-base-30": "#E6E4D9",
-          "color-base-35": "#DAD8CE",
-          "color-base-40": "#CECDC3",
-          "color-base-50": "#B7B5AC",
-          "color-base-60": "#878580",
-          "color-base-70": "#6F6E69",
-          "color-base-100": "#100F0F",
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
-        dark: {
-          "color-red": "#D14D41",
-          "color-orange": "#DA702C",
-          "color-yellow": "#D0A215",
-          "color-green": "#879A39",
-          "color-cyan": "#3AA99F",
-          "color-blue": "#4385BE",
-          "color-purple": "#8B7EC8",
-          "color-pink": "#CE5D97",
-
-          "color-base-00": "#100F0F",
-          "color-base-05": "#100F0F",
-          "color-base-10": "#1C1B1A",
-          "color-base-20": "#1C1B1A",
-          "color-base-25": "#282726",
-          "color-base-30": "#282726",
-          "color-base-35": "#343331",
-          "color-base-40": "#403E3C",
-          "color-base-50": "#575653",
-          "color-base-60": "#6F6E69",
-          "color-base-70": "#878580",
-          "color-base-100": "#CECDC3",
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  plugins: [
-    require('@tailwindcss/typography')
-  ],
+  plugins: [require("tailwindcss-animate")],
 }
