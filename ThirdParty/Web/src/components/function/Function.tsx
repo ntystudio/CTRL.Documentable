@@ -1,6 +1,14 @@
 import React, {useEffect} from 'react';
 import {FunctionParameter} from './FunctionParameter';
 import {useSelectedClass} from '../../providers/SelectedClassContextProvider';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator
+} from "../ui/breadcrumb";
 
 export const Function = () => {
     const {selectedFunction} = useSelectedClass();
@@ -13,7 +21,22 @@ export const Function = () => {
     }
 
     return (
-        <main className="px-10">
+        <main className="p-2">
+            <Breadcrumb className="mb-8">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <p className="mb-1 text-4xl text-dark-color-base-00 dark:text-light-color-base-00">
                 Function - {name || 'Unnamed'}
             </p>
