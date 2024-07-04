@@ -1,5 +1,5 @@
 import React, {FC, ReactNode} from 'react';
-import {EmptyContainer} from '../../components/UI/EmptyContainer';
+import {EmptyContainer} from '../ui/EmptyContainer';
 
 type IProps = {
     title: string
@@ -12,7 +12,7 @@ export const Section: FC<IProps> = (props) => {
 
     return (
         <>
-            <h2 className="text-dark-color-base-00 dark:text-light-color-base-00 text-3xl mb-6 mt-8">{type}</h2>
+            {/*<h2 className="text-dark-color-base-00 dark:text-light-color-base-00 text-3xl mb-12 mt-8">{type}</h2>*/}
             {isEmpty ? (
                 <EmptyContainer text={`No ${type} available for this class`} />
             ) : (
