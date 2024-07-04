@@ -46,7 +46,11 @@ const processItem = (item: ObjectConfig, topLevelRoutes: Map<string, TreeItemCon
 export const makeTreeData = (data: ClassConfig): ITreeData => {
     const topLevelRoutes = new Map<string, TreeItemConfig>();
 
-    data.nodes.forEach(item => {
+    // data.nodes.forEach(item => {
+    //     processItem(item, topLevelRoutes);
+    // });
+
+    data.forEach(item => {
         processItem(item, topLevelRoutes);
     });
 

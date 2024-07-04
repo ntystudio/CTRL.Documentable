@@ -1,12 +1,12 @@
 import {Route, Routes} from 'react-router-dom';
 import 'non.geist';
-import MainLayout from './layouts/MainLayout';
+import MainLayout from './components/layout/MainLayout';
 import MainContext from './providers/MainProvider';
 import {SelectedClassContextProvider} from './providers/SelectedClassContextProvider';
 import {LayoutProvider} from './providers/LayoutContext';
-import {Class} from './sections/class/Class';
-import {Function} from './sections/function/Function';
-import {Node} from './sections/node/Node';
+import {Class} from './components/class/Class';
+import {Function} from './components/function/Function';
+import {Node} from './components/node/Node';
 
 const App = () => {
     return (

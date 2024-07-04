@@ -1,5 +1,5 @@
 import {twMerge} from 'tailwind-merge';
-import {ThemeSwitcher} from '../components/UI/themeSwitcher';
+import {ThemeSwitcher} from '../ui/themeSwitcher';
 
 const Navbar = () => {
     return (
