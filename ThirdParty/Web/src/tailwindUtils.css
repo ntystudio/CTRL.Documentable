@@ -1,0 +1,52 @@
+/*!* Utility style for tables *!*/
+/*.nty-table {*/
+/*    @apply min-w-full;*/
+/*    @apply border-2 border-light-color-base-40 dark:border-dark-color-base-40;*/
+/*}*/
+
+/*!* Utility style for table headers *!*/
+/*.nty-th {*/
+/*    @apply px-5 py-3;*/
+/*    @apply text-left text-xs uppercase font-normal;*/
+/*    @apply border-b-2 border-light-color-base-40 dark:border-dark-color-base-40;*/
+/*    @apply bg-light-color-base-30 dark:bg-dark-color-base-30;*/
+/*    @apply text-dark-color-base-00 dark:text-light-color-base-00;*/
+/*}*/
+
+/*!* Utility style for table cell *!*/
+/*.nty-td {*/
+/*    @apply p-4;*/
+/*    @apply text-sm align-top;*/
+/*    @apply border-b-2 border-light-color-base-30 dark:border-dark-color-base-30;*/
+/*    @apply bg-light-color-base-20 dark:bg-dark-color-base-20;*/
+/*}*/
+
+/*!* Utility style for missing text *!*/
+/*.nty-zero-state-text {*/
+/*    @apply text-dark-color-red dark:text-light-color-red italic;*/
+/*}*/
+
+/*!* Utility style for html divider *!*/
+/*.nty-hr {*/
+/*    @apply border-t-0 my-4;*/
+/*    @apply border-b-2 border-b-light-color-base-30 dark:border-b-dark-color-base-30;*/
+/*}*/
+
+/*!* Utility style for standard light / dark text style *!*/
+/*.nty-text-body-std {*/
+/*    @apply text-dark-color-base-50 dark:text-light-color-base-50;*/
+/*}*/
+
+/*!* Utility style for standard light / dark text style *!*/
+/*.nty-text-link-std {*/
+/*    @apply hover:text-light-color-blue hover:dark:text-dark-color-blue;*/
+/*    @apply flex items-center;*/
+/*}*/
+
+/*!* Utility style for standard info box style *!*/
+/*.nty-box-std {*/
+/*    @apply p-2;*/
+/*    @apply rounded-sm text-xs font-medium;*/
+/*    @apply bg-light-color-base-30 dark:bg-dark-color-base-30;*/
+/*    @apply border-2 border-light-color-base-40 dark:border-dark-color-base-40*/
+/*}*/
