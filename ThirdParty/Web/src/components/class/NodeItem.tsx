@@ -2,7 +2,7 @@ import React, {FC, useCallback} from 'react';
 import {NodeConfig} from '../../types/types';
 import {useNavigate} from 'react-router-dom';
 import {useSelectedClass} from '../../providers/SelectedClassContextProvider';
-import {LinkIcon} from '../../components/UI/icons/LinkIcon';
+import {LinkIcon} from '../ui/icons/LinkIcon';
 
 interface NodeItemProps {
     node: NodeConfig;
