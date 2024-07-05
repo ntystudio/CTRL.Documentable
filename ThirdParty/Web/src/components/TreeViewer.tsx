@@ -78,11 +78,7 @@ export const TreeViewer: React.FC = () => {
     );
 };
 
-/*
- * use `React.memo` to memoize the component and avoid re-rendering when the data hasn't changed
- * React.memo is a higher-order component that you use to wrap a functional component when you want
- * to optimize it by preventing re-renders unless its props change.
- */
+
 const TreeViewerItemComponent: React.FC<TreeViewerItemProps> = ({ item }) => {
     const navigate = useNavigate();
     const { setSelectedClass } = useSelectedClass();
@@ -99,7 +95,7 @@ const TreeViewerItemComponent: React.FC<TreeViewerItemProps> = ({ item }) => {
     return (
         <TreeItem
             onClick={handleClick}
-            className="text-dark-color-base-40 dark:text-light-color-base-40"
+            className="text-foreground"
             nodeId={item.id}
             label={customLabel}
         >

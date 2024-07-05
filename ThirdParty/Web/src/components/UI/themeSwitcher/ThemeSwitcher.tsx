@@ -25,7 +25,7 @@ export const ThemeSwitcher = () => {
         <button onClick={toggleDarkMode}>
             {
                 darkMode ? <Icon icon="iconamoon:mode-light-light" width="24" color="white" /> :
-                    <Icon icon="iconamoon:mode-dark-light" width="24" />
+                    <Icon icon="iconamoon:mode-dark-light" width="24" color="black" />
             }
         </button>
     );
