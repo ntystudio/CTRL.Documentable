@@ -8,8 +8,8 @@ export const LinkIcon: React.FC<LinkIconProps> = ({ className = '' }) => {
         <svg
             className="iconify iconify--ph ${className}"
             xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
+            width="18"
+            height="18"
             viewBox="0 0 512 512"
             fill="currentColor"
         >
