@@ -1,9 +1,9 @@
 // DataService.ts
-import {ClassConfig, ObjectConfig} from '../types/types';
+import {ClassConfig} from '../types/types';
 import jsonData from '../data/nodes.json';
 
 class DataService {
-    private dataCache: ClassConfig = jsonData;
+    private dataCache: ClassConfig = jsonData.nodes;
 
     async loadData(): Promise<ClassConfig> {
         return this.dataCache;

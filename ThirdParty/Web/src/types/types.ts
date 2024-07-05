@@ -68,8 +68,4 @@ export interface ObjectConfig {
     nodes?: Array<NodeConfig>;
 }
 
-// export interface ClassConfig {
-//     nodes: ObjectConfig[];
-// }
-
 export type ClassConfig = ObjectConfig[];
