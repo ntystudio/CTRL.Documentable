@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {useSelectedClass} from '../../providers/SelectedClassContextProvider';
 import {TreeItemConfig} from '../../types/types';
 import {FunctionList} from './FunctionList';
 import {NodeList} from './NodeList';
 import {PropertyList} from './PropertyList';
-import {useLayout} from '../../providers/LayoutContext';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '../ui/tabs';
 import {
     Breadcrumb,
@@ -15,11 +14,12 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "../ui/breadcrumb";
+import NodeBreadcrumb from '../ui/NodeBreadcrumbs';
 
 export const Class = () => {
     const params = useParams();
     const path = params['*'];
-    const { setShowToC } = useLayout();
+    const [currentTab, setCurrentTab] = useState('properties');
 
     const {selectedClass, setSelectedClass, objectData, setObjectData} = useSelectedClass();
 
@@ -54,34 +54,28 @@ export const Class = () => {
             }
         }
 
-        // Show the ToC when the component mounts
-        setShowToC(true);
-
-        // Hide the ToC when the component unmounts
-        return () => {
-            setShowToC(false);
-        };
-
-    }, [objectData, path, setShowToC]);
+    }, [findItemByPath, objectData, path, setSelectedClass]);
 
     if (!selectedClass) {
         return <div>Not Found</div>;
     }
-    console.log(selectedClass);
+
     return (
         <div className="relative p-2">
             <Breadcrumb className="mb-8">
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                        <BreadcrumbLink href="/">Classes</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+                        <BreadcrumbLink href={`/class/${selectedClass.name}`}>{selectedClass.name}</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+                        <BreadcrumbPage>
+                            {currentTab.charAt(0).toUpperCase() + currentTab.slice(1)}
+                        </BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -89,8 +83,8 @@ export const Class = () => {
                 <p className="mb-6 text-4xl text-dark-color-base-00 dark:text-light-color-base-00">
                     Class - {selectedClass?.name}
                 </p>
-                <Tabs defaultValue="properties">
-                    <TabsList className="grid w-full grid-cols-3 w-[500px]">
+                <Tabs defaultValue="properties" onValueChange={(value) => setCurrentTab(value)}>
+                    <TabsList className="grid w-full grid-cols-3 max-w-[700px] mb-4">
                         <TabsTrigger value="properties">Properties ({selectedClass?.properties.length})</TabsTrigger>
                         <TabsTrigger value="functions">Functions ({selectedClass?.functions.length})</TabsTrigger>
                         <TabsTrigger value="nodes">Nodes ({selectedClass?.nodes?.length || 0})</TabsTrigger>
