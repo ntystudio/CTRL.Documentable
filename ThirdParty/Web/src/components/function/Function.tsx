@@ -1,14 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {FunctionParameter} from './FunctionParameter';
 import {useSelectedClass} from '../../providers/SelectedClassContextProvider';
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator
-} from "../ui/breadcrumb";
+import FunctionBreadcrumbs from '../ui/FunctionBreadcrumbs';
+import {Separator} from '../ui/separator';
+import {Badge} from '../ui/badge';
+import {LinkIcon} from '../ui/icons/LinkIcon';
 
 export const Function = () => {
     const {selectedFunction} = useSelectedClass();
@@ -22,62 +18,61 @@ export const Function = () => {
 
     return (
         <main className="p-2">
-            <Breadcrumb className="mb-8">
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
+            <FunctionBreadcrumbs />
             <p className="mb-1 text-4xl text-dark-color-base-00 dark:text-light-color-base-00">
                 Function - {name || 'Unnamed'}
             </p>
-            <hr className="nty-hr" />
-            <div className="text-dark-color-base-40 dark:text-light-color-base-40 mb-3">
-                {description === '' ?
-                    <span className="nty-zero-state-text">No description provided</span> : description}
-            </div>
-            <div
-                className="nty-box-std">
-                {flags?.map((flag, index) => (
-                    <span key={index} className="font-mono nty-text-body-std">
-                        {flag}
-                        {index !== flags.length - 1 && ', '}
-                    </span>
-                ))}
-            </div>
 
-            {parameters && parameters.length > 0 ? (
-                <div className="w-full overflow-x-auto rounded-md mt-12">
-                    <table className="nty-table">
-                        <thead>
-                            <tr className="flex">
-                                <th className="w-1/2 nty-th">Type</th>
-                                <th className="w-1/2 nty-th">Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {parameters.map((parameter, index) => (
-                                <tr key={index} className="flex">
-                                    <FunctionParameter parameter={parameter} />
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+            <Separator className="my-8" />
+            <div className="grid grid-cols-12 gap-8 w-full max-w-[1200px]">
+                <div className="col-span-4 flex flex-col">
+                    <div className="rounded-lg p-2 bg-muted border-2 mb-3">
+                        <p className="uppercase text-sm font-semibold mb-1 text-muted-foreground">Return Type</p>
+                        <h2 className="text-lg font-mono text-orange-700 dark:text-orange-400">{returnType}</h2>
+                    </div>
+                    <div className="rounded-lg p-2 bg-muted border-2">
+                        <p className="uppercase text-sm font-semibold mb-2 text-muted-foreground">Flags</p>
+                        <h2 className="text-base font-mono text-blue-700">
+                            {flags && flags?.length !== 0 && (
+                                <div className="flex flex-col items-start">
+                                    {[
+                                        ...flags
+                                            ?.filter(flag => !flag.startsWith('ModuleRelativePath') && !flag.startsWith('Comment') && !flag.startsWith('ToolTip')),
+                                        ...flags
+                                            ?.filter(flag => flag.startsWith('Comment') || flag.startsWith('ToolTip')),
+                                    ].map((flag, index) => (
+                                        <Badge key={index} variant="informational" className="mr-1 mb-1">
+                                            {flag}
+                                        </Badge>
+                                    ))}
+                                </div>
+                            )}
+                        </h2>
+                    </div>
                 </div>
-            ) : (
-                <div className="text-dark-color-base-60 dark:text-light-color-base-60 mb-3">
-                    <p className="nty-zero-state-text mt-8">No parameters available for this function.</p>
+                <div className="col-span-8 flex flex-col">
+                    <h2 className="text-3xl font-mono pb-4">
+                        <span className="text-left">{name}</span>
+                    </h2>
+                    <p className="text-muted-foreground text-xl">{description === ''
+                        ? <span className="nty-zero-state-text">No description provided</span>
+                        : description
+                    }</p>
+                    <div className="mt-2">
+                        <p className="uppercase text-sm font-semibold mt-4 mb-1 text-muted-foreground">Parameters</p>
+                        {parameters?.length === 0
+                            ? <p className="text-muted-foreground">No parameters provided</p>
+                            : parameters?.map((param, index) => (
+                                <div key={index} className="flex text-lg">
+                                    <span className="font-mono text-foreground">{param.name}:</span>
+                                    <span
+                                        className="font-mono ml-2 text-orange-700 dark:text-orange-400">{param.type}</span>
+                                </div>
+                            ))
+                        }
+                    </div>
                 </div>
-                )}
+            </div>
         </main>
     );
 };

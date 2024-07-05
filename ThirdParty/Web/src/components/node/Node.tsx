@@ -4,14 +4,8 @@ import {PinInput} from './PinInput';
 import {PinOutput} from './PinOutput';
 import {useSelectedClass} from '../../providers/SelectedClassContextProvider';
 import {NodePinConfig} from '../../types/types';
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator
-} from "../ui/breadcrumb";
+import NodeBreadcrumbs from '../ui/NodeBreadcrumbs';
+import {Separator} from '../ui/separator';
 
 interface RenderSectionProps<T> {
     items: T[];
@@ -56,34 +50,35 @@ export const Node = () => {
 
     return (
         <main className="p-2">
-            <Breadcrumb className="mb-8">
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
+            <NodeBreadcrumbs />
             <p className="mb-1 text-4xl text-dark-color-base-00 dark:text-light-color-base-00">
                 Node - {shortTitle}
             </p>
-            <hr className="nty-hr" />
-            <div className="text-dark-color-base-40 dark:text-light-color-base-40 mb-3">
-                {description === '' ?
-                    <span className="nty-zero-state-text">No description provided</span> : description}
+
+            <Separator className="my-8" />
+            <div className="grid grid-cols-12 gap-8 w-full max-w-[1200px]">
+                <div className="col-span-4 flex flex-col">
+                    <div className="rounded-lg p-2 bg-muted border-2 mb-3">
+                        <img src="/node-img-placeholder.png" alt="Node icon"
+                             className="w-full max-w-[200px] mx-auto rounded-lg" />
+                        {/*<img className="my-10" src={imgPath?.replace('..', '')}*/}
+                        {/*     alt={`Visualization of node: ${description}`} />*/}
+                    </div>
+                </div>
+                <div className="col-span-8 flex flex-col">
+                    <div className="col-span-8 flex flex-col">
+                        <h2 className="text-3xl font-mono pb-4">
+                            <span className="ml-2 text-left">{shortTitle}</span>
+                        </h2>
+                        <p className="text-muted-foreground text-xl">{description === ''
+                            ? <span className="nty-zero-state-text">No description provided</span>
+                            : description
+                        }</p>
+                        {inputs && <RenderSection<NodePinConfig> items={inputs} title="Inputs" ItemComponent={PinInput} />}
+                        {outputs && <RenderSection<NodePinConfig> items={outputs} title="Outputs" ItemComponent={PinOutput} />}
+                    </div>
+                </div>
             </div>
-
-            <img className="my-10" src={imgPath?.replace('..', '')} alt={`Visualization of node: ${description}`} />
-
-            {inputs && <RenderSection<NodePinConfig> items={inputs} title="Inputs" ItemComponent={PinInput} />}
-            {outputs && <RenderSection<NodePinConfig> items={outputs} title="Outputs" ItemComponent={PinOutput} />}
         </main>
     );
 };
