@@ -600,6 +600,23 @@ FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediat
 TArray<TSharedPtr<FJsonValue>> FTaskProcessor::GetPropertyFlags(const FProperty* Property)
 {
 	TArray<TSharedPtr<FJsonValue>> Output;
+
+	if (const auto Map = Property->GetMetaDataMap())
+	{
+		for (auto& KeyValue : *Map)
+		{
+			if (KeyValue.Value.IsEmpty())
+			{
+				Output.Add(MakeShared<FJsonValueString>(FJsonValueString(KeyValue.Key.ToString())));
+			}
+			else
+			{
+				FString Meta = FString::Printf(TEXT("%ls = %ls"), *KeyValue.Key.ToString(), *KeyValue.Value);
+				Output.Add(MakeShared<FJsonValueString>(FJsonValueString(Meta)));
+			}
+		}
+	}
+
 	if (Property->HasAnyPropertyFlags(EPropertyFlags::CPF_NativeAccessSpecifierPublic))
 	{
 		Output.Add(MakeShared<FJsonValueString>(FJsonValueString("Public")));
