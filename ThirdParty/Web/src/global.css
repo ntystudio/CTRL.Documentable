@@ -86,3 +86,41 @@
     @apply border-t-0 mt-2 mb-8;
     @apply border-b-2 border-b-blue-500 dark:border-b-pink-500;
 }
+
+/* Custom scrollbar for WebKit browsers */
+#separator-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+#separator-sidebar::-webkit-scrollbar-track {
+    background: var(--muted-bg-color); /* Use your background color variable */
+}
+
+#separator-sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--foreground-color); /* Use your foreground color variable */
+    border-radius: 10vw;
+    border: 2px solid var(--muted-bg-color); /* Match the track color */
+}
+
+#separator-sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-color); /* Use your accent color variable */
+}
+
+/* Custom scrollbar for Firefox */
+#separator-sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--foreground-color) var(--muted-bg-color);
+}
+
+/* Variables for dark and light mode */
+:root {
+    --muted-bg-color: #f5f5f5;
+    --foreground-color: #555555;
+    --accent-color: #888888;
+}
+
+[data-theme="dark"] {
+    --muted-bg-color: #303030;
+    --foreground-color: #888888;
+    --accent-color: #bbbbbb;
+}
