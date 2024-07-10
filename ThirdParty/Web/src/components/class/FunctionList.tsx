@@ -71,6 +71,10 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
         navigate(`/class/${className}/function/${func.name}`);
     };
 
+    const handleClearSearch = () => {
+        setSearchQuery('');
+    };
+
     return (
         <>
             <div className="flex flex-row w-full max-w-[700px] mb-12">
@@ -118,6 +122,7 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
                         </DropdownMenuCheckboxItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <Button onClick={handleClearSearch} className="mb-4 ml-2">Clear</Button>
             </div>
             {filteredFunctions.length === 0 ? (
                 <Alert className="max-w-[400px]">

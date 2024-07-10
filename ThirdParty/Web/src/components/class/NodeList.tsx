@@ -58,6 +58,10 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
         navigate(`/class/${node.className}/node/${node.fullTitle}`);
     }, [setSelectedNode, navigate]);
 
+    const handleClearSearch = () => {
+        setSearchQuery('');
+    };
+
     return (
         <>
             <div className="flex flex-row w-full max-w-[700px] mb-12">
@@ -87,6 +91,7 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                         </DropdownMenuCheckboxItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <Button onClick={handleClearSearch} className="mb-4 ml-2">Clear</Button>
             </div>
             {filteredNodes.length === 0 ? (
                 <Alert className="max-w-[400px]">
