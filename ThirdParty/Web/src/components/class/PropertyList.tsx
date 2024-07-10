@@ -137,8 +137,6 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
                                         </div>
                                     )}
                                 </h2>
-
-
                             </div>
                         </div>
                         <div className="col-span-8 flex flex-col">

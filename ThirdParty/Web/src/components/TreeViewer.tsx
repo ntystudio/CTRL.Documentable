@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import {TreeView} from '@mui/x-tree-view/TreeView';
-import {TreeItem} from '@mui/x-tree-view/TreeItem';
-import {Icon} from '@iconify/react';
-import {TreeItemConfig} from '../types/types';
-import {useSelectedClass} from '../providers/SelectedClassContextProvider';
-import {useNavigate} from 'react-router-dom';
+import { TreeView } from '@mui/x-tree-view/TreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { Icon } from '@iconify/react';
+import { TreeItemConfig } from '../types/types';
+import { useSelectedClass } from '../providers/SelectedClassContextProvider';
+import { useNavigate } from 'react-router-dom';
+import { Input } from '../components/ui/input';
 
 interface TreeViewerItemProps {
     item: TreeItemConfig;
@@ -31,9 +32,10 @@ const StrippedSquare = () => {
 };
 
 export const TreeViewer: React.FC = () => {
-    const {objectData, setObjectData} = useSelectedClass();
+    const { objectData } = useSelectedClass();
     const [darkMode, setDarkMode] = React.useState(true);
     const [expanded, setExpanded] = React.useState<string[]>([]);
+    const [searchQuery, setSearchQuery] = React.useState('');
 
     React.useEffect(() => {
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -52,6 +54,29 @@ export const TreeViewer: React.FC = () => {
         setExpanded(nodeIds);
     };
 
+    // Function to filter the tree items based on the search query
+    const filterItems = (items: TreeItemConfig[], query: string): TreeItemConfig[] => {
+        if (!query) return items;
+        const filteredItems = items
+            .map(item => {
+                if (item.name.toLowerCase().includes(query.toLowerCase())) {
+                    return item;
+                }
+                const filteredChildren = filterItems(item.children || [], query);
+                if (filteredChildren.length > 0) {
+                    return {
+                        ...item,
+                        children: filteredChildren
+                    };
+                }
+                return null;
+            })
+            .filter(item => item !== null);
+        return filteredItems as TreeItemConfig[];
+    };
+
+    const filteredData = filterItems(objectData, searchQuery);
+
     return (
         <Box
             sx={{
@@ -61,23 +86,40 @@ export const TreeViewer: React.FC = () => {
                 color: darkMode ? 'white' : 'black',
             }}
         >
-            <TreeView
-                aria-label="multi-select"
-                defaultCollapseIcon={<Icon icon="ph:folder-duotone" width="20" />}
-                defaultExpandIcon={<Icon icon="ph:folder-duotone" width="20" />}
-                defaultEndIcon={<StrippedSquare />}
-                multiSelect
-                expanded={expanded}
-                onNodeToggle={handleToggle}
-            >
-                {objectData.map((item: TreeItemConfig) => (
-                    <TreeViewerItem item={item} key={item.id} />
-                ))}
-            </TreeView>
+            <Input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="p-2 border rounded mb-4 dark:border-gray-600/50"
+            />
+            {filteredData.map((category: TreeItemConfig) => (
+                <div key={category.id}>
+                    {/*<a*/}
+                    {/*    href="#"*/}
+                    {/*    className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted/50 focus:outline-none focus-visible:bg-muted/50"*/}
+                    {/*>*/}
+                    {/*    <CodeIcon className="h-4 w-4" />*/}
+                    {/*    {category.name}*/}
+                    {/*</a>*/}
+                    <TreeView
+                        aria-label="multi-select"
+                        defaultCollapseIcon={<Icon icon="ph:folder-duotone" width="20" />}
+                        defaultExpandIcon={<Icon icon="ph:folder-duotone" width="20" />}
+                        defaultEndIcon={<StrippedSquare />}
+                        multiSelect
+                        expanded={expanded}
+                        onNodeToggle={handleToggle}
+                    >
+                        {category.children && category.children.map((item: TreeItemConfig) => (
+                            <TreeViewerItem item={item} key={item.id} />
+                        ))}
+                    </TreeView>
+                </div>
+            ))}
         </Box>
     );
 };
-
 
 const TreeViewerItemComponent: React.FC<TreeViewerItemProps> = ({ item }) => {
     const navigate = useNavigate();
@@ -99,7 +141,7 @@ const TreeViewerItemComponent: React.FC<TreeViewerItemProps> = ({ item }) => {
             nodeId={item.id}
             label={customLabel}
         >
-            {item.children.map((child) => (
+            {item.children && item.children.map((child) => (
                 <TreeViewerItem item={child} key={child.id} />
             ))}
         </TreeItem>
