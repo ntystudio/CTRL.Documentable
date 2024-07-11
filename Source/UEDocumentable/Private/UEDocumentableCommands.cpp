@@ -2,8 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
-// Copyright (C) 2021 Notion Theory LLC. All Rights Reserved.
+// Copyright (C) 2023-2024 NTY.studio. All Rights Reserved.
 
 #include "UEDocumentableCommands.h"
 
@@ -13,7 +12,7 @@
 
 void FUEDocumentableCommands::RegisterCommands()
 {
-	UI_COMMAND(ShowUI, "Documentation", "Shows documentation generator window", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(ShowUI, "CTRL Documentable", "Open the CTRL Documentable documentation generator window", EUserInterfaceActionType::Button, FInputGesture());
 	CommandMap.Add(TEXT("ShowUI"), ShowUI);
 }
 
