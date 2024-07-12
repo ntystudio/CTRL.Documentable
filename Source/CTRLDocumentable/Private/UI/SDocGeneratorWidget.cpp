@@ -74,10 +74,10 @@ bool SDocGeneratorWidget::ValidateSettingsForGeneration() const
 		return false;
 	}
 
-	if (Settings.BlueprintContextClass == nullptr)
-	{
-		return false;
-	}
+	// if (Settings.BlueprintContextClass == nullptr)
+	// {
+	// 	return false;
+	// }
 
 	return true;
 }

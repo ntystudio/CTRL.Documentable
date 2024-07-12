@@ -33,20 +33,14 @@ public:
 	TArray< FDirectoryPath > ContentPaths;
 
 
-	UPROPERTY(EditAnywhere, Category = "Output")
-	FDirectoryPath OutputDirectory;
-
 	UPROPERTY(EditAnywhere, Category = "Class Search", AdvancedDisplay)
 	TSubclassOf< UObject > BlueprintContextClass;
 
-	UPROPERTY(EditAnywhere, Category = "Output")
-	bool bCleanOutputDirectory;
 
 public:
 	FGenerationSettings()
 	{
 		BlueprintContextClass = AActor::StaticClass();
-		bCleanOutputDirectory = false;
 	}
 
 	bool HasAnySources() const
@@ -84,11 +78,6 @@ public:
 		if(CDO->Settings.DocumentationTitle.IsEmpty())
 		{
 			CDO->Settings.DocumentationTitle = FApp::GetProjectName();
-		}
-
-		if(CDO->Settings.OutputDirectory.Path.IsEmpty())
-		{
-			CDO->Settings.OutputDirectory.Path = FPaths::ProjectSavedDir() / TEXT("CTRLDocumentable");
 		}
 
 		if(CDO->Settings.BlueprintContextClass == nullptr)

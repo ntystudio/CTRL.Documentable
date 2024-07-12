@@ -5,7 +5,6 @@
 // Copyright (C) 2023-2024 NTY.studio. All Rights Reserved.
 
 #include "CTRLDocumentable.h"
-#include "DocumentationGenerator.h"
 #include "CTRLDocumentableCommands.h"
 #include "CTRLDocumentableLog.h"
 #include "TaskProcessor.h"
@@ -94,7 +93,7 @@ void FCTRLDocumentableModule::ShowUI()
 		.MinWidth(400.0f)
 		.MinHeight(300.0f)
 		.MaxHeight(600.0f)
-		.SupportsMaximize(true)
+		.SupportsMaximize(false)
 		.SupportsMinimize(false)
 		.SizingRule(ESizingRule::Autosized)
 		;
