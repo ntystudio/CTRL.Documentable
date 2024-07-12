@@ -7,21 +7,9 @@ type NodePinOutputProps = {
 export const PinOutput: FC<NodePinOutputProps> = ({item: {name, type, description}}) => {
     return (
         <>
-            <td className="w-1/3 nty-td">
-                <div className="text-light-color-cyan dark:text-dark-color-cyan font-mono">
-                    {type ? type : '-'}
-                </div>
-            </td>
-            <td className="w-1/3 nty-td">
-                <div className="font-mono text-dark-color-base-20 dark:text-light-color-base-20">
-                    {name ? name : '-'}
-                </div>
-            </td>
-            <td className="w-1/3 nty-td">
-                <div className=" nty-text-body-std">
-                    {description ? description : '-'}
-                </div>
-            </td>
+            <span className="font-mono text-foreground">{name ? `${name}:` : '-'}</span>
+            <span className="font-mono ml-2 text-orange-700 dark:text-orange-400">{type ? type : '-'}</span>
+            {/*<p className="text-muted-foreground text-sm">{description ? description : '-'}</p>*/}
         </>
     );
 };

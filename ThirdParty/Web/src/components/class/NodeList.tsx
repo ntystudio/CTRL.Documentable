@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect, useCallback} from 'react';
-import { NodeConfig } from '../../types/types';
+import {NodeConfig, NodePinConfig} from '../../types/types';
 import { Separator } from '../ui/separator';
 import { Input } from '../ui/input';
 import {
@@ -14,6 +14,9 @@ import { useSelectedClass } from '../../providers/SelectedClassContextProvider';
 import { LinkIcon } from '../ui/icons/LinkIcon';
 import {Alert, AlertDescription, AlertTitle} from '../ui/alert';
 import {ExclamationTriangleIcon} from '@radix-ui/react-icons';
+import {PinInput} from "../node/PinInput";
+import {PinOutput} from "../node/PinOutput";
+import {NodePins} from "../NodePins";
 
 type NodeSearchFields = {
     fullTitle: boolean;
@@ -108,22 +111,32 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                         <div className="grid grid-cols-12 gap-8 w-full max-w-[1200px]">
                             <div className="col-span-4 flex flex-col">
                                 <div className="rounded-lg p-2 bg-muted border-2 mb-3">
-                                    <img src="/node-img-placeholder.png" alt="Node icon" className="w-full max-w-[200px] mx-auto rounded-lg" />
+                                    <img src={node.imgPath?.replace('..', '')}  alt={`Visualization of node: ${node.description}`} className="w-full max-w-[300px] mx-auto rounded-lg" />
                                 </div>
                             </div>
-                            <div className="col-span-8 flex flex-col">
-                                <div className="col-span-8 flex flex-col">
-                                    <h2 className="text-3xl font-mono pb-4">
-                                        <button onClick={() => selectNodeHandler(node)}
-                                                className="font-mono nty-text-link-std flex flex-row items-center hover:underline">
-                                            <LinkIcon className="text-current" />
-                                            <span className="ml-2 text-left">{node.fullTitle}</span>
-                                        </button>
-                                    </h2>
-                                    <p className="text-muted-foreground text-xl">{node.description === ''
-                                        ? <span className="nty-zero-state-text">No description provided</span>
-                                        : node.description
-                                    }</p>
+                            <div className="col-span-8">
+                                <h2 className="text-3xl font-mono pb-4">
+                                    <button onClick={() => selectNodeHandler(node)}
+                                            className="font-mono nty-text-link-std flex flex-row items-center hover:underline">
+                                        <LinkIcon className="text-current"/>
+                                        <span className="ml-2 text-left">{node.fullTitle}</span>
+                                    </button>
+                                </h2>
+                                <p className="text-muted-foreground text-xl mb-4">{node.description === ''
+                                    ? <span className="nty-zero-state-text">No description provided</span>
+                                    : node.description
+                                }</p>
+                                <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 w-full">
+                                    <div> {/* Inputs container */}
+                                        {node.inputs &&
+                                            <NodePins<NodePinConfig> items={node.inputs} title="Inputs"
+                                                                     ItemComponent={PinInput}/>}
+                                    </div>
+                                    <div> {/* Outputs container */}
+                                        {node.outputs &&
+                                            <NodePins<NodePinConfig> items={node.outputs} title="Outputs"
+                                                                     ItemComponent={PinOutput}/>}
+                                    </div>
                                 </div>
                             </div>
                         </div>
