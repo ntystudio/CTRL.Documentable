@@ -333,7 +333,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 		// We've just come in from another thread, check the source object is still around
 		if(!Current->SourceObject.IsValid())
 		{
-			UE_LOG(LogUEDocumentable, Warning, TEXT("Object being enumerated expired!"));
+			UE_LOG(LogCTRLDocumentable, Warning, TEXT("Object being enumerated expired!"));
 			return nullptr;
 		}
 
@@ -391,7 +391,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 
 	if(!UEDocumentable::RunOnGameThreadRetVal(GameThread_InitDocGen, Current->Task->Settings.DocumentationTitle, IntermediateDir))
 	{
-		UE_LOG(LogUEDocumentable, Error, TEXT("Failed to initialize generator!"));
+		UE_LOG(LogCTRLDocumentable, Error, TEXT("Failed to initialize generator!"));
 		return;
 	}
 
@@ -419,7 +419,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 				// Generate image
 				if(!Current->DocGen->GenerateNodeImage(NodeInst, NodeState))
 				{
-					UE_LOG(LogUEDocumentable, Warning, TEXT("Failed to generate node image!"))
+					UE_LOG(LogCTRLDocumentable, Warning, TEXT("Failed to generate node image!"))
 					continue;
 				}
 
@@ -428,7 +428,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 				// Generate doc
 				if(!Current->DocGen->GenerateNodeDocs(NodeInst, NodeState, NodeMeta))
 				{
-					UE_LOG(LogUEDocumentable, Warning, TEXT("Failed to generate node doc xml!"))
+					UE_LOG(LogCTRLDocumentable, Warning, TEXT("Failed to generate node doc xml!"))
 					continue;
 				}
 
@@ -456,7 +456,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 
 	if(SuccessfulNodeCount == 0)
 	{
-		UE_LOG(LogUEDocumentable, Error, TEXT("No nodes were found to document!"));
+		UE_LOG(LogCTRLDocumentable, Error, TEXT("No nodes were found to document!"));
 
 		UEDocumentable::RunOnGameThread([this]
 			{
@@ -505,7 +505,7 @@ FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediat
 	auto Plugin = PluginManager.FindPlugin(TEXT("UEDocumentable"));
 	if(!Plugin.IsValid())
 	{
-		UE_LOG(LogUEDocumentable, Error, TEXT("Failed to locate plugin info"));
+		UE_LOG(LogCTRLDocumentable, Error, TEXT("Failed to locate plugin info"));
 		return EIntermediateProcessingResult::UnknownError;
 	}
 
@@ -525,7 +525,7 @@ FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediat
 		+ TEXT(" -name=") + DocTitle
 		+ (bCleanOutput ? TEXT(" -cleanoutput") : TEXT(""))
 		;
-	UE_LOG(LogUEDocumentable, Log, TEXT("Invoking conversion tool: %s %s"), *DocGenToolPath, *Args);
+	UE_LOG(LogCTRLDocumentable, Log, TEXT("Invoking conversion tool: %s %s"), *DocGenToolPath, *Args);
 	FProcHandle Proc = FPlatformProcess::CreateProc(
 		*DocGenToolPath,
 		*Args,
@@ -560,7 +560,7 @@ FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediat
 				FString Line = BufferedText.Left(EndOfLineIdx);
 				Line.RemoveFromEnd(TEXT("\r"));
 
-				UE_LOG(LogUEDocumentable, Log, TEXT("[UEDocumentable] %s"), *Line);
+				UE_LOG(LogCTRLDocumentable, Log, TEXT("[CTRLDocumentable] %s"), *Line);
 
 				BufferedText = BufferedText.Mid(EndOfLineIdx + 1);
 			}
@@ -575,7 +575,7 @@ FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediat
 
 		if(ReturnCode != 0)
 		{
-			UE_LOG(LogUEDocumentable, Error, TEXT("DocProcessor failed (code %i), see above output."), ReturnCode);
+			UE_LOG(LogCTRLDocumentable, Error, TEXT("DocProcessor failed (code %i), see above output."), ReturnCode);
 		}
 	}
 

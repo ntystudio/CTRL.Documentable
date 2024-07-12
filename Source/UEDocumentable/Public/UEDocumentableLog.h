@@ -9,4 +9,4 @@
 #include "Logging/LogMacros.h"
 
 
-DECLARE_LOG_CATEGORY_EXTERN(LogUEDocumentable, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogCTRLDocumentable, Log, All);

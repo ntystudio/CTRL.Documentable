@@ -49,7 +49,7 @@ void SDocGeneratorWidget::Construct(const SDocGeneratorWidget::FArguments& InArg
 		.AutoWidth()
 		[
 			SNew(SButton)
-			.Text(LOCTEXT("GenButtonLabel", "Generate Docs"))
+			.Text(LOCTEXT("GenButtonLabel", "Generate Documentation"))
 		.IsEnabled(this, &SDocGeneratorWidget::ValidateSettingsForGeneration)
 		.OnClicked(this, &SDocGeneratorWidget::OnGenerateDocumentation)
 		]

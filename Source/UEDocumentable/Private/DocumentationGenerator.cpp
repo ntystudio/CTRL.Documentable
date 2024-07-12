@@ -101,7 +101,7 @@ UK2Node* FDocumentationGenerator::GT_InitializeForSpawner(UBlueprintNodeSpawner*
 
 	if(K2NodeInst == nullptr)
 	{
-		UE_LOG(LogUEDocumentable, Warning, TEXT("Failed to create node from spawner of class %s with node class %s."), *Spawner->GetClass()->GetName(), Spawner->NodeClass ? *Spawner->NodeClass->GetName() : TEXT("None"));
+		UE_LOG(LogCTRLDocumentable, Warning, TEXT("Failed to create node from spawner of class %s with node class %s."), *Spawner->GetClass()->GetName(), Spawner->NodeClass ? *Spawner->NodeClass->GetName() : TEXT("None"));
 		return nullptr;
 	}
 
@@ -274,7 +274,7 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 
 		if (RTResource->ReadLinearColorPixelsPtr(PixelData->Pixels.GetData(), ReadPixelFlags, Rect) == false)
 		{
-			UE_LOG(LogUEDocumentable, Warning, TEXT("Failed to read pixels for node image."));
+			UE_LOG(LogCTRLDocumentable, Warning, TEXT("Failed to read pixels for node image."));
 			return false;
 		}
 
@@ -312,7 +312,7 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 	}
 	else
 	{
-		UE_LOG(LogUEDocumentable, Warning, TEXT("Failed to save screenshot image for node: %s"), *NodeName);
+		UE_LOG(LogCTRLDocumentable, Warning, TEXT("Failed to save screenshot image for node: %s"), *NodeName);
 	}
 
 	return bSuccess;

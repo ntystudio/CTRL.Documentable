@@ -24,7 +24,7 @@
 
 IMPLEMENT_MODULE(FUEDocumentableModule, UEDocumentable)
 
-DEFINE_LOG_CATEGORY(LogUEDocumentable);
+DEFINE_LOG_CATEGORY(LogCTRLDocumentable);
 
 void FUEDocumentableModule::StartupModule()
 {

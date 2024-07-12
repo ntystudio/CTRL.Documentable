@@ -47,17 +47,17 @@ UObject* FContentPathEnumerator::GetNext()
 
 		if (auto Struct = Cast<UScriptStruct>(AssetData.GetAsset()))
 		{
-			UE_LOG(LogUEDocumentable, Log, TEXT("Found new struct '%s' at '%s'"), *Struct->GetName(), *AssetData.ObjectPath.ToString());
+			UE_LOG(LogCTRLDocumentable, Log, TEXT("Found new struct '%s' at '%s'"), *Struct->GetName(), *AssetData.ObjectPath.ToString());
 		}
 
 		if (auto Enum = Cast<UEnum>(AssetData.GetAsset()))
 		{
-			UE_LOG(LogUEDocumentable, Log, TEXT("Found new enum '%s' at '%s'"), *Enum->GetName(), *AssetData.ObjectPath.ToString());
+			UE_LOG(LogCTRLDocumentable, Log, TEXT("Found new enum '%s' at '%s'"), *Enum->GetName(), *AssetData.ObjectPath.ToString());
 		}
 
 		if(auto Blueprint = Cast< UBlueprint >(AssetData.GetAsset()))
 		{
-			UE_LOG(LogUEDocumentable, Log, TEXT("Enumerating object '%s' at '%s'"), *Blueprint->GetName(), *AssetData.ObjectPath.ToString());
+			UE_LOG(LogCTRLDocumentable, Log, TEXT("Enumerating object '%s' at '%s'"), *Blueprint->GetName(), *AssetData.ObjectPath.ToString());
 
 			Result = Blueprint;
 			break;

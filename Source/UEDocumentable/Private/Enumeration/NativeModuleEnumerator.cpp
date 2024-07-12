@@ -36,7 +36,7 @@ void FNativeModuleEnumerator::Prepass(FName const& ModuleName)
 	}
 	if(Package == nullptr)
 	{
-		UE_LOG(LogUEDocumentable, Warning, TEXT("Failed to find specified package '%s', skipping."), *PkgName);
+		UE_LOG(LogCTRLDocumentable, Warning, TEXT("Failed to find specified package '%s', skipping."), *PkgName);
 		return;
 	}
 
@@ -56,12 +56,12 @@ void FNativeModuleEnumerator::Prepass(FName const& ModuleName)
 
 		if (auto Struct = Cast<UScriptStruct>(Obj))
 		{
-			UE_LOG(LogUEDocumentable, Log, TEXT("Found new Native struct '%s'"), *Struct->GetName());
+			UE_LOG(LogCTRLDocumentable, Log, TEXT("Found new Native struct '%s'"), *Struct->GetName());
 		}
 
 		if (auto Enum = Cast<UEnum>(Obj))
 		{
-			UE_LOG(LogUEDocumentable, Log, TEXT("Found new Native enum '%s'"), *Enum->GetName());
+			UE_LOG(LogCTRLDocumentable, Log, TEXT("Found new Native enum '%s'"), *Enum->GetName());
 		}
 
 		// Native class?
@@ -75,7 +75,7 @@ void FNativeModuleEnumerator::Prepass(FName const& ModuleName)
 
 		if(ObjectToProcess && !Processed.Contains(ObjectToProcess))
 		{
-			UE_LOG(LogUEDocumentable, Log, TEXT("Enumerating object '%s' in package '%s'"), *ObjectToProcess->GetName(), *PkgName);
+			UE_LOG(LogCTRLDocumentable, Log, TEXT("Enumerating object '%s' in package '%s'"), *ObjectToProcess->GetName(), *PkgName);
 
 			// Store this class
 			ObjectList.Add(ObjectToProcess);
