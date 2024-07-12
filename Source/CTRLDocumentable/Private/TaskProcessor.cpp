@@ -5,7 +5,7 @@
 // Copyright (C) 2023-2024 NTY.studio. All Rights Reserved.
 
 #include "TaskProcessor.h"
-#include "UEDocumentableLog.h"
+#include "CTRLDocumentableLog.h"
 #include "DocumentationGenerator.h"
 #include "BlueprintActionDatabase.h"
 #include "BlueprintNodeSpawner.h"
@@ -18,14 +18,14 @@
 #include "Widgets/Notifications/SNotificationList.h"
 #include "Framework/Notifications/NotificationManager.h"
 #include "ThreadingHelpers.h"
-#include "UEDocumentable.h"
+#include "CTRLDocumentable.h"
 #include "Interfaces/IPluginManager.h"
 #include "HAL/FileManager.h"
 #include "HAL/PlatformProcess.h"
 #include "Kismet2/KismetEditorUtilities.h"
 
 
-#define LOCTEXT_NAMESPACE "UEDocumentable"
+#define LOCTEXT_NAMESPACE "CTRLDocumentable"
 
 TArray<TSharedPtr<FJsonValue>> FTaskProcessor::Classes;
 
@@ -382,14 +382,14 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	Current = MakeUnique< FGenCurrentTask >();
 	Current->Task = InTask;
 
-	FString IntermediateDir = FPaths::ProjectIntermediateDir() / TEXT("UEDocumentable") / Current->Task->Settings.DocumentationTitle;
+	FString IntermediateDir = FPaths::ProjectIntermediateDir() / TEXT("CTRLDocumentable") / Current->Task->Settings.DocumentationTitle;
 
-	UEDocumentable::RunOnGameThread(GameThread_EnqueueEnumerators);	
+	CTRLDocumentable::RunOnGameThread(GameThread_EnqueueEnumerators);	
 
 	// Initialize the doc generator
 	Current->DocGen = MakeUnique< FDocumentationGenerator >();
 
-	if(!UEDocumentable::RunOnGameThreadRetVal(GameThread_InitDocGen, Current->Task->Settings.DocumentationTitle, IntermediateDir))
+	if(!CTRLDocumentable::RunOnGameThreadRetVal(GameThread_InitDocGen, Current->Task->Settings.DocumentationTitle, IntermediateDir))
 	{
 		UE_LOG(LogCTRLDocumentable, Error, TEXT("Failed to initialize generator!"));
 		return;
@@ -404,7 +404,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	int SuccessfulNodeCount = 0;
 	while(Current->Enumerators.Dequeue(Current->CurrentEnumerator))
 	{
-		while(UEDocumentable::RunOnGameThreadRetVal(GameThread_EnumerateNextObject))	// Game thread: Enumerate next Obj, get spawner list for Obj, store as array of weak ptrs.
+		while(CTRLDocumentable::RunOnGameThreadRetVal(GameThread_EnumerateNextObject))	// Game thread: Enumerate next Obj, get spawner list for Obj, store as array of weak ptrs.
 			{
 			if(bTerminationRequest)
 			{
@@ -412,7 +412,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 			}
 
 			FDocumentationGenerator::FNodeProcessingState NodeState;
-			while(auto NodeInst = UEDocumentable::RunOnGameThreadRetVal(GameThread_EnumerateNextNode, NodeState))	// Game thread: Get next still valid spawner, spawn node, add to root, return it)
+			while(auto NodeInst = CTRLDocumentable::RunOnGameThreadRetVal(GameThread_EnumerateNextNode, NodeState))	// Game thread: Get next still valid spawner, spawn node, add to root, return it)
 				{
 				// NodeInst should hopefully not reference anything except stuff we control (ie graph object), and it's rooted so should be safe to deal with here
 
@@ -434,14 +434,14 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 
 				for (int i = 0; i < Classes.Num(); i++)
 				{
-					FString ClassName = Classes[i]->AsObject()->GetStringField("className");
-					FString ClassId = NodeMeta.GetStringField("classId");
+					FString ClassName = Classes[i]->AsObject()->GetStringField(TEXT("className"));
+					FString ClassId = NodeMeta.GetStringField(TEXT("classId"));
 					if ( ClassName.Equals(ClassId, ESearchCase::IgnoreCase))
 					{
 						TArray<TSharedPtr<FJsonValue>> Nodes;
-						if (Classes[i]->AsObject()->HasField("nodes"))
+						if (Classes[i]->AsObject()->HasField(TEXT("nodes")))
 						{
-							Nodes = Classes[i]->AsObject()->GetArrayField("nodes");
+							Nodes = Classes[i]->AsObject()->GetArrayField(TEXT("nodes"));
 						}
 						Nodes.Add(MakeShared<FJsonValueObject>(MakeShared<FJsonObject>(NodeMeta)));
 						Classes[i]->AsObject()->SetArrayField("nodes", Nodes);
@@ -458,7 +458,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	{
 		UE_LOG(LogCTRLDocumentable, Error, TEXT("No nodes were found to document!"));
 
-		UEDocumentable::RunOnGameThread([this]
+		CTRLDocumentable::RunOnGameThread([this]
 			{
 				Current->Task->Notification->SetText(LOCTEXT("DocFinalizationFailed", "Generation failed - No nodes found"));
 				Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Fail);
@@ -474,15 +474,15 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	FJsonSerializer::Serialize(MakeShared<FJsonObject>(*Nodes), TJsonWriterFactory<>::Create(&JsonString, 0));
 
 	
-	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
-	UEDocumentable::RunOnGameThread([this]
+	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
+	CTRLDocumentable::RunOnGameThread([this]
 	{
 		Current->Task->Notification->SetText(LOCTEXT("DocConversionSuccessful", "Generation complete!"));
 		Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Success);
 		Current->Task->Notification->ExpireAndFadeout();
 		
 		void* PipeWrite = nullptr;
-		FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() + "/ThirdParty/Web");
+		FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web");
 		FProcHandle Proc = FPlatformProcess::CreateProc(
 		TEXT("C:\\Windows\\System32\\cmd.exe"),
 		TEXT("/c \"set port=3012 && npm start\""),
@@ -502,7 +502,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediateDocs(FString const& IntermediateDir, FString const& OutputDir, FString const& DocTitle, bool bCleanOutput)
 {
 	auto& PluginManager = IPluginManager::Get();
-	auto Plugin = PluginManager.FindPlugin(TEXT("UEDocumentable"));
+	auto Plugin = PluginManager.FindPlugin(TEXT("CTRLDocumentable"));
 	if(!Plugin.IsValid())
 	{
 		UE_LOG(LogCTRLDocumentable, Error, TEXT("Failed to locate plugin info"));

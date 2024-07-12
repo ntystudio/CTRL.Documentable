@@ -4,13 +4,13 @@
 
 // Copyright (C) 2023-2024 NTY.studio. All Rights Reserved.
 
-#include "UEDocumentableCommands.h"
+#include "CTRLDocumentableCommands.h"
 
 
-#define LOCTEXT_NAMESPACE "UEDocumentable"
+#define LOCTEXT_NAMESPACE "CTRLDocumentable"
 
 
-void FUEDocumentableCommands::RegisterCommands()
+void FCTRLDocumentableCommands::RegisterCommands()
 {
 	UI_COMMAND(ShowUI, "CTRL Documentable", "Open the CTRL Documentable documentation generator window", EUserInterfaceActionType::Button, FInputGesture());
 	CommandMap.Add(TEXT("ShowUI"), ShowUI);

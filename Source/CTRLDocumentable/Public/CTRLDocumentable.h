@@ -14,7 +14,7 @@
 class FUICommandList;
 
 
-class FUEDocumentableModule : public IModuleInterface
+class FCTRLDocumentableModule : public IModuleInterface
 {
 public:
 

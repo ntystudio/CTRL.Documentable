@@ -10,15 +10,16 @@
 #include "Editor/EditorStyle/Public/EditorStyleSet.h"
 
 
-class FUEDocumentableCommands : public TCommands< FUEDocumentableCommands >
+class FCTRLDocumentableCommands : public TCommands< FCTRLDocumentableCommands >
 {
 public:
-	FUEDocumentableCommands() : TCommands< FUEDocumentableCommands >
+	FCTRLDocumentableCommands() : TCommands< FCTRLDocumentableCommands >
 	(
-		"UEDocumentable", // Context name for fast lookup
-		NSLOCTEXT("Contexts", "UEDocumentable", "Documentation"), // Localized context name for displaying
+		"CTRLDocumentable", // Context name for fast lookup
+		NSLOCTEXT("Contexts", "CTRLDocumentable", "Documentation"), // Localized context name for displaying
 		NAME_None, // Parent
-		FEditorStyle::GetStyleSetName() // Icon Style Set
+		FAppStyle::GetAppStyleSetName() // Icon Style Set
+		// FEditorStyle::GetStyleSetName() // Icon Style Set
 	)
 	{
 	}

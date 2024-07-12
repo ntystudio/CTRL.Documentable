@@ -12,7 +12,7 @@
 /**
  * 
  */
-class UEDOCUMENTABLE_API SDocGeneratorWidget : public SCompoundWidget
+class CTRLDOCUMENTABLE_API SDocGeneratorWidget : public SCompoundWidget
 {
 public:
 	SLATE_BEGIN_ARGS(SDocGeneratorWidget)

@@ -6,7 +6,7 @@
 
 
 #include "UI/SDocGeneratorWidget.h"
-#include "UEDocumentable.h"
+#include "CTRLDocumentable.h"
 
 #include "PropertyEditorModule.h"
 #include "IDetailsView.h"
@@ -14,7 +14,7 @@
 #include "Widgets/Input/SButton.h"
 #include "Framework/Application/SlateApplication.h"
 
-#define LOCTEXT_NAMESPACE "UEDocumentable"
+#define LOCTEXT_NAMESPACE "CTRLDocumentable"
 
 void SDocGeneratorWidget::Construct(const SDocGeneratorWidget::FArguments& InArgs)
 {
@@ -84,7 +84,7 @@ bool SDocGeneratorWidget::ValidateSettingsForGeneration() const
 
 FReply SDocGeneratorWidget::OnGenerateDocumentation()
 {
-	auto& Module = FModuleManager::LoadModuleChecked<FUEDocumentableModule>(TEXT("UEDocumentable"));
+	auto& Module = FModuleManager::LoadModuleChecked<FCTRLDocumentableModule>(TEXT("CTRLDocumentable"));
 	Module.GenerateDocs(UGenerationSettingsObject::Get()->Settings);
 
 	TSharedRef< SWindow > ParentWindow = FSlateApplication::Get().FindWidgetWindow(AsShared()).ToSharedRef();

@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class UEDocumentable : ModuleRules
+public class CTRLDocumentable : ModuleRules
 {
-	public UEDocumentable(ReadOnlyTargetRules Target) : base(Target)
+	public CTRLDocumentable(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		

@@ -5,7 +5,7 @@
 // Copyright (C) 2023-2024 NTY.studio. All Rights Reserved.
 
 #include "NativeModuleEnumerator.h"
-#include "UEDocumentableLog.h"
+#include "CTRLDocumentableLog.h"
 #include "UObject/UnrealType.h"
 #include "UObject/Package.h"
 #include "UObject/UObjectHash.h"

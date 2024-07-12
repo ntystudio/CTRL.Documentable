@@ -7,7 +7,7 @@
 #pragma once
 
 #include "DocumentationGenerator.h"
-#include "UEDocumentableLog.h"
+#include "CTRLDocumentableLog.h"
 #include "SGraphNode.h"
 #include "SGraphPanel.h"
 #include "NodeFactory.h"
@@ -246,7 +246,7 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 
 	TUniquePtr<TImagePixelData<FLinearColor>> PixelData;
 
-	bSuccess = UEDocumentable::RunOnGameThreadRetVal([this, Node, DrawSize, &Rect, &PixelData]
+	bSuccess = CTRLDocumentable::RunOnGameThreadRetVal([this, Node, DrawSize, &Rect, &PixelData]
 	{
 		auto NodeWidget = FNodeFactory::CreateNodeWidget(Node);
 		NodeWidget->SetOwner(GraphPanel.ToSharedRef());
@@ -292,7 +292,7 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 		CreateDirectoryRecursively(State.ClassDocsPath / TEXT("functions"));
 	}
 	State.RelImageBasePath = TEXT("../img/");
-	const FString ImageBasePath = FPaths::Combine(IPluginManager::Get().FindPlugin("UEDocumentable")->GetBaseDir() + "/ThirdParty/Web/public/") / TEXT("img/");
+	const FString ImageBasePath = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web/public/") / TEXT("img/");
 	FString ImgFilename = FString::Printf(TEXT("nd_img_%s.png"), *NodeName);
 	FString ScreenshotSaveName = ImageBasePath / ImgFilename;
 

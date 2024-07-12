@@ -4,10 +4,10 @@
 
 // Copyright (C) 2023-2024 NTY.studio. All Rights Reserved.
 
-#include "UEDocumentable.h"
+#include "CTRLDocumentable.h"
 #include "DocumentationGenerator.h"
-#include "UEDocumentableCommands.h"
-#include "UEDocumentableLog.h"
+#include "CTRLDocumentableCommands.h"
+#include "CTRLDocumentableLog.h"
 #include "TaskProcessor.h"
 #include "UI/SDocGeneratorWidget.h"
 #include "GenerationSettings.h"
@@ -20,32 +20,32 @@
 #include "HAL/RunnableThread.h"
 
 
-#define LOCTEXT_NAMESPACE "FUEDocumentableModule"
+#define LOCTEXT_NAMESPACE "FCTRLDocumentableModule"
 
-IMPLEMENT_MODULE(FUEDocumentableModule, UEDocumentable)
+IMPLEMENT_MODULE(FCTRLDocumentableModule, CTRLDocumentable)
 
 DEFINE_LOG_CATEGORY(LogCTRLDocumentable);
 
-void FUEDocumentableModule::StartupModule()
+void FCTRLDocumentableModule::StartupModule()
 {
 	// Create command list
 	UICommands = MakeShareable< FUICommandList >(new FUICommandList);
 
-	FUEDocumentableCommands::Register();
+	FCTRLDocumentableCommands::Register();
 
 	// Map commands
 	FUIAction ShowDocGenUI_UIAction(
-		FExecuteAction::CreateRaw(this, &FUEDocumentableModule::ShowUI),
+		FExecuteAction::CreateRaw(this, &FCTRLDocumentableModule::ShowUI),
 		FCanExecuteAction::CreateLambda([] { return true; })
 	);
 
-	auto CmdInfo = FUEDocumentableCommands::Get().ShowUI;
+	auto CmdInfo = FCTRLDocumentableCommands::Get().ShowUI;
 	UICommands->MapAction(CmdInfo, ShowDocGenUI_UIAction);
 
 	// Setup menu extension
 	auto AddMenuExtension = [](FMenuBuilder& MenuBuilder)
 	{
-		MenuBuilder.AddMenuEntry(FUEDocumentableCommands::Get().ShowUI);
+		MenuBuilder.AddMenuEntry(FCTRLDocumentableCommands::Get().ShowUI);
 	};
 
 	auto& LevelEditorModule = FModuleManager::LoadModuleChecked< FLevelEditorModule >("LevelEditor");
@@ -59,13 +59,13 @@ void FUEDocumentableModule::StartupModule()
 	LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
 }
 
-void FUEDocumentableModule::ShutdownModule()
+void FCTRLDocumentableModule::ShutdownModule()
 {
-	FUEDocumentableCommands::Unregister();
+	FCTRLDocumentableCommands::Unregister();
 }
 
 
-void FUEDocumentableModule::GenerateDocs(FGenerationSettings const& Settings)
+void FCTRLDocumentableModule::GenerateDocs(FGenerationSettings const& Settings)
 {
 	if (!Processor.IsValid())
 	{
@@ -76,17 +76,17 @@ void FUEDocumentableModule::GenerateDocs(FGenerationSettings const& Settings)
 
 	if (!Processor->IsRunning())
 	{
-		FRunnableThread::Create(Processor.Get(), TEXT("UEDocumentableProcessorThread"), 0, TPri_BelowNormal);
+		FRunnableThread::Create(Processor.Get(), TEXT("CTRLDocumentableProcessorThread"), 0, TPri_BelowNormal);
 	}
 }
 
-void FUEDocumentableModule::ProcessIntermediateDocs(FString const& IntermediateDir, FString const& OutputDir, FString const& DocTitle, bool bCleanOutput)
+void FCTRLDocumentableModule::ProcessIntermediateDocs(FString const& IntermediateDir, FString const& OutputDir, FString const& DocTitle, bool bCleanOutput)
 {
 }
 
-void FUEDocumentableModule::ShowUI()
+void FCTRLDocumentableModule::ShowUI()
 {
-	const FText WindowTitle = LOCTEXT("DocGenWindowTitle", "UE Documentable");
+	const FText WindowTitle = LOCTEXT("DocGenWindowTitle", "CTRL Documentable");
 
 	TSharedPtr< SWindow > Window =
 		SNew(SWindow)
@@ -94,7 +94,7 @@ void FUEDocumentableModule::ShowUI()
 		.MinWidth(400.0f)
 		.MinHeight(300.0f)
 		.MaxHeight(600.0f)
-		.SupportsMaximize(false)
+		.SupportsMaximize(true)
 		.SupportsMinimize(false)
 		.SizingRule(ESizingRule::Autosized)
 		;

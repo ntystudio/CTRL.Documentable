@@ -88,7 +88,7 @@ public:
 
 		if(CDO->Settings.OutputDirectory.Path.IsEmpty())
 		{
-			CDO->Settings.OutputDirectory.Path = FPaths::ProjectSavedDir() / TEXT("UEDocumentable");
+			CDO->Settings.OutputDirectory.Path = FPaths::ProjectSavedDir() / TEXT("CTRLDocumentable");
 		}
 
 		if(CDO->Settings.BlueprintContextClass == nullptr)
@@ -98,7 +98,7 @@ public:
 	}
 
 public:
-	UPROPERTY(EditAnywhere, Config, Category = "UEDocumentable", Meta = (ShowOnlyInnerProperties))
+	UPROPERTY(EditAnywhere, Config, Category = "CTRLDocumentable", Meta = (ShowOnlyInnerProperties))
 		FGenerationSettings Settings;
 };
 
