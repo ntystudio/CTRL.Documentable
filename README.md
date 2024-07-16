@@ -53,7 +53,7 @@ Assuming you have the correct node version installed per the prerequisites, you 
 <br/>
 
 ## Feedback
-If you come across an issue while using the plugin or have a suggestion to improve the plugin, feel free to [open an issue](https://github.com/ntystudio/CTRL-reference-visualizer/issues) or leave a post in our [discord server](https://discord.gg/ntystudio) (CTRL Framework section in discord below).
+If you come across an issue while using the plugin or have a suggestion to improve the plugin, feel free to [open an issue](https://github.com/ntystudio/CTRL-documentable/issues) or leave a post in our [discord server](https://discord.gg/ntystudio) (CTRL Framework section in discord below).
 
 ![image](https://github.com/user-attachments/assets/07b8c1d0-a582-46dd-80dc-452ee5cf6ce2)
 <br/>
