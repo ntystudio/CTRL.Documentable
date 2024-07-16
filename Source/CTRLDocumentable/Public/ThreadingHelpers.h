@@ -19,6 +19,13 @@ namespace CTRLDocumentable
 		FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
 	}
 
+	template < typename TLambda >
+	inline auto RunDetached(TLambda Func) -> void
+	{
+		FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady(MoveTemp(Func), TStatId(), nullptr, ENamedThreads::AnyThread);
+		FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
+	}
+
 	template < typename TLambda, typename... TArgs >
 	inline auto RunOnGameThreadRetVal(TLambda Func, TArgs&... Args) -> decltype(Func(Args...))
 	{

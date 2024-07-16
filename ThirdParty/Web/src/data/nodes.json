@@ -1,17 +1,16 @@
 ﻿{
 	"nodes": [
 		{
-			"className": "UCustomSerializer",
+			"className": "UDummy",
 			"classHierarchy": [
-				"UObject",
-				"UBlueprintFunctionLibrary"
+				"UObject"
 			],
-			"path": "Classes/Default/UCustomSerializer",
+			"path": "Classes/Default/UDummy",
 			"properties": [],
 			"functions": [
 				{
-					"name": "DecodeMessageFromServer",
-					"description": "Decode Message from Server",
+					"name": "BytesToStringFixed",
+					"description": "Bytes to String Fixed",
 					"flags": [
 						"Final",
 						"Native",
@@ -64,9 +63,9 @@
 			],
 			"nodes": [
 				{
-					"docsName": "TheHive",
-					"classId": "UCustomSerializer",
-					"className": "Custom Serializer",
+					"docsName": "Bioroid",
+					"classId": "UDummy",
+					"className": "Dummy",
 					"shortTitle": "Encode Message for Server",
 					"fullTitle": "Encode Message for Server",
 					"description": "",
@@ -97,13 +96,13 @@
 					]
 				},
 				{
-					"docsName": "TheHive",
-					"classId": "UCustomSerializer",
-					"className": "Custom Serializer",
-					"shortTitle": "Decode Message from Server",
-					"fullTitle": "Decode Message from Server",
+					"docsName": "Bioroid",
+					"classId": "UDummy",
+					"className": "Dummy",
+					"shortTitle": "Bytes to String Fixed",
+					"fullTitle": "Bytes to String Fixed",
 					"description": "",
-					"imgPath": "../img/nd_img_DecodeMessageFromServer.png",
+					"imgPath": "../img/nd_img_BytesToStringFixed.png",
 					"inputs": [
 						{
 							"name": "In",
@@ -125,156 +124,1356 @@
 						{
 							"name": "Return Value",
 							"type": "String",
-							"description": "Decode Message from Server"
-						}
-					]
-				},
-				{
-					"docsName": "TheHive",
-					"classId": "UCustomSerializer",
-					"className": "Custom Serializer",
-					"shortTitle": "Encode Message for Server",
-					"fullTitle": "Encode Message for Server",
-					"description": "",
-					"imgPath": "../img/nd_img_EncodeMessageForServer.png",
-					"inputs": [
-						{
-							"name": "In",
-							"type": "Exec",
-							"description": "$no_comments"
-						},
-						{
-							"name": "Message",
-							"type": "String",
-							"description": "$no_comments"
-						}
-					],
-					"outputs": [
-						{
-							"name": "Out",
-							"type": "Exec",
-							"description": "$no_comments"
-						},
-						{
-							"name": "Return Value",
-							"type": "Array of Bytes",
-							"description": "Encode Message for Server"
-						}
-					]
-				},
-				{
-					"docsName": "TheHive",
-					"classId": "UCustomSerializer",
-					"className": "Custom Serializer",
-					"shortTitle": "Decode Message from Server",
-					"fullTitle": "Decode Message from Server",
-					"description": "",
-					"imgPath": "../img/nd_img_DecodeMessageFromServer.png",
-					"inputs": [
-						{
-							"name": "In",
-							"type": "Exec",
-							"description": "$no_comments"
-						},
-						{
-							"name": "In",
-							"type": "Array of Bytes",
-							"description": "$no_comments"
-						}
-					],
-					"outputs": [
-						{
-							"name": "Out",
-							"type": "Exec",
-							"description": "$no_comments"
-						},
-						{
-							"name": "Return Value",
-							"type": "String",
-							"description": "Decode Message from Server"
+							"description": "Bytes to String Fixed"
 						}
 					]
 				}
 			]
 		},
 		{
-			"className": "UDiscordInputComponent",
+			"className": "UFirstPerson_AnimBP_C",
 			"classHierarchy": [
 				"UObject",
-				"UActorComponent"
+				"UAnimInstance"
 			],
-			"path": "Classes/Default/UDiscordInputComponent",
+			"path": "Classes/Default/UFirstPerson_AnimBP_C",
 			"properties": [
 				{
-					"name": "Connection",
-					"type": "ATcpSocketConnection*",
+					"name": "UberGraphFrame",
+					"type": "FPointerToUberGraphFrame",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "__AnimBlueprintMutables",
+					"type": "FAnimBlueprintGeneratedMutableData",
 					"flags": [
-						"ModuleRelativePath = DiscordInputComponent.h",
-						"Protected"
+						"BlueprintCompilerGeneratedDefaults = true"
 					],
 					"description": ""
 				},
 				{
-					"name": "ConnId",
-					"type": "int32",
+					"name": "AnimBlueprintExtension_PropertyAccess",
+					"type": "FAnimSubsystemInstance",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimBlueprintExtension_Base",
+					"type": "FAnimSubsystemInstance",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_Root",
+					"type": "FAnimNode_Root",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_13",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_12",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_11",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_10",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_9",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_8",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_7",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_9",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_9",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_8",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_8",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_7",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_7",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_6",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_6",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_5",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_5",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateMachine_1",
+					"type": "FAnimNode_StateMachine",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_Slot",
+					"type": "FAnimNode_Slot",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SaveCachedPose_1",
+					"type": "FAnimNode_SaveCachedPose",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_6",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_5",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_4",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_3",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_2",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult_1",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_TransitionResult",
+					"type": "FAnimNode_TransitionResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_4",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_4",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_3",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_3",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_2",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_2",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer_1",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult_1",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SequencePlayer",
+					"type": "FAnimNode_SequencePlayer",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateResult",
+					"type": "FAnimNode_StateResult",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_StateMachine",
+					"type": "FAnimNode_StateMachine",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_SaveCachedPose",
+					"type": "FAnimNode_SaveCachedPose",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_UseCachedPose_1",
+					"type": "FAnimNode_UseCachedPose",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_UseCachedPose",
+					"type": "FAnimNode_UseCachedPose",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_BlendListByBool",
+					"type": "FAnimNode_BlendListByBool",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "IsMoving",
+					"type": "bool",
 					"flags": [
-						"ModuleRelativePath = DiscordInputComponent.h",
-						"Protected"
+						"DisplayName = Is Moving",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "bIsInAir",
+					"type": "bool",
+					"flags": [
+						"DisplayName = Is In Air",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "HasRifle",
+					"type": "bool",
+					"flags": [
+						"DisplayName = Has Rifle",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "FirstPersonCharacter",
+					"type": "ABP_FirstPersonCharacter_C*",
+					"flags": [
+						"DisplayName = First Person Character",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
 					],
 					"description": ""
 				}
 			],
 			"functions": [
 				{
-					"name": "Connected",
-					"description": "Connected",
+					"name": "ExecuteUbergraph_FirstPerson_AnimBP",
+					"description": "Execute Ubergraph First Person Anim BP",
 					"flags": [
-						"Final",
-						"Native",
-						"Public"
+						"Final"
 					],
 					"returnType": "void",
 					"parameters": [
 						{
-							"name": "ConnectionId",
+							"name": "EntryPoint",
 							"type": "int32",
 							"description": "",
 							"flags": [
-								"Public",
+								"BlueprintReadOnly",
+								"BlueprintVisible",
 								"Parm"
 							]
 						}
 					]
 				},
 				{
-					"name": "Disconnected",
-					"description": "Disconnected",
+					"name": "BlueprintUpdateAnimation",
+					"description": "Executed when the Animation is updated",
 					"flags": [
-						"Final",
-						"Native",
-						"Public"
-					],
-					"returnType": "void",
-					"parameters": [
-						{
-							"name": "ConnectionId",
-							"type": "int32",
-							"description": "",
-							"flags": [
-								"Public",
-								"Parm"
-							]
-						}
-					]
-				},
-				{
-					"name": "ReceivedMessage",
-					"description": "Received Message",
-					"flags": [
-						"Final",
-						"Native",
+						"Event",
 						"Public",
-						"HasOutParams"
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "DeltaTimeX",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "EvaluateGraphExposedInputs_ExecuteUbergraph_FirstPerson_AnimBP_AnimGraphNode_TransitionResult_53F31B364AE1E94B7AB4B3B7BB0F164E",
+					"description": "Evaluate Graph Exposed Inputs Execute Ubergraph First Person Anim BP Anim Graph Node Transition Result 53F31B364AE1E94B7AB4B3B7BB0F164E",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "EvaluateGraphExposedInputs_ExecuteUbergraph_FirstPerson_AnimBP_AnimGraphNode_TransitionResult_B902C16045F47029D8FF9A8AE4529E0E",
+					"description": "Evaluate Graph Exposed Inputs Execute Ubergraph First Person Anim BP Anim Graph Node Transition Result B902C16045F47029D8FF9A8AE4529E0E",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "EvaluateGraphExposedInputs_ExecuteUbergraph_FirstPerson_AnimBP_AnimGraphNode_TransitionResult_D654D16F412EF3EFE1B50B94AB239895",
+					"description": "Evaluate Graph Exposed Inputs Execute Ubergraph First Person Anim BP Anim Graph Node Transition Result D654D16F412EF3EFE1B50B94AB239895",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "EvaluateGraphExposedInputs_ExecuteUbergraph_FirstPerson_AnimBP_AnimGraphNode_TransitionResult_274EC9B146631F45FDB52BB11F47D731",
+					"description": "Evaluate Graph Exposed Inputs Execute Ubergraph First Person Anim BP Anim Graph Node Transition Result 274EC9B146631F45FDB52BB11F47D731",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "AnimGraph",
+					"description": "Anim Graph",
+					"flags": [
+						"HasOutParams",
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "AnimGraph",
+							"type": "FPoseLink",
+							"description": "",
+							"flags": [
+								"Parm",
+								"OutParm"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"className": "UNewAnimBlueprint_C",
+			"classHierarchy": [
+				"UObject",
+				"UAnimInstance"
+			],
+			"path": "Classes/Default/UNewAnimBlueprint_C",
+			"properties": [
+				{
+					"name": "UberGraphFrame",
+					"type": "FPointerToUberGraphFrame",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimBlueprintExtension_PropertyAccess",
+					"type": "FAnimSubsystemInstance",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimBlueprintExtension_Base",
+					"type": "FAnimSubsystemInstance",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "AnimGraphNode_Root",
+					"type": "FAnimNode_Root",
+					"flags": [],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "ExecuteUbergraph_NewAnimBlueprint",
+					"description": "Execute Ubergraph New Anim Blueprint",
+					"flags": [
+						"Final"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "EntryPoint",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "AnimGraph",
+					"description": "Anim Graph",
+					"flags": [
+						"HasOutParams",
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "AnimGraph",
+							"type": "FPoseLink",
+							"description": "",
+							"flags": [
+								"Parm",
+								"OutParm"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"className": "UHUD_C",
+			"classHierarchy": [
+				"UObject",
+				"UVisual",
+				"UWidget",
+				"UUserWidget"
+			],
+			"path": "Classes/Default/UHUD_C",
+			"properties": [
+				{
+					"name": "ProgressBar_0",
+					"type": "UProgressBar*",
+					"flags": [
+						"EditInline = true",
+						"DisplayName = ProgressBar_0",
+						"Category = HUD",
+						"BlueprintReadOnly",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Player",
+					"type": "ABP_FirstPersonCharacter_C*",
+					"flags": [
+						"DisplayName = Player",
+						"Category = Default",
+						"ExposeOnSpawn = true",
+						"BlueprintVisible",
+						"ExposeOnSpawn",
+						"Edit"
+					],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "GetPercent",
+					"description": "Get Percent",
+					"flags": [
+						"Public",
+						"HasOutParams",
+						"BlueprintCallable",
+						"BlueprintEvent",
+						"BlueprintPure"
+					],
+					"returnType": "float",
+					"parameters": []
+				}
+			]
+		},
+		{
+			"className": "UBP_Weapon_Component_C",
+			"classHierarchy": [
+				"UObject",
+				"UActorComponent",
+				"USceneComponent",
+				"UPrimitiveComponent",
+				"UMeshComponent",
+				"USkinnedMeshComponent",
+				"USkeletalMeshComponent"
+			],
+			"path": "Classes/Default/UBP_Weapon_Component_C",
+			"properties": [
+				{
+					"name": "UberGraphFrame",
+					"type": "FPointerToUberGraphFrame",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "First PersonCharacter",
+					"type": "ABP_FirstPersonCharacter_C*",
+					"flags": [
+						"DisplayName = First Person Character",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "ProjectileOffset",
+					"type": "FVector",
+					"flags": [
+						"DisplayName = Projectile Offset",
+						"Category = Default",
+						"MultiLine = true",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "ExecuteUbergraph_BP_Weapon_Component",
+					"description": "Execute Ubergraph BP Weapon Component",
+					"flags": [
+						"Final",
+						"HasDefaults"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "EntryPoint",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "ReceiveBeginPlay",
+					"description": "Blueprint implementable event for when the component is beginning play, called before its owning actor's BeginPlay\nor when the component is dynamically created if the Actor has already BegunPlay.",
+					"flags": [
+						"Event",
+						"Public",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "InpActEvt_IA_Shoot_K2Node_EnhancedInputActionEvent_0",
+					"description": "Inp Act Evt IA Shoot K2Node Enhanced Input Action Event 0",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "ActionValue",
+							"type": "FInputActionValue",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "ElapsedTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "TriggeredTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "SourceAction",
+							"type": "const UInputAction*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm",
+								"ConstParm"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"className": "ABP_Pickup_Rifle_C",
+			"classHierarchy": [
+				"UObject",
+				"AActor"
+			],
+			"path": "Classes/Default/ABP_Pickup_Rifle_C",
+			"properties": [
+				{
+					"name": "UberGraphFrame",
+					"type": "FPointerToUberGraphFrame",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "SkeletalMesh",
+					"type": "USkeletalMeshComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "SphereCollision",
+					"type": "USphereComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "ProjectileOffset",
+					"type": "FVector",
+					"flags": [
+						"DisplayName = Projectile Offset",
+						"Category = Default",
+						"MultiLine = true",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "FirstPersonCharacterReference",
+					"type": "ABP_FirstPersonCharacter_C*",
+					"flags": [
+						"DisplayName = First Person Character Reference",
+						"Category = Default",
+						"MultiLine = true",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "ExecuteUbergraph_BP_Pickup_Rifle",
+					"description": "Execute Ubergraph BP Pickup Rifle",
+					"flags": [
+						"Final",
+						"HasDefaults"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "EntryPoint",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "BndEvt__BP_Rifle_SphereCollision_K2Node_ComponentBoundEvent_0_ComponentBeginOverlapSignature__DelegateSignature",
+					"description": "Bnd Evt  BP Rifle Sphere Collision K2Node Component Bound Event 0 Component Begin Overlap Signature  Delegate Signature",
+					"flags": [
+						"HasOutParams",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "OverlappedComponent",
+							"type": "UPrimitiveComponent*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "OtherActor",
+							"type": "AActor*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "OtherComp",
+							"type": "UPrimitiveComponent*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "OtherBodyIndex",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "bFromSweep",
+							"type": "bool",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "SweepResult",
+							"type": "const FHitResult&",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm",
+								"OutParm",
+								"ConstParm",
+								"ReferenceParm"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"className": "ABP_FirstPersonProjectile_C",
+			"classHierarchy": [
+				"UObject",
+				"AActor"
+			],
+			"path": "Classes/Default/ABP_FirstPersonProjectile_C",
+			"properties": [
+				{
+					"name": "UberGraphFrame",
+					"type": "FPointerToUberGraphFrame",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "ProjectileMovement",
+					"type": "UProjectileMovementComponent*",
+					"flags": [
+						"Category = MyProjectile",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Sphere",
+					"type": "UStaticMeshComponent*",
+					"flags": [
+						"Category = MyProjectile",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "CollisionComponent",
+					"type": "USphereComponent*",
+					"flags": [
+						"Category = MyProjectile",
+						"BlueprintVisible"
+					],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "ExecuteUbergraph_BP_FirstPersonProjectile",
+					"description": "Execute Ubergraph BP First Person Projectile",
+					"flags": [
+						"Final",
+						"HasDefaults"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "EntryPoint",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "ReceiveHit",
+					"description": "Event when this actor bumps into a blocking object, or blocks another actor that bumps into it.\nThis could happen due to things like Character movement, using Set Location with 'sweep' enabled, or physics simulation.\nFor events when objects overlap (e.g. walking into a trigger) see the 'Overlap' event.\n\n@note For collisions during physics simulation to generate hit events, 'Simulation Generates Hit Events' must be enabled.\n@note When receiving a hit from another object's movement (bSelfMoved is false), the directions of 'Hit.Normal' and 'Hit.ImpactNormal'\nwill be adjusted to indicate force from the other object against this object.\n@note NormalImpulse will be filled in for physics-simulating bodies, but will be zero for swept-component blocking collisions.",
+					"flags": [
+						"Event",
+						"Public",
+						"HasOutParams",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "MyComp",
+							"type": "UPrimitiveComponent*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "Other",
+							"type": "AActor*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "OtherComp",
+							"type": "UPrimitiveComponent*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "bSelfMoved",
+							"type": "bool",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "HitLocation",
+							"type": "FVector",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "HitNormal",
+							"type": "FVector",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "NormalImpulse",
+							"type": "FVector",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "Hit",
+							"type": "const FHitResult&",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm",
+								"OutParm",
+								"ConstParm",
+								"ReferenceParm"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"className": "ABP_FirstPersonPlayerController_C",
+			"classHierarchy": [
+				"UObject",
+				"AActor",
+				"AController",
+				"APlayerController"
+			],
+			"path": "Classes/Default/ABP_FirstPersonPlayerController_C",
+			"properties": [
+				{
+					"name": "UberGraphFrame",
+					"type": "FPointerToUberGraphFrame",
+					"flags": [],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "ExecuteUbergraph_BP_FirstPersonPlayerController",
+					"description": "Execute Ubergraph BP First Person Player Controller",
+					"flags": [
+						"Final",
+						"HasDefaults"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "EntryPoint",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "ReceiveBeginPlay",
+					"description": "Event when play begins for this actor.",
+					"flags": [
+						"Event",
+						"Protected",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				}
+			]
+		},
+		{
+			"className": "ABP_FirstPersonGameMode_C",
+			"classHierarchy": [
+				"UObject",
+				"AActor",
+				"AInfo",
+				"AGameModeBase"
+			],
+			"path": "Classes/Default/ABP_FirstPersonGameMode_C",
+			"properties": [
+				{
+					"name": "DefaultSceneRoot",
+					"type": "USceneComponent*",
+					"flags": [
+						"Category = MyGame",
+						"BlueprintVisible"
+					],
+					"description": ""
+				}
+			],
+			"functions": []
+		},
+		{
+			"className": "ABP_FirstPersonCharacter_C",
+			"classHierarchy": [
+				"UObject",
+				"AActor",
+				"APawn",
+				"ACharacter"
+			],
+			"path": "Classes/Default/ABP_FirstPersonCharacter_C",
+			"properties": [
+				{
+					"name": "UberGraphFrame",
+					"type": "FPointerToUberGraphFrame",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "FirstPersonMesh",
+					"type": "USkeletalMeshComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "FirstPersonCamera",
+					"type": "UCameraComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Timeline_0_Alpha_004EC7754ACE2B5AACFC158DB0675092",
+					"type": "float",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "Timeline_0__Direction_004EC7754ACE2B5AACFC158DB0675092",
+					"type": "TEnumAsByte<ETimelineDirection::Type>",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "Timeline_0",
+					"type": "UTimelineComponent*",
+					"flags": [
+						"Category = BP_FirstPersonCharacter",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Timeline_Alpha_80437E5D4F599A69110B6899C30C7146",
+					"type": "float",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "Timeline__Direction_80437E5D4F599A69110B6899C30C7146",
+					"type": "TEnumAsByte<ETimelineDirection::Type>",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "Timeline",
+					"type": "UTimelineComponent*",
+					"flags": [
+						"Category = BP_FirstPersonCharacter",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "TurnTimeline_Alpha_BF5F43DC4FA7496D9F0E2381EB0B5664",
+					"type": "float",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "TurnTimeline__Direction_BF5F43DC4FA7496D9F0E2381EB0B5664",
+					"type": "TEnumAsByte<ETimelineDirection::Type>",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "TurnTimeline",
+					"type": "UTimelineComponent*",
+					"flags": [
+						"Category = BP_FirstPersonCharacter",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "bHasRifle",
+					"type": "bool",
+					"flags": [
+						"DisplayName = Has Rifle",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "Weapon",
+					"type": "UBP_Weapon_Component_C*",
+					"flags": [
+						"DisplayName = Weapon",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "TargetRotation",
+					"type": "FRotator",
+					"flags": [
+						"DisplayName = Target Rotation",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "Energy",
+					"type": "double",
+					"flags": [
+						"DisplayName = Energy",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "Conn",
+					"type": "ATcpSocketConnection*",
+					"flags": [
+						"DisplayName = Conn",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "Msg",
+					"type": "UVaRestJsonObject*",
+					"flags": [
+						"DisplayName = Msg",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "Beacon",
+					"type": "ABP_Beacon_C*",
+					"flags": [
+						"DisplayName = Beacon",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "ExecuteUbergraph_BP_FirstPersonCharacter",
+					"description": "Execute Ubergraph BP First Person Character",
+					"flags": [
+						"Final",
+						"HasDefaults"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "EntryPoint",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "RollDice",
+					"description": "Roll Dice",
+					"flags": [
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "Move",
+					"description": "Move",
+					"flags": [
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "Axis",
+							"type": "double",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "Turn",
+					"description": "Turn",
+					"flags": [
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "Axis",
+							"type": "double",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "OnNewMessage",
+					"description": "On New Message",
+					"flags": [
+						"HasOutParams",
+						"BlueprintCallable",
+						"BlueprintEvent"
 					],
 					"returnType": "void",
 					"parameters": [
@@ -283,7 +1482,8 @@
 							"type": "int32",
 							"description": "",
 							"flags": [
-								"Public",
+								"BlueprintReadOnly",
+								"BlueprintVisible",
 								"Parm"
 							]
 						},
@@ -292,15 +1492,618 @@
 							"type": "TArray",
 							"description": "",
 							"flags": [
-								"Public",
+								"BlueprintReadOnly",
+								"BlueprintVisible",
 								"Parm",
 								"OutParm",
 								"ReferenceParm"
 							]
 						}
 					]
+				},
+				{
+					"name": "Connected",
+					"description": "Connected",
+					"flags": [
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "ConnectionId",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "CustomEvent_0",
+					"description": "Custom Event 0",
+					"flags": [
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "ConnectionId",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "ReceiveBeginPlay",
+					"description": "Event when play begins for this actor.",
+					"flags": [
+						"Event",
+						"Protected",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "InpActEvt_IA_Forward_K2Node_EnhancedInputActionEvent_0",
+					"description": "Inp Act Evt IA Forward K2Node Enhanced Input Action Event 0",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "ActionValue",
+							"type": "FInputActionValue",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "ElapsedTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "TriggeredTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "SourceAction",
+							"type": "const UInputAction*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm",
+								"ConstParm"
+							]
+						}
+					]
+				},
+				{
+					"name": "InpActEvt_IA_Turn_K2Node_EnhancedInputActionEvent_1",
+					"description": "Inp Act Evt IA Turn K2Node Enhanced Input Action Event 1",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "ActionValue",
+							"type": "FInputActionValue",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "ElapsedTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "TriggeredTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "SourceAction",
+							"type": "const UInputAction*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm",
+								"ConstParm"
+							]
+						}
+					]
+				},
+				{
+					"name": "InpActEvt_IA_Jump_K2Node_EnhancedInputActionEvent_2",
+					"description": "Inp Act Evt IA Jump K2Node Enhanced Input Action Event 2",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "ActionValue",
+							"type": "FInputActionValue",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "ElapsedTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "TriggeredTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "SourceAction",
+							"type": "const UInputAction*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm",
+								"ConstParm"
+							]
+						}
+					]
+				},
+				{
+					"name": "InpActEvt_IA_Jump_K2Node_EnhancedInputActionEvent_3",
+					"description": "Inp Act Evt IA Jump K2Node Enhanced Input Action Event 3",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "ActionValue",
+							"type": "FInputActionValue",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "ElapsedTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "TriggeredTime",
+							"type": "float",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						},
+						{
+							"name": "SourceAction",
+							"type": "const UInputAction*",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm",
+								"ConstParm"
+							]
+						}
+					]
+				},
+				{
+					"name": "Timeline_0__UpdateFunc",
+					"description": "Timeline 0  Update Func",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "Timeline_0__FinishedFunc",
+					"description": "Timeline 0  Finished Func",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "Timeline__UpdateFunc",
+					"description": "Timeline  Update Func",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "Timeline__FinishedFunc",
+					"description": "Timeline  Finished Func",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "TurnTimeline__UpdateFunc",
+					"description": "Turn Timeline  Update Func",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "TurnTimeline__FinishedFunc",
+					"description": "Turn Timeline  Finished Func",
+					"flags": [
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "ProcessMessage",
+					"description": "Process Message",
+					"flags": [
+						"Public",
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
 				}
 			]
+		},
+		{
+			"className": "ABP_Beacon_C",
+			"classHierarchy": [
+				"UObject",
+				"AActor"
+			],
+			"path": "Classes/Default/ABP_Beacon_C",
+			"properties": [
+				{
+					"name": "Mesh",
+					"type": "UStaticMeshComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "DefaultSceneRoot",
+					"type": "USceneComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Connections",
+					"type": "TArray",
+					"flags": [
+						"DisplayName = Connections",
+						"Category = Default",
+						"ExposeOnSpawn = true",
+						"BlueprintVisible",
+						"ExposeOnSpawn",
+						"Edit"
+					],
+					"description": ""
+				}
+			],
+			"functions": []
+		},
+		{
+			"className": "ABP_Dice_C",
+			"classHierarchy": [
+				"UObject",
+				"AActor"
+			],
+			"path": "Classes/Default/ABP_Dice_C",
+			"properties": [
+				{
+					"name": "UberGraphFrame",
+					"type": "FPointerToUberGraphFrame",
+					"flags": [],
+					"description": ""
+				},
+				{
+					"name": "Arrow6",
+					"type": "UArrowComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Arrow5",
+					"type": "UArrowComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Arrow4",
+					"type": "UArrowComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Arrow3",
+					"type": "UArrowComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Arrow2",
+					"type": "UArrowComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Arrow1",
+					"type": "UArrowComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "StaticMesh",
+					"type": "UStaticMeshComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "DefaultSceneRoot",
+					"type": "USceneComponent*",
+					"flags": [
+						"Category = Default",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "ActorLoc",
+					"type": "FVector",
+					"flags": [
+						"DisplayName = Actor Loc",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				},
+				{
+					"name": "Arrows",
+					"type": "TArray",
+					"flags": [
+						"DisplayName = Arrows",
+						"Category = Default",
+						"BlueprintVisible",
+						"Edit"
+					],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "ExecuteUbergraph_BP_Dice",
+					"description": "Execute Ubergraph BP Dice",
+					"flags": [
+						"Final",
+						"HasDefaults"
+					],
+					"returnType": "void",
+					"parameters": [
+						{
+							"name": "EntryPoint",
+							"type": "int32",
+							"description": "",
+							"flags": [
+								"BlueprintReadOnly",
+								"BlueprintVisible",
+								"Parm"
+							]
+						}
+					]
+				},
+				{
+					"name": "Result",
+					"description": "Result",
+					"flags": [
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "Stopped",
+					"description": "Stopped",
+					"flags": [
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "Roll",
+					"description": "Roll",
+					"flags": [
+						"BlueprintCallable",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				},
+				{
+					"name": "ReceiveBeginPlay",
+					"description": "Event when play begins for this actor.",
+					"flags": [
+						"Event",
+						"Protected",
+						"BlueprintEvent"
+					],
+					"returnType": "void",
+					"parameters": []
+				}
+			]
+		},
+		{
+			"className": "UBP_HUD_W_C",
+			"classHierarchy": [
+				"UObject",
+				"UVisual",
+				"UWidget",
+				"UUserWidget"
+			],
+			"path": "Classes/Default/UBP_HUD_W_C",
+			"properties": [
+				{
+					"name": "ProgressBar_0",
+					"type": "UProgressBar*",
+					"flags": [
+						"EditInline = true",
+						"DisplayName = ProgressBar_0",
+						"Category = BP_HUD_W",
+						"BlueprintReadOnly",
+						"BlueprintVisible"
+					],
+					"description": ""
+				},
+				{
+					"name": "Player",
+					"type": "ABP_FirstPersonCharacter_C*",
+					"flags": [
+						"DisplayName = Player",
+						"Category = Default",
+						"ExposeOnSpawn = true",
+						"BlueprintVisible",
+						"ExposeOnSpawn",
+						"Edit"
+					],
+					"description": ""
+				}
+			],
+			"functions": [
+				{
+					"name": "GetPercent",
+					"description": "Get Percent",
+					"flags": [
+						"Public",
+						"HasOutParams",
+						"BlueprintCallable",
+						"BlueprintEvent",
+						"BlueprintPure"
+					],
+					"returnType": "float",
+					"parameters": []
+				}
+			]
+		},
+		{
+			"className": "UBP_DiceRoll_W_C",
+			"classHierarchy": [
+				"UObject",
+				"UVisual",
+				"UWidget",
+				"UUserWidget"
+			],
+			"path": "Classes/Default/UBP_DiceRoll_W_C",
+			"properties": [],
+			"functions": []
 		}
 	]
 }

@@ -50,7 +50,10 @@ void FTaskProcessor::QueueTask(FGenerationSettings const& Settings)
 	Info.bUseSuccessFailIcons = true;
 	Info.bUseLargeFont = true;
 	Info.bFireAndForget = false;
-	Info.bAllowThrottleWhenFrameRateIsLow = false;
+	FSimpleDelegate CancelDelegate;
+	CancelDelegate.BindRaw(this, &FTaskProcessor::Stop);
+	const FNotificationButtonInfo CancelBtn(FText::FromString("Cancel"), FText::FromString("Cancel"), CancelDelegate, SNotificationItem::CS_Pending);
+	Info.ButtonDetails.Add(CancelBtn);
 	NewTask->Notification = FSlateNotificationManager::Get().AddNotification(Info);
 	NewTask->Notification->SetCompletionState(SNotificationItem::CS_Pending);
 
@@ -114,8 +117,8 @@ uint32 FTaskProcessor::Run()
 			continue;
 		}
 #endif
-		//FString ClassName = Class->GetPrefixCPP() + Class->GetName();
-		//UE_LOG(LogTemp, Warning, TEXT("Found class: %s"), *ClassName);
+		FString ClassName = Class->GetPrefixCPP() + Class->GetName();
+		UE_LOG(LogTemp, Warning, TEXT("Found class: %s"), *ClassName);
 	
 		if (ProcessClass(Class))
 		{
@@ -148,6 +151,11 @@ void FTaskProcessor::Exit()
 
 void FTaskProcessor::Stop()
 {
+	Current->Task->Notification->SetText(LOCTEXT("DocGenerationCancelled", "Generation cancelled!"));
+	Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Fail);
+	Current->Task->Notification->SetExpireDuration(2.0f);
+
+	Current->Task->Notification->ExpireAndFadeout();
 	bTerminationRequest = true;
 }
 
@@ -301,6 +309,15 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 			{
 				continue;
 			}
+			
+			if (Obj->IsA(UBlueprint::StaticClass()))
+			{
+				UBlueprint* BP = Cast<UBlueprint>(Obj);
+				UClass* Class = BP->GeneratedClass.Get();
+				if (Class && ProcessClass(Class))
+					Classes.Add(MakeShared<FJsonValueObject>(FJsonValueObject(SerializeClassInfo(Class))));
+			}
+
 
 			// Cache list of spawners for this object
 			auto& BPActionMap = FBlueprintActionDatabase::Get().GetAllActions();
@@ -317,7 +334,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 					// Add to queue as weak ptr
 					check(Current->CurrentSpawners.Enqueue(Spawner));
 				}
-
+				
 				// Done
 				Current->Processed.Add(Obj);
 				return true;
@@ -341,6 +358,10 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 		TWeakObjectPtr< UBlueprintNodeSpawner > Spawner;
 		while(Current->CurrentSpawners.Dequeue(Spawner))
 		{
+			if (Current->SourceObject.Get()->IsA(UAnimBlueprint::StaticClass()))
+			{
+				continue;
+			}
 			if(Spawner.IsValid())
 			{
 				// See if we can document this spawner
@@ -431,6 +452,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 					UE_LOG(LogCTRLDocumentable, Warning, TEXT("Failed to generate node doc xml!"))
 					continue;
 				}
+				
 
 				for (int i = 0; i < Classes.Num(); i++)
 				{
@@ -475,28 +497,65 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 
 	
 	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
-	CTRLDocumentable::RunOnGameThread([this]
+	CTRLDocumentable::RunDetached([this]
 	{
-		Current->Task->Notification->SetText(LOCTEXT("DocConversionSuccessful", "Generation complete!"));
-		Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Success);
-		Current->Task->Notification->ExpireAndFadeout();
-		
-		void* PipeWrite = nullptr;
-		FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web");
-		FProcHandle Proc = FPlatformProcess::CreateProc(
-		TEXT("C:\\Windows\\System32\\cmd.exe"),
-		TEXT("/c \"set port=3012 && npm start\""),
-		true,
-		false,
-		false,
-		nullptr,
-		0,
-		*WorkingDir,
-		PipeWrite
-		);
+		if (Current->Task->Settings.StartNodeServer == true)
+		{
+			FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web");
+			if (!FPaths::DirectoryExists(FPaths::Combine(WorkingDir, "node_modules")))
+			{
+				CTRLDocumentable::RunOnGameThread([this]
+				{
+					Current->Task->Notification->SetText(FText::FromString("Installing node modules"));
+					Current->Task->Notification->SetExpireDuration(3600);
+				});
+				void* PipeWrite = nullptr;
+				FProcHandle Proc = FPlatformProcess::CreateProc(
+					TEXT("C:\\Windows\\System32\\cmd.exe"),
+					TEXT("/c \"npm i\""),
+					true,
+					true,
+					true,
+					nullptr,
+					0,
+					*WorkingDir,
+					PipeWrite
+				);
+				for(bool bProcessFinished = false; !bProcessFinished; )
+				{
+					bProcessFinished = !FPlatformProcess::IsProcRunning(Proc);
+					
+					if(bTerminationRequest)
+					{
+						FPlatformProcess::TerminateProc(Proc, true);
+						bProcessFinished = true;
+						return;
+					}
+				}
+			}
+			
+			void* PipeWrite = nullptr;
+			FProcHandle Proc = FPlatformProcess::CreateProc(
+				TEXT("C:\\Windows\\System32\\cmd.exe"),
+				TEXT("/c \"set port=3012 && npm start\""),
+				true,
+				false,
+				false,
+				nullptr,
+				0,
+				*WorkingDir,
+				PipeWrite
+			);
+		}
+		CTRLDocumentable::RunOnGameThread([this]
+		{
+			Current->Task->Notification->SetText(LOCTEXT("DocConversionSuccessful", "Generation complete!"));
+			Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Success);
+			Current->Task->Notification->ExpireAndFadeout();
+		});
+		Current.Reset();
 	});
 
-	Current.Reset();
 }
 
 FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediateDocs(FString const& IntermediateDir, FString const& OutputDir, FString const& DocTitle, bool bCleanOutput)
@@ -545,6 +604,7 @@ FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediat
 		for(bool bProcessFinished = false; !bProcessFinished; )
 		{
 			bProcessFinished = FPlatformProcess::GetProcReturnCode(Proc, &ReturnCode);
+			
 
 			/*			if(!bProcessFinished && Warn->ReceivedUserCancel())
 			{

@@ -23,6 +23,9 @@ struct FGenerationSettings
 public:
 	UPROPERTY(EditAnywhere, Category = "Documentation")
 	FString DocumentationTitle;
+
+	UPROPERTY(EditAnywhere, Category = "Documentation" )
+	bool StartNodeServer;
 		
 	/** List of C++ modules in which to search for blueprint-exposed classes to document. */
 	UPROPERTY(EditAnywhere, Category = "Class Search", Meta = (Tooltip = "Raw module names (Do not prefix with '/Script')."))
@@ -32,9 +35,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Class Search", Meta = (ContentDir))//, Meta = (Tooltip = "Path to content subfolder, e.g. '/Game/MyFolder' or '/PluginName/MyFolder'."))
 	TArray< FDirectoryPath > ContentPaths;
 
-
 	UPROPERTY(EditAnywhere, Category = "Class Search", AdvancedDisplay)
 	TSubclassOf< UObject > BlueprintContextClass;
+
+	
 
 
 public:
@@ -78,6 +82,11 @@ public:
 		if(CDO->Settings.DocumentationTitle.IsEmpty())
 		{
 			CDO->Settings.DocumentationTitle = FApp::GetProjectName();
+		}
+
+		if (CDO->Settings.StartNodeServer == false)
+		{
+			CDO->Settings.StartNodeServer = true;
 		}
 
 		if(CDO->Settings.BlueprintContextClass == nullptr)
