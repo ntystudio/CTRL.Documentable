@@ -7,6 +7,7 @@ import {LayoutProvider} from './providers/LayoutContext';
 import {Class} from './components/class/Class';
 import {Function} from './components/function/Function';
 import {Node} from './components/node/Node';
+import WelcomePage from "./components/Welcome";
 
 const App = () => {
     return (
@@ -20,6 +21,7 @@ const App = () => {
                             <Route path="/class/:uuid/function/:uuid" element={<Function />} />
                             <Route path="/class/:uuid/node/:uuid" element={<Node />} />
                         </Routes>
+                        <WelcomePage />
                     </MainLayout>
                 </LayoutProvider>
             </SelectedClassContextProvider>
