@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, {FC, useState, useEffect, useCallback} from 'react';
 import { FunctionConfig } from '../../types/types';
 import { Separator } from '../ui/separator';
 import { Input } from '../ui/input';
@@ -11,6 +11,8 @@ import { useSelectedClass } from '../../providers/SelectedClassContextProvider';
 import { LinkIcon } from '../ui/icons/LinkIcon';
 import {Alert, AlertDescription, AlertTitle} from '../ui/alert';
 import {ExclamationTriangleIcon} from '@radix-ui/react-icons';
+import {useNotes} from "../../providers/NotesContextProvider";
+import {NoteDialog} from "../../components/NoteDialog";
 
 type FunctionSearchFields = {
     name: boolean;
@@ -21,6 +23,10 @@ type FunctionSearchFields = {
 };
 
 export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
+    const { getNoteContent, addNote, deleteNote, hasNote, isLoading: isNotesLoading } = useNotes();
+    const { setSelectedFunction, selectedClass } = useSelectedClass();
+    const [noteFunction, setNoteFunction] = useState<FunctionConfig | null>(null);
+    const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredFunctions, setFilteredFunctions] = useState(functions);
     const [searchFields, setSearchFields] = useState<FunctionSearchFields>({
@@ -31,7 +37,6 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
         parameters: true
     });
 
-    const { setSelectedFunction, selectedClass } = useSelectedClass();
     const navigate = useNavigate();
     const { name: className } = selectedClass || {};
 
@@ -66,14 +71,36 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
         }));
     };
 
-    const selectFunctionHandler = (func: FunctionConfig) => {
-        setSelectedFunction(func);
-        navigate(`/class/${className}/function/${func.name}`);
-    };
-
     const handleClearSearch = () => {
         setSearchQuery('');
     };
+
+    const handleAddOrEditNote = (func: FunctionConfig) => {
+        setNoteFunction(func);
+        setIsNoteDialogOpen(true);
+    };
+
+    const handleSaveNote = (content: string) => {
+        if (noteFunction && selectedClass) {
+            addNote(selectedClass.name, noteFunction.name, content);
+        }
+        setIsNoteDialogOpen(false);
+    };
+
+    const handleDeleteNote = (func: FunctionConfig) => {
+        if (selectedClass) {
+            deleteNote(selectedClass.name, func.name);
+        }
+    };
+
+    const selectFunctionHandler = useCallback((func: FunctionConfig) => {
+        setSelectedFunction(func);
+        navigate(`/class/${selectedClass?.name}/function/${func.name}`);
+    }, [setSelectedFunction, navigate, selectedClass]);
+
+    if (isNotesLoading || !selectedClass) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
@@ -170,10 +197,31 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
                                     <span className="ml-2 text-left">{func.name}</span>
                                 </button>
                             </h2>
-                            <p className="text-muted-foreground text-xl">{func.description === ''
-                                ? <span className="nty-zero-state-text">No description provided</span>
-                                : func.description
-                            }</p>
+
+                            {func.description && (
+                                <p className="text-muted-foreground text-xl mb-4">{func.description}</p>
+                            )}
+
+                            {hasNote(selectedClass.name, func.name) ? (
+                                <div className="bg-gray-100 p-4 rounded-md mb-4">
+                                    <p className="text-gray-800 mb-4">{getNoteContent(selectedClass.name, func.name)}</p>
+                                    <div className="flex">
+                                        <Button size={'sm'} onClick={() => handleAddOrEditNote(func)} className="mr-2">
+                                            Edit Note
+                                        </Button>
+                                        <Button size={'sm'} onClick={() => handleDeleteNote(func)} variant="destructive">
+                                            Delete Note
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="mt-2">
+                                    <Button size={'sm'} onClick={() => handleAddOrEditNote(func)}>
+                                        Add Note
+                                    </Button>
+                                </div>
+                            )}
+
                             <div className="mt-2">
                                 <p className="uppercase text-sm font-semibold mt-4 mb-1 text-muted-foreground">Parameters</p>
                                 {func.parameters?.length === 0
@@ -190,6 +238,13 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
                     </div>
                 </React.Fragment>
             )))}
+            <NoteDialog
+                isOpen={isNoteDialogOpen}
+                onClose={() => setIsNoteDialogOpen(false)}
+                onSave={handleSaveNote}
+                initialContent={noteFunction && selectedClass ? (getNoteContent(selectedClass.name, noteFunction.name) || '') : ''}
+                title={`${noteFunction ? (hasNote(selectedClass.name, noteFunction.name) ? 'Edit' : 'Add') : ''} Note for ${noteFunction?.name || ''}`}
+            />
         </>
     );
 };

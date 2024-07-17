@@ -17,6 +17,8 @@ import {ExclamationTriangleIcon} from '@radix-ui/react-icons';
 import {PinInput} from "../node/PinInput";
 import {PinOutput} from "../node/PinOutput";
 import {NodePins} from "../NodePins";
+import {useNotes} from "../../providers/NotesContextProvider";
+import {NoteDialog} from "../../components/NoteDialog";
 
 type NodeSearchFields = {
     fullTitle: boolean;
@@ -24,14 +26,16 @@ type NodeSearchFields = {
 };
 
 export const NodeList: FC<NodeListProps> = ({ nodes }) => {
+    const { getNoteContent, addNote, deleteNote, hasNote, isLoading: isNotesLoading } = useNotes();
+    const { setSelectedNode, selectedClass } = useSelectedClass();
+    const [noteNode, setNoteNode] = useState<NodeConfig | null>(null);
+    const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredNodes, setFilteredNodes] = useState(nodes);
     const [searchFields, setSearchFields] = useState<NodeSearchFields>({
         fullTitle: true,
         description: true
     });
-
-    const { setSelectedNode, selectedClass } = useSelectedClass();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -56,14 +60,36 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
         }));
     };
 
-    const selectNodeHandler = useCallback((node: NodeConfig) => {
-        setSelectedNode(node);
-        navigate(`/class/${node.className}/node/${node.fullTitle}`);
-    }, [setSelectedNode, navigate]);
-
     const handleClearSearch = () => {
         setSearchQuery('');
     };
+
+    const handleAddOrEditNote = (node: NodeConfig) => {
+        setNoteNode(node);
+        setIsNoteDialogOpen(true);
+    };
+
+    const handleSaveNote = (content: string) => {
+        if (noteNode && selectedClass) {
+            addNote(selectedClass.name, noteNode.fullTitle, content);
+        }
+        setIsNoteDialogOpen(false);
+    };
+
+    const handleDeleteNote = (node: NodeConfig) => {
+        if (selectedClass) {
+            deleteNote(selectedClass.name, node.fullTitle);
+        }
+    };
+
+    const selectNodeHandler = useCallback((node: NodeConfig) => {
+        setSelectedNode(node);
+        navigate(`/class/${selectedClass?.name}/node/${node.fullTitle}`);
+    }, [setSelectedNode, navigate, selectedClass]);
+
+    if (isNotesLoading || !selectedClass) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
@@ -122,10 +148,31 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                                         <span className="ml-2 text-left">{node.fullTitle}</span>
                                     </button>
                                 </h2>
-                                <p className="text-muted-foreground text-xl mb-4">{node.description === ''
-                                    ? <span className="nty-zero-state-text">No description provided</span>
-                                    : node.description
-                                }</p>
+
+                                {node.description && (
+                                    <p className="text-muted-foreground text-xl mb-4">{node.description}</p>
+                                )}
+
+                                {hasNote(selectedClass.name, node.fullTitle) ? (
+                                    <div className="bg-gray-100 p-4 rounded-md mb-4">
+                                        <p className="text-gray-800 mb-4">{getNoteContent(selectedClass.name, node.fullTitle)}</p>
+                                        <div className="flex justify-end">
+                                            <Button size={'sm'} onClick={() => handleAddOrEditNote(node)} className="mr-2">
+                                                Edit Note
+                                            </Button>
+                                            <Button size={'sm'} onClick={() => handleDeleteNote(node)} variant="destructive">
+                                                Delete Note
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="mt-2">
+                                        <Button size={'sm'} onClick={() => handleAddOrEditNote(node)}>
+                                            Add Note
+                                        </Button>
+                                    </div>
+                                )}
+
                                 <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 w-full">
                                     <div> {/* Inputs container */}
                                         {node.inputs &&
@@ -143,6 +190,13 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                     </React.Fragment>
                 ))
             )}
+            <NoteDialog
+                isOpen={isNoteDialogOpen}
+                onClose={() => setIsNoteDialogOpen(false)}
+                onSave={handleSaveNote}
+                initialContent={noteNode && selectedClass ? (getNoteContent(selectedClass.name, noteNode.fullTitle) || '') : ''}
+                title={`${noteNode ? (hasNote(selectedClass.name, noteNode.fullTitle) ? 'Edit' : 'Add') : ''} Note for ${noteNode?.fullTitle || ''}`}
+            />
         </>
     );
 };

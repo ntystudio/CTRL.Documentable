@@ -13,6 +13,9 @@ import {
 import { Button } from '../ui/button';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import {useNotes} from "../../providers/NotesContextProvider";
+import {NoteDialog} from "../../components/NoteDialog";
+import {useSelectedClass} from "../../providers/SelectedClassContextProvider";
 
 type SearchFields = {
     name: boolean;
@@ -30,6 +33,10 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
         description: true,
         flags: true
     });
+    const { getNoteContent, addNote, deleteNote, hasNote, isLoading } = useNotes();
+    const { selectedClass } = useSelectedClass();
+    const [selectedProperty, setSelectedProperty] = useState<PropertyConfig | null>(null);
+    const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
 
     useEffect(() => {
         const lowercasedQuery = searchQuery.toLowerCase();
@@ -62,6 +69,28 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
     const handleClearSearch = () => {
         setSearchQuery('');
     };
+
+    const handleAddOrEditNote = (property: PropertyConfig) => {
+        setSelectedProperty(property);
+        setIsNoteDialogOpen(true);
+    };
+
+    const handleSaveNote = (content: string) => {
+        if (selectedProperty && selectedClass) {
+            addNote(selectedClass.name, selectedProperty.name, content);
+        }
+        setIsNoteDialogOpen(false);
+    };
+
+    const handleDeleteNote = (property: PropertyConfig) => {
+        if (selectedClass) {
+            deleteNote(selectedClass.name, property.name);
+        }
+    };
+
+    if (isLoading || !selectedClass) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
@@ -135,7 +164,8 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
                                                     ...property.flags
                                                         ?.filter(flag => flag.startsWith('ModuleRelativePath')),
                                                 ].map((flag, index) => (
-                                                    <Badge key={index} variant="informational" className="mr-1 mb-1 truncate">
+                                                    <Badge key={index} variant="informational"
+                                                           className="mr-1 mb-1 truncate">
                                                         {flag}
                                                     </Badge>
                                                 ))}
@@ -146,15 +176,42 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
                             </div>
                             <div className="col-span-8 flex flex-col">
                                 <h2 className="text-3xl font-mono pb-4">{property.name}</h2>
-                                <p className="text-muted-foreground text-xl">{property.description === ''
-                                    ? <span className="nty-zero-state-text">No description provided</span>
-                                    : property.description
-                                }</p>
+
+                                {property.description && (
+                                    <p className="text-muted-foreground text-xl mb-4">{property.description}</p>
+                                )}
+
+                                {hasNote(selectedClass.name, property.name) ? (
+                                    <div className="bg-gray-100 p-4 rounded-md mb-4">
+                                        <p className="text-gray-800 mb-4">{getNoteContent(selectedClass.name, property.name)}</p>
+                                        <div className="flex">
+                                            <Button size={'sm'} onClick={() => handleAddOrEditNote(property)} className="mr-2">
+                                                Edit Note
+                                            </Button>
+                                            <Button size={'sm'} onClick={() => handleDeleteNote(property)} variant="destructive">
+                                                Delete Note
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="mt-2">
+                                        <Button size={'sm'} onClick={() => handleAddOrEditNote(property)}>
+                                            Add Note
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
                 ))
             )}
+            <NoteDialog
+                isOpen={isNoteDialogOpen}
+                onClose={() => setIsNoteDialogOpen(false)}
+                onSave={handleSaveNote}
+                initialContent={selectedProperty ? (getNoteContent(selectedProperty.name, selectedProperty.name) || '') : ''}
+                title={`${selectedProperty ? (hasNote(selectedProperty.name, selectedProperty.name) ? 'Edit' : 'Add') : ''} Note for ${selectedProperty?.name || ''}`}
+            />
         </>
     );
 };
@@ -165,4 +222,4 @@ type PropertyListProps = {
 
 // Usage example
 const properties = nodes.nodes.flatMap(node => node.properties); // Flatten properties from nodes
-<PropertyList properties={properties} />
+<PropertyList properties={properties}/>

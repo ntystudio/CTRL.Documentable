@@ -1,14 +1,16 @@
 import React from 'react';
-import {FunctionParameter} from './FunctionParameter';
 import {useSelectedClass} from '../../providers/SelectedClassContextProvider';
 import FunctionBreadcrumbs from '../ui/FunctionBreadcrumbs';
 import {Separator} from '../ui/separator';
 import {Badge} from '../ui/badge';
-import {LinkIcon} from '../ui/icons/LinkIcon';
+import {NoteSection} from "../../components/NoteSection";
 
 export const Function = () => {
-    const {selectedFunction} = useSelectedClass();
-    console.log(useSelectedClass())
+    const { selectedClass, selectedFunction } = useSelectedClass();
+
+    if (!selectedClass || !selectedFunction) {
+        return <div>Loading...</div>;
+    }
 
     const {description, name, flags, parameters, returnType} = selectedFunction || {}; // Provide a fallback to prevent errors if selectedFunction is undefined
 
@@ -54,10 +56,18 @@ export const Function = () => {
                     <h2 className="text-3xl font-mono pb-4">
                         <span className="text-left">{name}</span>
                     </h2>
+
                     <p className="text-muted-foreground text-xl">{description === ''
                         ? <span className="nty-zero-state-text">No description provided</span>
                         : description
                     }</p>
+
+                    <NoteSection
+                        classId={selectedClass.name}
+                        itemId={selectedFunction.name}
+                        itemName={selectedFunction.name}
+                    />
+
                     <div className="mt-2">
                         <p className="uppercase text-sm font-semibold mt-4 mb-1 text-muted-foreground">Parameters</p>
                         {parameters?.length === 0

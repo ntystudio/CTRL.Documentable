@@ -6,12 +6,14 @@ import {NodePinConfig} from '../../types/types';
 import NodeBreadcrumbs from '../ui/NodeBreadcrumbs';
 import {Separator} from '../ui/separator';
 import {NodePins} from "../NodePins";
+import {NoteSection} from "../../components/NoteSection";
 
 
 export const Node = () => {
-    const {selectedNode} = useSelectedClass();
-    if (!selectedNode) {
-        return <p>No node selected</p>;
+    const { selectedClass, selectedNode } = useSelectedClass();
+
+    if (!selectedClass || !selectedNode) {
+        return <div>Loading...</div>;
     }
 
     const {shortTitle, description, imgPath, inputs, outputs} = selectedNode;
@@ -41,6 +43,13 @@ export const Node = () => {
                             : description
                         }
                     </p>
+
+                    <NoteSection
+                        classId={selectedClass.name}
+                        itemId={selectedNode.fullTitle}
+                        itemName={selectedNode.fullTitle}
+                    />
+
                     <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 w-full">
                         <div> {/* Inputs container */}
                             {inputs &&
