@@ -8,21 +8,24 @@ import {Class} from './components/class/Class';
 import {Function} from './components/function/Function';
 import {Node} from './components/node/Node';
 import WelcomePage from "./components/Welcome";
+import {NotesProvider} from "./providers/NotesContextProvider";
 
 const App = () => {
     return (
         <MainContext>
             <SelectedClassContextProvider>
-                <LayoutProvider>
-                    <MainLayout>
-                        <Routes>
-                            <Route path="/" element={<WelcomePage />} />
-                            <Route path="/class/*" element={<Class />} />
-                            <Route path="/class/:uuid/function/:uuid" element={<Function />} />
-                            <Route path="/class/:uuid/node/:uuid" element={<Node />} />
-                        </Routes>
-                    </MainLayout>
-                </LayoutProvider>
+                <NotesProvider>
+                    <LayoutProvider>
+                        <MainLayout>
+                            <Routes>
+                                <Route path="/" element={<WelcomePage />} />
+                                <Route path="/class/*" element={<Class />} />
+                                <Route path="/class/:uuid/function/:uuid" element={<Function />} />
+                                <Route path="/class/:uuid/node/:uuid" element={<Node />} />
+                            </Routes>
+                        </MainLayout>
+                    </LayoutProvider>
+                </NotesProvider>
             </SelectedClassContextProvider>
         </MainContext>
     );
