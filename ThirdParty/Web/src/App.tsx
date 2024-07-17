@@ -16,12 +16,11 @@ const App = () => {
                 <LayoutProvider>
                     <MainLayout>
                         <Routes>
-                            <Route path="/" element={<></>} />
+                            <Route path="/" element={<WelcomePage />} />
                             <Route path="/class/*" element={<Class />} />
                             <Route path="/class/:uuid/function/:uuid" element={<Function />} />
                             <Route path="/class/:uuid/node/:uuid" element={<Node />} />
                         </Routes>
-                        <WelcomePage />
                     </MainLayout>
                 </LayoutProvider>
             </SelectedClassContextProvider>

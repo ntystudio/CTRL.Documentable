@@ -24,7 +24,7 @@ const WelcomePage: FC = () => {
                 <Separator className="my-8"/>
                 <h3 className="text-xl font-bold">Discord</h3>
                 <p className="text-base">
-                    Join our <a href="https://github.com/ntystudio/CTRL-documentable/issues"
+                    Join our <a href="https://discord.gg/ntystudio"
                                 target="_blank"
                                 className="underline">discord community</a> to get the latest updates on the plugin,
                     discover other CTRL Framework tools, and get help from other community members.
