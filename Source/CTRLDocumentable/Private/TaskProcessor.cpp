@@ -535,7 +535,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 			void* PipeWrite = nullptr;
 			FProcHandle Proc = FPlatformProcess::CreateProc(
 				*Cmd,
-				TEXT("/c \"set port=3012 && npm start\""),
+				TEXT("/c \"set port=3012 && npm run dev\""),
 				true,
 				false,
 				false,
