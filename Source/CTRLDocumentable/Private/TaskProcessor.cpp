@@ -382,21 +382,6 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 		return nullptr;
 	};
 
-	auto GameThread_FinalizeDocs = [this](FString const& OutputPath) -> bool
-	{
-		bool const Result = Current->DocGen->GT_Finalize(OutputPath);
-
-		if (!Result)
-		{
-			Current->Task->Notification->SetText(LOCTEXT("DocFinalizationFailed", "Generation failed"));
-			Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Fail);
-			Current->Task->Notification->ExpireAndFadeout();
-			//GEditor->PlayEditorSound(CompileSuccessSound);
-		}
-
-		return Result;
-	};
-
 	/*****************************/
 
 
@@ -457,6 +442,19 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 				for (int i = 0; i < Classes.Num(); i++)
 				{
 					FString ClassName = Classes[i]->AsObject()->GetStringField(TEXT("className"));
+
+					if (ClassName.Contains("ASKEL_"))
+					{
+						ClassName = ClassName.Replace(TEXT("ASKEL_"), TEXT(""));
+						ClassName = ClassName.Replace(TEXT("_C"), TEXT(""));
+					}
+
+					if (ClassName.Contains("USKEL_"))
+					{
+						ClassName = ClassName.Replace(TEXT("USKEL_"), TEXT(""));
+						ClassName = ClassName.Replace(TEXT("_C"), TEXT(""));
+					}
+					
 					FString ClassId = NodeMeta.GetStringField(TEXT("classId"));
 					if ( ClassName.Equals(ClassId, ESearchCase::IgnoreCase))
 					{
@@ -495,10 +493,10 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	Nodes->SetArrayField("nodes", Classes);
 	FJsonSerializer::Serialize(MakeShared<FJsonObject>(*Nodes), TJsonWriterFactory<>::Create(&JsonString, 0));
 
-	
 	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
 	CTRLDocumentable::RunDetached([this]
 	{
+	    FString Cmd = FWindowsPlatformMisc::GetEnvironmentVariable(*FString("COMSPEC"));
 		if (Current->Task->Settings.StartNodeServer == true)
 		{
 			FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web");
@@ -511,7 +509,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 				});
 				void* PipeWrite = nullptr;
 				FProcHandle Proc = FPlatformProcess::CreateProc(
-					TEXT("C:\\Windows\\System32\\cmd.exe"),
+					*Cmd,
 					TEXT("/c \"npm i\""),
 					true,
 					true,
@@ -536,7 +534,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 			
 			void* PipeWrite = nullptr;
 			FProcHandle Proc = FPlatformProcess::CreateProc(
-				TEXT("C:\\Windows\\System32\\cmd.exe"),
+				*Cmd,
 				TEXT("/c \"set port=3012 && npm start\""),
 				true,
 				false,

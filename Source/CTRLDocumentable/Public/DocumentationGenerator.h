@@ -29,16 +29,12 @@ public:
 public :
 	struct FNodeProcessingState
 	{
-		TSharedPtr< FXmlFile > ClassDocXml;
-		FString ClassDocsPath;
 		FString RelImageBasePath;
 		FString ImageFilename;
-
+		UClass  *AssociatedClass;
 		FNodeProcessingState():
-			ClassDocXml()
-			, ClassDocsPath()
-			, RelImageBasePath()
-			, ImageFilename()
+			RelImageBasePath(),
+			ImageFilename()
 		{}
 	};
 
@@ -56,18 +52,8 @@ public:
 
 protected:
 	void CleanUp();
-	TSharedPtr< FXmlFile > InitIndexXml(FString const& IndexTitle);
-	TSharedPtr< FXmlFile > InitClassListXml();
-	TSharedPtr< FXmlFile > InitClassDocXml(UClass* Class);
+
 	FString GetFunctionFlags(UFunction *InFunction);
-	TSharedPtr< FXmlFile > FillClassProperties(TSharedPtr< FXmlFile > DocFile, UClass *Class);
-	TSharedPtr< FXmlFile > FillClassFunctions(TSharedPtr< FXmlFile > DocFile, UClass *Class);
-	bool CreateFunctionDocumentation(const UFunction &Function, UClass* Class, FXmlNode* ClassDocRoot);
-	bool UpdateClassListWithClass(FXmlFile* DocFile, UClass* Class);
-	bool UpdateClassDocWithNode(FXmlFile* DocFile, UEdGraphNode* Node);
-	bool SaveIndexXml(FString const& OutDir);
-	bool SaveClassListXml(FString const& OutDir);
-	bool SaveClassDocXml(FString const& OutDir);
 	FString ExtractFunctionDescription(const FString& FunctionTooltip);
 	FString ExtractFunctionParamDescription(const FString &FunctionTooltip, const FString &ParamName, const FString& DefaultTooltip, bool ExtractReturnInfo = false);
 	FString JoinArrayOfStrings(const TArray<FString>& Array, int Start = 0, bool AddLineEndings = true);
@@ -83,10 +69,6 @@ protected:
 	TSharedPtr< class SGraphPanel > GraphPanel;
 
 	FString DocsTitle;
-	TSharedPtr< FXmlFile > IndexXml;
-	TSharedPtr< FXmlFile > ClassListXml;
-	TMap< TWeakObjectPtr< UClass >, TSharedPtr< FXmlFile > > ClassDocsMap;
-
 	FString OutputDir;
 
 public:
