@@ -50,7 +50,7 @@ export const Node = () => {
                         itemName={selectedNode.fullTitle}
                     />
 
-                    <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 w-full">
+                    <div className="grid grid-cols-1 gap-4 w-full">
                         <div> {/* Inputs container */}
                             {inputs &&
                                 <NodePins<NodePinConfig> items={inputs} title="Inputs" ItemComponent={PinInput}/>}

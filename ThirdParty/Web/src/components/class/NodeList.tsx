@@ -173,7 +173,7 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                                     </div>
                                 )}
 
-                                <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 w-full">
+                                <div className="grid grid-cols-1 gap-4 w-full">
                                     <div> {/* Inputs container */}
                                         {node.inputs &&
                                             <NodePins<NodePinConfig> items={node.inputs} title="Inputs"
