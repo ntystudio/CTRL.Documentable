@@ -156,7 +156,7 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                                 {hasNote(selectedClass.name, node.fullTitle) ? (
                                     <div className="bg-gray-100 p-4 rounded-md mb-4">
                                         <p className="text-gray-800 mb-4">{getNoteContent(selectedClass.name, node.fullTitle)}</p>
-                                        <div className="flex justify-end">
+                                        <div className="flex">
                                             <Button size={'sm'} onClick={() => handleAddOrEditNote(node)} className="mr-2">
                                                 Edit Note
                                             </Button>

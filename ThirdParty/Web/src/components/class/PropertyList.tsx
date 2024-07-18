@@ -209,8 +209,12 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
                 isOpen={isNoteDialogOpen}
                 onClose={() => setIsNoteDialogOpen(false)}
                 onSave={handleSaveNote}
-                initialContent={selectedProperty ? (getNoteContent(selectedProperty.name, selectedProperty.name) || '') : ''}
-                title={`${selectedProperty ? (hasNote(selectedProperty.name, selectedProperty.name) ? 'Edit' : 'Add') : ''} Note for ${selectedProperty?.name || ''}`}
+                initialContent={selectedProperty && selectedClass
+                    ? (getNoteContent(selectedClass.name, selectedProperty.name) || '')
+                    : ''}
+                title={`${selectedProperty
+                    ? (hasNote(selectedClass.name, selectedProperty.name) ? 'Edit' : 'Add')
+                    : ''} Note for ${selectedProperty?.name || ''}`}
             />
         </>
     );
