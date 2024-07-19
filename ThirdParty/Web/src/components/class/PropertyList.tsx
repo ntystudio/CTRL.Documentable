@@ -1,8 +1,18 @@
 import React, { FC, useState, useEffect } from 'react';
-import { PropertyConfig } from '../../types/types';
+import {FunctionConfig, PropertyConfig} from '../../types/types';
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from '../ui/alert-dialog';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Separator } from '../ui/separator';
 import { Input } from '../ui/input';
-import { Badge } from '../ui/badge';
 import nodes from '../../data/nodes.json';
 import {
     DropdownMenu,
@@ -12,7 +22,7 @@ import {
 } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
-import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import {ExclamationTriangleIcon, Pencil1Icon, TrashIcon, BookmarkFilledIcon} from '@radix-ui/react-icons';
 import {useNotes} from "../../providers/NotesContextProvider";
 import {NoteDialog} from "../../components/NoteDialog";
 import {useSelectedClass} from "../../providers/SelectedClassContextProvider";
@@ -35,6 +45,7 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
     });
     const { getNoteContent, addNote, deleteNote, hasNote, isLoading } = useNotes();
     const { selectedClass } = useSelectedClass();
+    const [noteToDelete, setNoteToDelete] = useState<FunctionConfig | null>(null);
     const [selectedProperty, setSelectedProperty] = useState<PropertyConfig | null>(null);
     const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
 
@@ -85,6 +96,7 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
     const handleDeleteNote = (property: PropertyConfig) => {
         if (selectedClass) {
             deleteNote(selectedClass.name, property.name);
+            setNoteToDelete(null);
         }
     };
 
@@ -164,48 +176,88 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
                         <Separator className="my-8"/>
                         <div className="grid grid-cols-12 gap-8 w-full max-w-[1200px]">
                             <div className="col-span-4 flex flex-col">
-                                <div className="rounded-lg p-2 bg-muted border-2 mb-3">
-                                    <p className="uppercase text-sm font-semibold mb-1 text-muted-foreground">type</p>
-                                    <h2 className="text-lg font-mono text-orange-700 dark:text-orange-400">{property.type}</h2>
-                                </div>
-                                <div className="rounded-lg p-2 bg-muted border-2">
-                                    <p className="uppercase text-sm font-semibold mb-2 text-muted-foreground">metadata</p>
-                                    <h2 className="text-base font-mono text-blue-700">
-                                        {property.flags && property.flags.length !== 0 && (
-                                            <div className="flex flex-col items-start">
-                                                {[
-                                                    ...property.flags
-                                                        ?.filter(flag => !flag.startsWith('ModuleRelativePath') && !flag.startsWith('ToolTip') && !flag.startsWith('Comment')),
-                                                    ...property.flags
-                                                        ?.filter(flag => flag.startsWith('ModuleRelativePath')),
-                                                ].map((flag, index) => (
-                                                    <Badge key={index} variant="informational"
-                                                           className="mr-1 mb-1 truncate">
-                                                        {flag}
-                                                    </Badge>
-                                                ))}
-                                            </div>
+                                <Card>
+                                    <CardContent>
+                                        <div className="text-lg font-bold text-informational mt-4">{property.type}</div>
+                                        {property.flags && property.flags.length > 0 && (
+                                            <>
+                                                <Separator className="my-2"/>
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <Button variant="outline" className="mt-2 w-full">Metadata</Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-auto" align="start">
+                                                        <div className="flex flex-col items-start">
+                                                            {[
+                                                                ...property.flags
+                                                                    ?.filter(flag => !flag.startsWith('ModuleRelativePath') && !flag.startsWith('ToolTip') && !flag.startsWith('Comment')),
+                                                                ...property.flags
+                                                                    ?.filter(flag => flag.startsWith('ModuleRelativePath')),
+                                                            ].map((flag, index, array) => (
+                                                                <div key={index} className="font-mono text-sm">
+                                                                    {flag}
+                                                                    {index !== array.length - 1 && <Separator className="my-2"/>}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </>
                                         )}
-                                    </h2>
-                                </div>
+                                    </CardContent>
+                                </Card>
                             </div>
                             <div className="col-span-8 flex flex-col">
-                                <h2 className="text-3xl font-mono pb-4">{property.name}</h2>
+                                <h2 className="text-2xl font-bold pb-2">{property.name}</h2>
 
                                 {property.description && (
-                                    <p className="text-muted-foreground text-xl mb-4">{property.description}</p>
+                                    <p className="text-muted-foreground text-lg mb-4">{property.description}</p>
                                 )}
 
                                 {hasNote(selectedClass.name, property.name) ? (
-                                    <div className="bg-gray-100 p-4 rounded-md mb-4">
-                                        <p className="text-gray-800 mb-4">{getNoteContent(selectedClass.name, property.name)}</p>
-                                        <div className="flex">
-                                            <Button size={'sm'} onClick={() => handleAddOrEditNote(property)} className="mr-2">
-                                                Edit Note
+                                    <div className="bg-gray-100 p-4 rounded-md mb-4 relative group border-2 dark:border-[#ffc229] dark:bg-[#1b1614]">
+                                        <div className="flex items-start">
+                                            <div className="flex-shrink-0 mr-2">
+                                                <BookmarkFilledIcon className="w-5 h-5 text-[#ffc229]"/>
+                                            </div>
+                                            <p className="flex-grow">{getNoteContent(selectedClass.name, property.name)}</p>
+                                        </div>
+                                        <div
+                                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                            <Button
+                                                onClick={() => handleAddOrEditNote(property)}
+                                                className="py-1 px-1.5 mr-1"
+                                                size={'sm'}
+                                                aria-label="Edit note"
+                                            >
+                                                <Pencil1Icon className="h-5 w-5" />
                                             </Button>
-                                            <Button size={'sm'} onClick={() => handleDeleteNote(property)} variant="destructive">
-                                                Delete Note
-                                            </Button>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button
+                                                        className="py-1 px-1.5"
+                                                        size={'sm'}
+                                                        variant="destructive"
+                                                        aria-label="Delete note"
+                                                    >
+                                                        <TrashIcon className="h-5 w-5" />
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            This action cannot be undone. This will permanently delete the note for {property.name}.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={() => handleDeleteNote(property)} variant="destructive">
+                                                            Delete
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
                                         </div>
                                     </div>
                                 ) : (

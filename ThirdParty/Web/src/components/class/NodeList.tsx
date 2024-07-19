@@ -1,6 +1,15 @@
 import React, {FC, useState, useEffect, useCallback} from 'react';
-import {NodeConfig, NodePinConfig} from '../../types/types';
+import {FunctionConfig, NodeConfig, NodePinConfig, PropertyConfig} from '../../types/types';
 import { Separator } from '../ui/separator';
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from '../ui/alert-dialog';
 import { Input } from '../ui/input';
 import {
     DropdownMenu,
@@ -13,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelectedClass } from '../../providers/SelectedClassContextProvider';
 import { LinkIcon } from '../ui/icons/LinkIcon';
 import {Alert, AlertDescription, AlertTitle} from '../ui/alert';
-import {ExclamationTriangleIcon} from '@radix-ui/react-icons';
+import {BookmarkFilledIcon, ExclamationTriangleIcon, Pencil1Icon, TrashIcon} from '@radix-ui/react-icons';
 import {PinInput} from "../node/PinInput";
 import {PinOutput} from "../node/PinOutput";
 import {NodePins} from "../NodePins";
@@ -32,6 +41,7 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
     const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredNodes, setFilteredNodes] = useState(nodes);
+    const [noteToDelete, setNoteToDelete] = useState<FunctionConfig | null>(null);
     const [searchFields, setSearchFields] = useState<NodeSearchFields>({
         fullTitle: true,
         description: true
@@ -79,6 +89,7 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
     const handleDeleteNote = (node: NodeConfig) => {
         if (selectedClass) {
             deleteNote(selectedClass.name, node.fullTitle);
+            setNoteToDelete(null);
         }
     };
 
@@ -158,7 +169,7 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                                 </div>
                             </div>
                             <div className="col-span-8">
-                                <h2 className="text-3xl font-mono pb-4">
+                                <h2 className="text-2xl font-mono pb-3">
                                     <button onClick={() => selectNodeHandler(node)}
                                             className="font-mono nty-text-link-std flex flex-row items-center hover:underline">
                                         <LinkIcon className="text-current"/>
@@ -166,40 +177,83 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                                     </button>
                                 </h2>
 
-                                {node.description && (
-                                    <p className="text-muted-foreground text-xl mb-4">{node.description}</p>
-                                )}
+                                <div className=" ml-[26px]">
+                                    {node.description && (
+                                        <p className="text-muted-foreground text-lg mb-4">{node.description}</p>
+                                    )}
 
-                                {hasNote(selectedClass.name, node.fullTitle) ? (
-                                    <div className="bg-gray-100 p-4 rounded-md mb-4">
-                                        <p className="text-gray-800 mb-4">{getNoteContent(selectedClass.name, node.fullTitle)}</p>
-                                        <div className="flex">
-                                            <Button size={'sm'} onClick={() => handleAddOrEditNote(node)} className="mr-2">
-                                                Edit Note
-                                            </Button>
-                                            <Button size={'sm'} onClick={() => handleDeleteNote(node)} variant="destructive">
-                                                Delete Note
+                                    {hasNote(selectedClass.name, node.fullTitle) ? (
+                                        <div
+                                            className="bg-gray-100 p-4 rounded-md mb-4 relative group border-2 dark:border-[#ffc229] dark:bg-[#1b1614]">
+                                            <div className="flex items-start">
+                                                <div className="flex-shrink-0 mr-2">
+                                                    <BookmarkFilledIcon className="w-5 h-5 text-[#ffc229]"/>
+                                                </div>
+                                                <p className="flex-grow">{getNoteContent(selectedClass.name, node.fullTitle)}</p>
+                                            </div>
+                                            <div
+                                                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                                <Button
+                                                    onClick={() => handleAddOrEditNote(node)}
+                                                    className="py-1 px-1.5 mr-1"
+                                                    size={'sm'}
+                                                    aria-label="Edit note"
+                                                >
+                                                    <Pencil1Icon className="h-5 w-5"/>
+                                                </Button>
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <Button
+                                                            className="py-1 px-1.5"
+                                                            size={'sm'}
+                                                            variant="destructive"
+                                                            aria-label="Delete note"
+                                                        >
+                                                            <TrashIcon className="h-5 w-5"/>
+                                                        </Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle>Are you absolutely
+                                                                sure?</AlertDialogTitle>
+                                                            <AlertDialogDescription>
+                                                                This action cannot be undone. This will permanently
+                                                                delete the note for {node.fullTitle}.
+                                                            </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                            <AlertDialogAction onClick={() => handleDeleteNote(node)}
+                                                                               variant="destructive">
+                                                                Delete
+                                                            </AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="mt-2">
+                                            <Button size={'sm'} onClick={() => handleAddOrEditNote(node)}>
+                                                Add Note
                                             </Button>
                                         </div>
-                                    </div>
-                                ) : (
-                                    <div className="mt-2">
-                                        <Button size={'sm'} onClick={() => handleAddOrEditNote(node)}>
-                                            Add Note
-                                        </Button>
-                                    </div>
-                                )}
+                                    )}
 
-                                <div className="grid grid-cols-1 gap-4 w-full">
-                                    <div> {/* Inputs container */}
-                                        {node.inputs &&
-                                            <NodePins<NodePinConfig> items={node.inputs} title="Inputs"
-                                                                     ItemComponent={PinInput}/>}
-                                    </div>
-                                    <div> {/* Outputs container */}
-                                        {node.outputs &&
-                                            <NodePins<NodePinConfig> items={node.outputs} title="Outputs"
-                                                                     ItemComponent={PinOutput}/>}
+                                    <Separator className="mt-6 mb-2 max-w-xl"/>
+
+                                    <div className="grid grid-cols-1 gap-4 w-full">
+                                        <div> {/* Inputs container */}
+                                            {node.inputs &&
+                                                <NodePins<NodePinConfig> items={node.inputs} title="Inputs"
+                                                                         ItemComponent={PinInput}/>}
+                                        </div>
+                                        <Separator className="mt-2 mb-0 max-w-xl"/>
+                                        <div> {/* Outputs container */}
+                                            {node.outputs &&
+                                                <NodePins<NodePinConfig> items={node.outputs} title="Outputs"
+                                                                         ItemComponent={PinOutput}/>}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

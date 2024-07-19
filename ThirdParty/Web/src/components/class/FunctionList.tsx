@@ -1,5 +1,14 @@
 import React, {FC, useState, useEffect, useCallback} from 'react';
 import { FunctionConfig } from '../../types/types';
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from '../ui/alert-dialog';
 import { Separator } from '../ui/separator';
 import { Input } from '../ui/input';
 import {Button} from '../ui/button';
@@ -10,9 +19,11 @@ import { useNavigate } from 'react-router-dom';
 import { useSelectedClass } from '../../providers/SelectedClassContextProvider';
 import { LinkIcon } from '../ui/icons/LinkIcon';
 import {Alert, AlertDescription, AlertTitle} from '../ui/alert';
-import {ExclamationTriangleIcon} from '@radix-ui/react-icons';
+import {BookmarkFilledIcon, ExclamationTriangleIcon, Pencil1Icon, TrashIcon} from '@radix-ui/react-icons';
 import {useNotes} from "../../providers/NotesContextProvider";
 import {NoteDialog} from "../../components/NoteDialog";
+import {Card, CardContent} from "../../components/ui/card";
+import {Popover, PopoverContent, PopoverTrigger} from "../../components/ui/popover";
 
 type FunctionSearchFields = {
     name: boolean;
@@ -29,6 +40,7 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
     const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredFunctions, setFilteredFunctions] = useState(functions);
+    const [noteToDelete, setNoteToDelete] = useState<FunctionConfig | null>(null);
     const [searchFields, setSearchFields] = useState<FunctionSearchFields>({
         name: true,
         returnType: true,
@@ -90,6 +102,7 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
     const handleDeleteNote = (func: FunctionConfig) => {
         if (selectedClass) {
             deleteNote(selectedClass.name, func.name);
+            setNoteToDelete(null);
         }
     };
 
@@ -180,33 +193,39 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
                         <Separator className="my-8"/>
                         <div className="grid grid-cols-12 gap-8 w-full max-w-[1200px]">
                             <div className="col-span-4 flex flex-col">
-                                <div className="rounded-lg p-2 bg-muted border-2 mb-3">
-                                    <p className="uppercase text-sm font-semibold mb-1 text-muted-foreground">Return
-                                        Type</p>
-                                    <h2 className="text-lg font-mono text-orange-700 dark:text-orange-400">{func.returnType}</h2>
-                                </div>
-                                <div className="rounded-lg p-2 bg-muted border-2">
-                                    <p className="uppercase text-sm font-semibold mb-2 text-muted-foreground">Metadata</p>
-                                <h2 className="text-base font-mono text-blue-700">
-                                    {func.flags && func.flags?.length !== 0 && (
-                                        <div className="flex flex-col items-start">
-                                            {[
-                                                ...func.flags
-                                                    ?.filter(flag => !flag.startsWith('ModuleRelativePath') && !flag.startsWith('Comment') && !flag.startsWith('ToolTip')),
-                                                ...func.flags
-                                                    ?.filter(flag => flag.startsWith('Comment') || flag.startsWith('ToolTip')),
-                                            ].map((flag, index) => (
-                                                <Badge key={index} variant="informational" className="mr-1 mb-1">
-                                                    {flag}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                    )}
-                                </h2>
+                                <Card>
+                                    <CardContent>
+                                        <div className="text-lg font-bold text-informational mt-4">{func.returnType}</div>
+                                        {func.flags && func.flags.length > 0 && (
+                                            <>
+                                                <Separator className="my-2"/>
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <Button variant="outline" className="mt-2 w-full">Metadata</Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-auto" align="start">
+                                                        <div className="flex flex-col items-start">
+                                                            {[
+                                                                ...func.flags
+                                                                    ?.filter(flag => !flag.startsWith('ModuleRelativePath') && !flag.startsWith('ToolTip') && !flag.startsWith('Comment')),
+                                                                ...func.flags
+                                                                    ?.filter(flag => flag.startsWith('ModuleRelativePath')),
+                                                            ].map((flag, index, array) => (
+                                                                <div key={index} className="font-mono text-sm">
+                                                                    {flag}
+                                                                    {index !== array.length - 1 && <Separator className="my-2"/>}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </>
+                                        )}
+                                    </CardContent>
+                                </Card>
                             </div>
-                        </div>
                         <div className="col-span-8 flex flex-col">
-                            <h2 className="text-3xl font-mono pb-4">
+                            <h2 className="text-2xl font-mono pb-3">
                                 <button onClick={() => selectFunctionHandler(func)}
                                         className="font-mono nty-text-link-std flex flex-row items-center hover:underline">
                                     <LinkIcon className="text-current" />
@@ -214,42 +233,84 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
                                 </button>
                             </h2>
 
-                            {func.description && (
-                                <p className="text-muted-foreground text-xl mb-4">{func.description}</p>
-                            )}
+                            <div className=" ml-[26px]">
+                                {func.description && (
+                                    <p className="text-muted-foreground text-lg mb-4">{func.description}</p>
+                                )}
 
-                            {hasNote(selectedClass.name, func.name) ? (
-                                <div className="bg-gray-100 p-4 rounded-md mb-4">
-                                    <p className="text-gray-800 mb-4">{getNoteContent(selectedClass.name, func.name)}</p>
-                                    <div className="flex">
-                                        <Button size={'sm'} onClick={() => handleAddOrEditNote(func)} className="mr-2">
-                                            Edit Note
-                                        </Button>
-                                        <Button size={'sm'} onClick={() => handleDeleteNote(func)} variant="destructive">
-                                            Delete Note
+                                {hasNote(selectedClass.name, func.name) ? (
+                                    <div
+                                        className="bg-gray-100 p-4 rounded-md mb-4 relative group border-2 dark:border-[#ffc229] dark:bg-[#1b1614]">
+                                        <div className="flex items-start">
+                                            <div className="flex-shrink-0 mr-2">
+                                                <BookmarkFilledIcon className="w-5 h-5 text-[#ffc229]"/>
+                                            </div>
+                                            <p className="flex-grow">{getNoteContent(selectedClass.name, func.name)}</p>
+                                        </div>
+                                        <div
+                                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                            <Button
+                                                onClick={() => handleAddOrEditNote(func)}
+                                                className="py-1 px-1.5 mr-1"
+                                                size={'sm'}
+                                                aria-label="Edit note"
+                                            >
+                                                <Pencil1Icon className="h-5 w-5"/>
+                                            </Button>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button
+                                                        className="py-1 px-1.5"
+                                                        size={'sm'}
+                                                        variant="destructive"
+                                                        aria-label="Delete note"
+                                                    >
+                                                        <TrashIcon className="h-5 w-5"/>
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            This action cannot be undone. This will permanently delete
+                                                            the note for {func.name}.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={() => handleDeleteNote(func)}
+                                                                           variant="destructive">
+                                                            Delete
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="mt-2">
+                                        <Button size={'sm'} onClick={() => handleAddOrEditNote(func)}>
+                                            Add Note
                                         </Button>
                                     </div>
-                                </div>
-                            ) : (
-                                <div className="mt-2">
-                                    <Button size={'sm'} onClick={() => handleAddOrEditNote(func)}>
-                                        Add Note
-                                    </Button>
-                                </div>
-                            )}
+                                )}
 
-                            <div className="mt-2">
-                                <p className="uppercase text-sm font-semibold mt-4 mb-1 text-muted-foreground">Parameters</p>
-                                {func.parameters?.length === 0
-                                    ? <p className="text-muted-foreground">No parameters provided</p>
-                                    : func.parameters?.map((param, index) => (
-                                        <div key={index} className="flex text-lg">
-                                            <span className="font-mono text-foreground">{param.name}:</span>
-                                            <span className="font-mono ml-2 text-orange-700 dark:text-orange-400">{param.type}</span>
-                                        </div>
-                                    ))
-                                }
+                                <Separator className="my-6 max-w-xl"/>
+
+                                <div>
+                                    <p className="uppercase text-sm font-semibold mb-3">Parameters</p>
+                                    {func.parameters?.length === 0
+                                        ? <p className="text-muted-foreground">No parameters provided</p>
+                                        : func.parameters?.map((param, index) => (
+                                            <div key={index} className="flex mb-2">
+                                                <Badge className="rounded-lg border border-[#404044] bg-[#0c0d16] py-0.5 px-1.5 dark:text-white font-mono text-base">{param.name}:</Badge>
+                                                <span className="font-bold ml-2 text-informational text-lg">{param.type}</span>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </React.Fragment>
