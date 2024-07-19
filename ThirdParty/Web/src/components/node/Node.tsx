@@ -34,15 +34,13 @@ export const Node = () => {
                     </div>
                 </div>
                 <div className="col-span-8">
-                    <h2 className="text-2xl font-mono pb-3">
-                        <span className="ml-2 text-left">{shortTitle}</span>
+                    <h2 className="text-2xl font-bold pb-3">
+                        <span>{shortTitle}</span>
                     </h2>
-                    <p className="text-muted-foreground text-lg mb-4">
-                        {description === ''
-                            ? <span className="nty-zero-state-text">No description provided</span>
-                            : description
-                        }
-                    </p>
+
+                    {description && (
+                        <p className="text-muted-foreground text-lg mb-4">{description}</p>
+                    )}
 
                     <NoteSection
                         classId={selectedClass.name}
@@ -50,11 +48,14 @@ export const Node = () => {
                         itemName={selectedNode.fullTitle}
                     />
 
+                    <Separator className="mt-6 mb-2 max-w-xl"/>
+
                     <div className="grid grid-cols-1 gap-4 w-full">
                         <div> {/* Inputs container */}
                             {inputs &&
                                 <NodePins<NodePinConfig> items={inputs} title="Inputs" ItemComponent={PinInput}/>}
                         </div>
+                        <Separator className="mt-2 mb-0 max-w-xl"/>
                         <div> {/* Outputs container */}
                             {outputs &&
                                 <NodePins<NodePinConfig> items={outputs} title="Outputs" ItemComponent={PinOutput}/>}

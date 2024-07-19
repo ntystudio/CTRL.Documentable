@@ -4,7 +4,7 @@ import {Separator} from "./ui/separator";
 const WelcomePage: FC = () => {
     return (
         <section className="w-full">
-            <div className="p-4 max-w-[700px] mx-auto">
+            <div className="max-w-[700px] mx-auto h-screen flex flex-col justify-center">
                 <div className="p-5 border-2 rounded-lg">
                     <img src="/ctrl-documentable-logo.png" alt="Logo of the CTRL Documentable plugin"
                          className="w-full max-w-[300px] rounded-lg"/>

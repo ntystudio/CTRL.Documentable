@@ -69,9 +69,9 @@ export const TreeViewer: React.FC = () => {
     const renderChildLinks = useCallback((children: TreeItemConfig[]) => {
         return (
             <ul className="">
-                {children.map((child) => (
+                {children.map((child, index) => (
                     <li key={child.id}>
-                        <Accordion type="single" collapsible className="w-full">
+                        <Accordion type="multiple" className="w-full" defaultValue={index === 0 ? [child.id] : undefined}>
                             <AccordionItem value={child.id}>
                                 <AccordionTrigger
                                     onClick={() => handleItemClick(child)}
@@ -87,10 +87,10 @@ export const TreeViewer: React.FC = () => {
                                                     <button
                                                         onClick={() => handleItemClick(grandchild)}
                                                         className={`
-                                                            flex flex-row justify-between pl-4 pr-1.5 py-1.5 text-sm w-full font-semibold
-                                                            border-l-2 border-color-gray-200 hover:bg-gray-200 dark:border-gray-200/10 dark:hover:border-[#26bbff] dark:hover:text-white dark:hover:bg-[#202024] rounded-r
+                                                            flex flex-row justify-between pl-4 pr-1.5 py-1.5 text-sm w-full
+                                                            border-l-2 border-color-gray-200 hover:bg-gray-200 dark:border-gray-200/10 dark:hover:border-[#26bbff] hover:border-[#26bbff] dark:hover:text-white dark:hover:bg-[#202024] rounded-r
                                                             ${activeItemId === grandchild.id
-                                                            ? 'font-bold text-blue-500 bg-gray-100 dark:bg-gray-700'
+                                                            ? 'text-blue-500'
                                                             : 'text-muted-foreground'
                                                         }
                                                         `}
@@ -123,10 +123,10 @@ export const TreeViewer: React.FC = () => {
             <div className="relative mb-4">
                 <Input
                     type="text"
-                    placeholder="Search..."
+                    placeholder="Search classes..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="p-2 pr-8 border rounded dark:border-gray-600/50"
+                    className="pr-8 border-2 rounded"
                 />
                 {searchQuery && (
                     <button

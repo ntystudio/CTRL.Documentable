@@ -215,10 +215,10 @@ export const PropertyList: FC<PropertyListProps> = ({ properties }) => {
                                 )}
 
                                 {hasNote(selectedClass.name, property.name) ? (
-                                    <div className="bg-gray-100 p-4 rounded-md mb-4 relative group border-2 dark:border-[#ffc229] dark:bg-[#1b1614]">
+                                    <div className="p-4 rounded-md mb-4 relative group border-2 bg-[#e8ebff] border-[#1fa2fd] dark:border-[#ffc229] dark:bg-[#1b1614]">
                                         <div className="flex items-start">
                                             <div className="flex-shrink-0 mr-2">
-                                                <BookmarkFilledIcon className="w-5 h-5 text-[#ffc229]"/>
+                                                <BookmarkFilledIcon className="w-5 h-5 text-[#1fa2fd] dark:text-[#ffc229]"/>
                                             </div>
                                             <p className="flex-grow">{getNoteContent(selectedClass.name, property.name)}</p>
                                         </div>

@@ -77,7 +77,7 @@ export const Class = () => {
     }
 
     return (
-        <div className="relative p-2">
+        <div className="relative p-4 pb-16">
             <Breadcrumb className="mb-8">
                 <BreadcrumbList>
                     <BreadcrumbItem>

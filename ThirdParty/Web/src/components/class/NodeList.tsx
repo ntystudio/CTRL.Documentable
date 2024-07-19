@@ -169,11 +169,11 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
                                 </div>
                             </div>
                             <div className="col-span-8">
-                                <h2 className="text-2xl font-mono pb-3">
+                                <h2 className="text-2xl font-bold pb-3">
                                     <button onClick={() => selectNodeHandler(node)}
-                                            className="font-mono nty-text-link-std flex flex-row items-center hover:underline">
+                                            className="flex flex-row items-center hover:underline">
                                         <LinkIcon className="text-current"/>
-                                        <span className="ml-2 text-left">{node.fullTitle}</span>
+                                        <span className="ml-2">{node.fullTitle}</span>
                                     </button>
                                 </h2>
 
@@ -184,10 +184,10 @@ export const NodeList: FC<NodeListProps> = ({ nodes }) => {
 
                                     {hasNote(selectedClass.name, node.fullTitle) ? (
                                         <div
-                                            className="bg-gray-100 p-4 rounded-md mb-4 relative group border-2 dark:border-[#ffc229] dark:bg-[#1b1614]">
+                                            className="p-4 rounded-md mb-4 relative group border-2 bg-[#e8ebff] border-[#1fa2fd] dark:border-[#ffc229] dark:bg-[#1b1614]">
                                             <div className="flex items-start">
                                                 <div className="flex-shrink-0 mr-2">
-                                                    <BookmarkFilledIcon className="w-5 h-5 text-[#ffc229]"/>
+                                                    <BookmarkFilledIcon className="w-5 h-5 text-[#1fa2fd] dark:text-[#ffc229]"/>
                                                 </div>
                                                 <p className="flex-grow">{getNoteContent(selectedClass.name, node.fullTitle)}</p>
                                             </div>

@@ -25,10 +25,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({ results, activeItemId }) 
                     <button
                         onClick={() => handleItemClick(item)}
                         className={`
-                            flex flex-row justify-between pl-4 pr-1.5 py-1.5 text-sm w-full font-semibold
-                            border-l-2 border-color-[#202024] hover:bg-gray-200 dark:border-gray-200/10 dark:hover:bg-[#202024] rounded-r
+                            flex flex-row justify-between pl-4 pr-1.5 py-1.5 text-sm w-full
+                                                            border-l-2 border-color-gray-200 hover:bg-gray-200 dark:border-gray-200/10 dark:hover:border-[#26bbff] hover:border-[#26bbff] dark:hover:text-white dark:hover:bg-[#202024] rounded-r
                             ${activeItemId === item.id
-                            ? 'font-bold text-blue-500 bg-gray-100 dark:bg-gray-700'
+                            ? 'text-blue-500'
                             : 'text-muted-foreground'
                         }
                         `}
