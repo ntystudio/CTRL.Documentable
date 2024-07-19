@@ -32,7 +32,7 @@ export const NoteSection: React.FC<NoteSectionProps> = ({ classId, itemId, itemN
         <div className="mt-4">
             {hasNote(classId, itemId) ? (
                 <div className="bg-gray-100 p-4 rounded-md mb-4">
-                    <p className="text-gray-800 mb-4">{getNoteContent(classId, itemId)}</p>
+                    <p className="text-muted-foreground">{getNoteContent(classId, itemId)}</p>
                     <div className="flex">
                         <Button size={'sm'} onClick={handleAddOrEditNote} className="mr-2">
                             Edit Note

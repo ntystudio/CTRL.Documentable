@@ -96,7 +96,7 @@ export const Class = () => {
                 </BreadcrumbList>
             </Breadcrumb>
             <div>
-                <p className="mb-6 text-4xl text-dark-color-base-00 dark:text-light-color-base-00">
+                <p className="font-bold mb-6 text-4xl">
                     Class - {selectedClass?.name}
                 </p>
                 <Tabs defaultValue={defaultTab} value={currentTab} onValueChange={(value) => setCurrentTab(value)}>

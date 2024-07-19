@@ -32,9 +32,9 @@ const Section: FC<IProps> = (props) => {
 
 export const NodePins = <T, >({items, title, ItemComponent}: NodePinProps<T>) => (
     <>
-        <p className="uppercase text-sm font-semibold mt-4 mb-1 text-muted-foreground">{title}</p>
+        <p className="uppercase text-sm font-semibold mt-4 mb-3">{title}</p>
         {items.map((item, index) => (
-                <div key={index} className="flex text-lg">
+                <div key={index} className="flex mb-2">
                     <ItemComponent item={item} />
                 </div>
             ))

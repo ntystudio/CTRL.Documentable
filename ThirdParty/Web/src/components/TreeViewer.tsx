@@ -81,14 +81,14 @@ export const TreeViewer: React.FC = () => {
                                 </AccordionTrigger>
                                 {child.children && child.children.length > 0 && (
                                     <AccordionContent>
-                                        <ul className="">
+                                        <ul>
                                             {child.children.map((grandchild) => (
                                                 <li key={grandchild.id} className="">
                                                     <button
                                                         onClick={() => handleItemClick(grandchild)}
                                                         className={`
-                                                            flex flex-row justify-between pl-4 pr-1.5 py-1.5 text-sm w-full
-                                                            border-l-2 border-color-gray-200 hover:bg-gray-200 dark:border-gray-200/10 dark:hover:bg-gray-200/10 rounded-r
+                                                            flex flex-row justify-between pl-4 pr-1.5 py-1.5 text-sm w-full font-semibold
+                                                            border-l-2 border-color-gray-200 hover:bg-gray-200 dark:border-gray-200/10 dark:hover:border-[#26bbff] dark:hover:text-white dark:hover:bg-[#202024] rounded-r
                                                             ${activeItemId === grandchild.id
                                                             ? 'font-bold text-blue-500 bg-gray-100 dark:bg-gray-700'
                                                             : 'text-muted-foreground'

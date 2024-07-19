@@ -28,9 +28,6 @@ export const NoteDialog: React.FC<NoteDialogProps> = ({ isOpen, onClose, onSave,
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        Add or edit your note below.
-                    </AlertDialogDescription>
                 </AlertDialogHeader>
                 <Textarea
                     value={content}

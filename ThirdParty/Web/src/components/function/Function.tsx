@@ -21,7 +21,7 @@ export const Function = () => {
     return (
         <main className="p-2">
             <FunctionBreadcrumbs />
-            <p className="mb-1 text-4xl text-dark-color-base-00 dark:text-light-color-base-00">
+            <p className="mb-1 text-4xl font-bold">
                 Function - {name || 'Unnamed'}
             </p>
 
@@ -53,7 +53,7 @@ export const Function = () => {
                     </div>
                 </div>
                 <div className="col-span-8 flex flex-col">
-                    <h2 className="text-3xl font-mono pb-4">
+                    <h2 className="text-2xl font-mono pb-3">
                         <span className="text-left">{name}</span>
                     </h2>
 
@@ -73,7 +73,7 @@ export const Function = () => {
                         {parameters?.length === 0
                             ? <p className="text-muted-foreground">No parameters provided</p>
                             : parameters?.map((param, index) => (
-                                <div key={index} className="flex text-lg">
+                                <div key={index} className="flex">
                                     <span className="font-mono text-foreground">{param.name}:</span>
                                     <span
                                         className="font-mono ml-2 text-orange-700 dark:text-orange-400">{param.type}</span>

@@ -21,7 +21,7 @@ export const Node = () => {
     return (
         <main className="p-2">
             <NodeBreadcrumbs />
-            <p className="mb-1 text-4xl text-dark-color-base-00 dark:text-light-color-base-00">
+            <p className="mb-1 text-4xl font-bold">
                 Node - {shortTitle}
             </p>
 
@@ -34,10 +34,10 @@ export const Node = () => {
                     </div>
                 </div>
                 <div className="col-span-8">
-                    <h2 className="text-3xl font-mono pb-4">
+                    <h2 className="text-2xl font-mono pb-3">
                         <span className="ml-2 text-left">{shortTitle}</span>
                     </h2>
-                    <p className="text-muted-foreground text-xl mb-4">
+                    <p className="text-muted-foreground text-lg mb-4">
                         {description === ''
                             ? <span className="nty-zero-state-text">No description provided</span>
                             : description
