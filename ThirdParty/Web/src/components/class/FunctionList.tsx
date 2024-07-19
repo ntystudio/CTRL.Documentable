@@ -105,16 +105,32 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
     return (
         <>
             <div className="flex flex-row w-full max-w-[700px] mb-12">
-                <Input
-                    type="text"
-                    placeholder="Search functions..."
-                    value={searchQuery}
-                    onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setSearchQuery(e.target.value)}
-                    className="p-2 border rounded mb-4 mr-4"
-                />
+                <div className="relative flex-grow mr-4">
+                    <Input
+                        type="text"
+                        placeholder="Search functions..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="p-2 pr-8 border rounded"
+                    />
+                    {searchQuery && (
+                        <button
+                            onClick={handleClearSearch}
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                            aria-label="Clear search"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fillRule="evenodd"
+                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                      clipRule="evenodd"/>
+                            </svg>
+                        </button>
+                    )}
+                </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
-                        <Button className="mb-4">Filter</Button>
+                        <Button>Filter</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuCheckboxItem
@@ -149,28 +165,28 @@ export const FunctionList: FC<FunctionListProps> = ({ functions }) => {
                         </DropdownMenuCheckboxItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <Button onClick={handleClearSearch} className="mb-4 ml-2">Clear</Button>
             </div>
             {filteredFunctions.length === 0 ? (
                 <Alert className="max-w-[400px]">
-                    <ExclamationTriangleIcon className="h-6 w-6" />
+                    <ExclamationTriangleIcon className="h-6 w-6"/>
                     <AlertTitle>Heads up!</AlertTitle>
                     <AlertDescription>
                         There are no functions for this class.
                     </AlertDescription>
                 </Alert>
             ) : (
-            filteredFunctions.map((func, index) => (
-                <React.Fragment key={index}>
-                    <Separator className="my-8" />
-                    <div className="grid grid-cols-12 gap-8 w-full max-w-[1200px]">
-                        <div className="col-span-4 flex flex-col">
-                            <div className="rounded-lg p-2 bg-muted border-2 mb-3">
-                                <p className="uppercase text-sm font-semibold mb-1 text-muted-foreground">Return Type</p>
-                                <h2 className="text-lg font-mono text-orange-700 dark:text-orange-400">{func.returnType}</h2>
-                            </div>
-                            <div className="rounded-lg p-2 bg-muted border-2">
-                                <p className="uppercase text-sm font-semibold mb-2 text-muted-foreground">Metadata</p>
+                filteredFunctions.map((func, index) => (
+                    <React.Fragment key={index}>
+                        <Separator className="my-8"/>
+                        <div className="grid grid-cols-12 gap-8 w-full max-w-[1200px]">
+                            <div className="col-span-4 flex flex-col">
+                                <div className="rounded-lg p-2 bg-muted border-2 mb-3">
+                                    <p className="uppercase text-sm font-semibold mb-1 text-muted-foreground">Return
+                                        Type</p>
+                                    <h2 className="text-lg font-mono text-orange-700 dark:text-orange-400">{func.returnType}</h2>
+                                </div>
+                                <div className="rounded-lg p-2 bg-muted border-2">
+                                    <p className="uppercase text-sm font-semibold mb-2 text-muted-foreground">Metadata</p>
                                 <h2 className="text-base font-mono text-blue-700">
                                     {func.flags && func.flags?.length !== 0 && (
                                         <div className="flex flex-col items-start">
