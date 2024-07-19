@@ -7,7 +7,7 @@
       --background: 0 0% 100%;
       --foreground: 240 10% 3.9%;
 
-      --card: 0 0% 100%;
+      --card: 220 14% 96%;
       --card-foreground: 240 10% 3.9%;
 
       --popover: 0 0% 100%;
@@ -28,10 +28,10 @@
       --destructive: 0 84.2% 60.2%;
       --destructive-foreground: 0 0% 98%;
 
-        --informational: 0, 0%, 100%;
-        --informational-foreground: 0, 0%, 20%;
+        --informational: 208, 100%, 56%;
+        --informational-foreground: 0, 0%, 100%;
 
-      --border: 240 5.9% 90%;
+      --border: 240 5.9% 85%;
       --input: 240 5.9% 90%;
       --ring: 240 10% 3.9%;
 
@@ -123,4 +123,57 @@
     --muted-bg-color: #303030;
     --foreground-color: #888888;
     --accent-color: #bbbbbb;
+}
+
+
+/* Scrollbar styles */
+:root {
+    --scrollbar-thumb-light: #c1c1c1;
+    --scrollbar-track-light: #f1f1f1;
+    --scrollbar-thumb-dark: #4a4a4a;
+    --scrollbar-track-dark: #2c2c2c;
+}
+
+/* Webkit browsers (Chrome, Safari, newer versions of Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-light);
+    border-radius: 4px;
+    border: 2px solid var(--scrollbar-track-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a8a8a8;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb-light) var(--scrollbar-track-light);
+}
+
+/* Dark mode styles */
+.dark ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-dark);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-dark);
+    border: 2px solid var(--scrollbar-track-dark);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: #5a5a5a;
+}
+
+.dark * {
+    scrollbar-color: var(--scrollbar-thumb-dark) var(--scrollbar-track-dark);
 }
