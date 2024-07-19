@@ -1,18 +1,20 @@
 import {PropsWithChildren} from 'react';
-import Navbar from './Navbar';
 import Sidebar from './Sidebar';
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "../../components/ui/resizable";
 
 const MainLayout = ({children}: PropsWithChildren) => {
     return (
-        <>
-            <Navbar />
-            <main className="flex min-h-screen w-full bg-background">
-                <Sidebar />
-                <div className="flex-1 px-6 py-16 overflow-y-auto h-screen">
-                    <div className="flex-1">{children}</div>
-                </div>
-            </main>
-        </>
+        <main className="flex w-full h-screen overflow-hidden">
+            <ResizablePanelGroup direction="horizontal" className="w-full">
+                <ResizablePanel defaultSize={20} minSize={16} maxSize={25}>
+                    <Sidebar/>
+                </ResizablePanel>
+                <ResizableHandle withHandle/>
+                <ResizablePanel defaultSize={80}>
+                    <div className="h-full overflow-y-auto px-4">{children}</div>
+                </ResizablePanel>
+            </ResizablePanelGroup>
+        </main>
     );
 };
 
