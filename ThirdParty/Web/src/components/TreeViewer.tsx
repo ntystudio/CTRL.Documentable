@@ -1,151 +1,154 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import { TreeView } from '@mui/x-tree-view/TreeView';
-import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import { Icon } from '@iconify/react';
+// TreeViewer.tsx
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "./ui/accordion";
+import { Input } from './ui/input';
 import { TreeItemConfig } from '../types/types';
 import { useSelectedClass } from '../providers/SelectedClassContextProvider';
-import { useNavigate } from 'react-router-dom';
-import { Input } from '../components/ui/input';
-
-interface TreeViewerItemProps {
-    item: TreeItemConfig;
-}
-
-const StrippedSquare = () => {
-    return (
-        <svg
-            className="hushur-icon text-blue"
-            xmlns="http://www.w3.org/2000/svg"
-            width="10"
-            height="10"
-            viewBox="0 0 95 95"
-            fill="none"
-        >
-            <path d="M0 0V24.6L24.6 0H0Z" fill="#949AA2" />
-            <path d="M40.8 0L0 40.7V66.2L66.2 0H40.8Z" fill="#949AA2" />
-            <path d="M82.3 0L0 82.3V95H12.7L95 12.7V0H82.3Z" fill="#949AA2" />
-            <path d="M54.2001 95L95 54.2001V28.8L28.8 95H54.2001Z" fill="#949AA2" />
-            <path d="M95 95V70.4L70.3 95H95Z" fill="#949AA2" />
-        </svg>
-    );
-};
+import SearchResults from './SearchResults';
 
 export const TreeViewer: React.FC = () => {
-    const { objectData } = useSelectedClass();
-    const [darkMode, setDarkMode] = React.useState(true);
-    const [expanded, setExpanded] = React.useState<string[]>([]);
-    const [searchQuery, setSearchQuery] = React.useState('');
+    const { objectData, setSelectedClass } = useSelectedClass();
+    const [darkMode, setDarkMode] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [activeItemId, setActiveItemId] = useState<string | null>(null);
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
         setDarkMode(isDarkMode);
 
-        // Initially expand all nodes
-        setExpanded(getFirstLevelNodeIds(objectData));
-    }, [objectData]);
-
-    // Function to get the first level of node IDs
-    const getFirstLevelNodeIds = (items: TreeItemConfig[]): string[] => {
-        return items.map(item => item.id);  // This returns only the top-level node IDs
-    };
-
-    const handleToggle = (event: React.SyntheticEvent, nodeIds: string[]) => {
-        setExpanded(nodeIds);
-    };
-
-    // Function to filter the tree items based on the search query
-    const filterItems = (items: TreeItemConfig[], query: string): TreeItemConfig[] => {
-        if (!query) return items;
-        const filteredItems = items
-            .map(item => {
-                if (item.name.toLowerCase().includes(query.toLowerCase())) {
-                    return item;
+        const findActiveItem = (items: TreeItemConfig[]): string | null => {
+            for (const item of items) {
+                if (location.pathname.includes(`/class/${item.path}`)) {
+                    return item.id;
                 }
-                const filteredChildren = filterItems(item.children || [], query);
-                if (filteredChildren.length > 0) {
-                    return {
-                        ...item,
-                        children: filteredChildren
-                    };
+                if (item.children) {
+                    const childResult = findActiveItem(item.children);
+                    if (childResult) return childResult;
                 }
-                return null;
-            })
-            .filter(item => item !== null);
-        return filteredItems as TreeItemConfig[];
+            }
+            return null;
+        };
+
+        setActiveItemId(findActiveItem(objectData));
+    }, [objectData, location.pathname]);
+
+    const filterItems = useCallback((items: TreeItemConfig[], query: string): TreeItemConfig[] => {
+        if (!query) return [];
+        const results: TreeItemConfig[] = [];
+        items.forEach(item => {
+            if (item.name.toLowerCase().includes(query.toLowerCase())) {
+                results.push(item);
+            }
+            if (item.children) {
+                results.push(...filterItems(item.children, query));
+            }
+        });
+        return results;
+    }, []);
+
+    const searchResults = useMemo(() => filterItems(objectData, searchQuery), [objectData, searchQuery, filterItems]);
+
+    const handleClearSearch = () => {
+        setSearchQuery('');
     };
 
-    const filteredData = filterItems(objectData, searchQuery);
-
-    return (
-        <Box
-            sx={{
-                minHeight: 220,
-                flexGrow: 1,
-                maxWidth: 300,
-                color: darkMode ? 'white' : 'black',
-            }}
-        >
-            <Input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="p-2 border rounded mb-4 dark:border-gray-600/50"
-            />
-            {filteredData.map((category: TreeItemConfig) => (
-                <div key={category.id}>
-                    {/*<a*/}
-                    {/*    href="#"*/}
-                    {/*    className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted/50 focus:outline-none focus-visible:bg-muted/50"*/}
-                    {/*>*/}
-                    {/*    <CodeIcon className="h-4 w-4" />*/}
-                    {/*    {category.name}*/}
-                    {/*</a>*/}
-                    <TreeView
-                        aria-label="multi-select"
-                        defaultCollapseIcon={<Icon icon="ph:folder-duotone" width="20" />}
-                        defaultExpandIcon={<Icon icon="ph:folder-duotone" width="20" />}
-                        defaultEndIcon={<StrippedSquare />}
-                        multiSelect
-                        expanded={expanded}
-                        onNodeToggle={handleToggle}
-                    >
-                        {category.children && category.children.map((item: TreeItemConfig) => (
-                            <TreeViewerItem item={item} key={item.id} />
-                        ))}
-                    </TreeView>
-                </div>
-            ))}
-        </Box>
-    );
-};
-
-const TreeViewerItemComponent: React.FC<TreeViewerItemProps> = ({ item }) => {
-    const navigate = useNavigate();
-    const { setSelectedClass } = useSelectedClass();
-
-    const handleClick = () => {
+    const handleItemClick = useCallback((item: TreeItemConfig) => {
         navigate('class/' + item.path);
         setSelectedClass(item);
-    };
+        setActiveItemId(item.id);
+    }, [navigate, setSelectedClass]);
 
-    const customLabel = (
-        <span className="text-xs font-sans">{item.name}</span>
-    );
+    const renderChildLinks = useCallback((children: TreeItemConfig[]) => {
+        return (
+            <ul className="">
+                {children.map((child) => (
+                    <li key={child.id}>
+                        <Accordion type="single" collapsible className="w-full">
+                            <AccordionItem value={child.id}>
+                                <AccordionTrigger
+                                    onClick={() => handleItemClick(child)}
+                                    className={`text-sm hover:underline ${activeItemId === child.id ? 'font-bold text-blue-500' : ''}`}
+                                >
+                                    {child.name}
+                                </AccordionTrigger>
+                                {child.children && child.children.length > 0 && (
+                                    <AccordionContent>
+                                        <ul className="">
+                                            {child.children.map((grandchild) => (
+                                                <li key={grandchild.id} className="">
+                                                    <button
+                                                        onClick={() => handleItemClick(grandchild)}
+                                                        className={`
+                                                            flex flex-row justify-between pl-4 pr-1.5 py-1.5 text-sm w-full
+                                                            border-l-2 border-color-gray-200 hover:bg-gray-200 dark:border-gray-200/10 dark:hover:bg-gray-200/10 rounded-r
+                                                            ${activeItemId === grandchild.id
+                                                            ? 'font-bold text-blue-500 bg-gray-100 dark:bg-gray-700'
+                                                            : 'text-muted-foreground'
+                                                        }
+                                                        `}
+                                                    >
+                                                        {grandchild.name}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </AccordionContent>
+                                )}
+                            </AccordionItem>
+                        </Accordion>
+                    </li>
+                ))}
+            </ul>
+        );
+    }, [activeItemId, handleItemClick]);
+
+    const renderAccordionItems = useMemo(() => {
+        return objectData.map((item) => (
+            <React.Fragment key={item.id}>
+                {item.children && item.children.length > 0 && renderChildLinks(item.children)}
+            </React.Fragment>
+        ));
+    }, [objectData, renderChildLinks]);
 
     return (
-        <TreeItem
-            onClick={handleClick}
-            className="text-foreground"
-            nodeId={item.id}
-            label={customLabel}
-        >
-            {item.children && item.children.map((child) => (
-                <TreeViewerItem item={child} key={child.id} />
-            ))}
-        </TreeItem>
+        <div className={darkMode ? 'dark' : ''}>
+            <div className="relative mb-4">
+                <Input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="p-2 pr-8 border rounded dark:border-gray-600/50"
+                />
+                {searchQuery && (
+                    <button
+                        onClick={handleClearSearch}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        aria-label="Clear search"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                    </button>
+                )}
+            </div>
+            {searchQuery ? (
+                <SearchResults results={searchResults} activeItemId={activeItemId} />
+            ) : (
+                <Accordion type="single" collapsible className="w-full">
+                    {renderAccordionItems}
+                </Accordion>
+            )}
+        </div>
     );
 };
 
-const TreeViewerItem = React.memo(TreeViewerItemComponent);
+export default TreeViewer;

@@ -11,6 +11,7 @@
     "@mui/material": "^5.15.4",
     "@mui/styled-engine-sc": "^6.0.0-alpha.12",
     "@mui/x-tree-view": "^6.17.0",
+    "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "@radix-ui/react-hover-card": "^1.1.1",
@@ -51,8 +52,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-  "server": "node server.js",
-  "dev": "concurrently \"npm run start\" \"npm run server\""
+    "server": "node server.js",
+    "dev": "concurrently \"npm run start\" \"npm run server\""
   },
   "eslintConfig": {
     "extends": [
