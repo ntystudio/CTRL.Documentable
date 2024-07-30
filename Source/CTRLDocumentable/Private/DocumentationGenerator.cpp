@@ -19,6 +19,7 @@
 #include "BlueprintBoundNodeSpawner.h"
 #include "BlueprintComponentNodeSpawner.h"
 #include "BlueprintEventNodeSpawner.h"
+#include "K2Node_ComponentBoundEvent.h"
 #include "K2Node_DynamicCast.h"
 #include "K2Node_Message.h"
 #include "XmlFile.h"
@@ -256,7 +257,7 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 	State.RelImageBasePath = TEXT("../img/");
 	FString ImgFilename = FString::Printf(TEXT("nd_img_%s.png"), *NodeName);
 	FString ScreenshotSaveName = ImageBasePath / ImgFilename;
-
+	ScreenshotSaveName = FPaths::MakeValidFileName(ScreenshotSaveName, '_');
 	TUniquePtr<FImageWriteTask> ImageTask = MakeUnique<FImageWriteTask>();
 	ImageTask->PixelData = MoveTemp(PixelData);
 	ImageTask->Filename = ScreenshotSaveName;
@@ -641,6 +642,7 @@ bool FDocumentationGenerator::IsSpawnerDocumentable(UBlueprintNodeSpawner* Spawn
 		UBlueprintDelegateNodeSpawner::StaticClass(),
 		UBlueprintBoundNodeSpawner::StaticClass(),
 		UBlueprintComponentNodeSpawner::StaticClass(),
+		
 	};
 
 	// Spawners of or deriving from the following classes will be excluded in a blueprint context
@@ -652,6 +654,7 @@ bool FDocumentationGenerator::IsSpawnerDocumentable(UBlueprintNodeSpawner* Spawn
 	static const TSubclassOf< UK2Node > ExcludedNodeClasses[] = {
 		UK2Node_DynamicCast::StaticClass(),
 		UK2Node_Message::StaticClass(),
+		UK2Node_ComponentBoundEvent::StaticClass(),
 	};
 
 	// Function spawners for functions with any of the following metadata tags will also be excluded

@@ -5,10 +5,12 @@
 // Copyright (C) 2023-2024 NTY.studio. All Rights Reserved.
 
 #include "ContentPathEnumerator.h"
+
 #include "CTRLDocumentableLog.h"
 #include "Engine/Blueprint.h"
 #include "Animation/AnimBlueprint.h"
 #include "AssetRegistry/AssetRegistryModule.h"
+#include "ControlRigDeveloper/Public/ControlRigBlueprint.h"
 
 
 FContentPathEnumerator::FContentPathEnumerator(
@@ -32,8 +34,11 @@ void FContentPathEnumerator::Prepass(FName const& Path)
 	
 	// @TODO: Not sure about this, but for some reason was generating docs for 'AnimInstance' itself.
 	// Filter.RecursiveClassesExclusionSet.Add(UAnimBlueprint::StaticClass()->GetFName());
-	//Filter.RecursiveClassPathsExclusionSet.Add(UAnimBlueprint::StaticClass()->GetClassPathName());
-	
+	Filter.RecursiveClassPathsExclusionSet.Add(UAnimBlueprint::StaticClass()->GetClassPathName());
+	Filter.RecursiveClassPathsExclusionSet.Add(UControlRigBlueprint::StaticClass()->GetClassPathName());
+	Filter.RecursiveClassPathsExclusionSet.Add(URigVMBlueprint::StaticClass()->GetClassPathName());
+
+
 	AssetRegistry.GetAssetsByPath(Path, AssetList, true);
 	AssetRegistry.RunAssetsThroughFilter(AssetList, Filter);
 }
@@ -59,6 +64,9 @@ UObject* FContentPathEnumerator::GetNext()
 
 		if(auto Blueprint = Cast< UBlueprint >(AssetData.GetAsset()))
 		{
+			if (Blueprint->IsA(UControlRigBlueprint::StaticClass()))
+				continue;
+			
 			UE_LOG(LogCTRLDocumentable, Log, TEXT("Enumerating object '%s' at '%s'"), *Blueprint->GetName(), *AssetData.ObjectPath.ToString());
 
 			Result = Blueprint;

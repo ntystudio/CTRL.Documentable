@@ -43,7 +43,13 @@ public class CTRLDocumentable : ModuleRules
 				"Projects",
 				"Json",
 				"JsonUtilities",
-				"ImageWriteQueue"
+				"ImageWriteQueue",
+				"ControlRig",
+				"ControlRigEditor",
+				"ControlRigDeveloper",
+				"RigVM",
+				"RigVMDeveloper",
+				"RigVMEditor"
 			}
 			);
 			
