@@ -205,7 +205,7 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 	FString NodeName = GetNodeDocId(Node);
 
 	FIntRect Rect;
-
+	
 	TUniquePtr<TImagePixelData<FLinearColor>> PixelData;
 
 	bSuccess = CTRLDocumentable::RunOnGameThreadRetVal([this, Node, DrawSize, &Rect, &PixelData]
@@ -248,16 +248,20 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 		return false;
 	}
 
-	const FString ImageBasePath = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web/public/") / TEXT("img/");
+	const FString ClassNamePath = State.AssociatedClass->GetName() + "/";
 
+	const FString ImageBasePath = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web/public/") / TEXT("img/") / ClassNamePath;
+
+	
 	if (!FPaths::DirectoryExists(ImageBasePath))
 	{
 		CreateDirectoryRecursively(ImageBasePath);
 	}
-	State.RelImageBasePath = TEXT("../img/");
+	State.RelImageBasePath = "../img/" + ClassNamePath;
+	
 	FString ImgFilename = FString::Printf(TEXT("nd_img_%s.png"), *NodeName);
+	ImgFilename = FPaths::MakeValidFileName(ImgFilename, '_');
 	FString ScreenshotSaveName = ImageBasePath / ImgFilename;
-	ScreenshotSaveName = FPaths::MakeValidFileName(ScreenshotSaveName, '_');
 	TUniquePtr<FImageWriteTask> ImageTask = MakeUnique<FImageWriteTask>();
 	ImageTask->PixelData = MoveTemp(PixelData);
 	ImageTask->Filename = ScreenshotSaveName;
