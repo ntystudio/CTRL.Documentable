@@ -12,7 +12,7 @@
 #include "Modules/ModuleManager.h"
 
 class FUICommandList;
-
+class FRunnableThread;
 
 class FCTRLDocumentableModule : public IModuleInterface
 {
@@ -24,6 +24,7 @@ public:
 
 public:
 	void GenerateDocs(struct FGenerationSettings const& Settings);
+	FRunnableThread* GenerateDocsThread(struct FGenerationSettings const& Settings);
 
 protected:
 	void ProcessIntermediateDocs(FString const& IntermediateDir, FString const& OutputDir, FString const& DocTitle, bool bCleanOutput);

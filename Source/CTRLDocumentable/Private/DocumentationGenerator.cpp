@@ -212,15 +212,24 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 	{
 		auto NodeWidget = FNodeFactory::CreateNodeWidget(Node);
 		NodeWidget->SetOwner(GraphPanel.ToSharedRef());
+		NodeWidget->SlatePrepass(1.0f);
+		
 
-		const bool bUseGammaCorrection = true;
+		const bool bUseGammaCorrection = false;
 		FWidgetRenderer Renderer(bUseGammaCorrection);
 		Renderer.SetIsPrepassNeeded(true);
-		auto RenderTarget = Renderer.DrawWidget(NodeWidget.ToSharedRef(), DrawSize);
-		
+		auto RenderTarget = Renderer.CreateTargetFor(DrawSize, TF_Default, true);
+		Renderer.DrawWidget(RenderTarget, NodeWidget.ToSharedRef(), DrawSize, 1.0f, true);
 		const FVector2D DesiredDouble = NodeWidget->GetDesiredSize();
 		const FIntPoint DesiredInt(DesiredDouble.X, DesiredDouble.Y);
+		if (DesiredInt.X == 0 || DesiredInt.Y == 0)
+		{
+			UE_LOG(LogCTRLDocumentable, Warning, TEXT("Failed to draw pixels for node image."));
+			return false;
+		}
 
+		UE_LOG(LogTemp, Warning, TEXT("SIZE: %d:%d"), DesiredInt.X, DesiredInt.Y);
+		
 		auto Desired = NodeWidget->GetDesiredSize();
 	
 		FTextureRenderTargetResource* RTResource = RenderTarget->GameThread_GetRenderTargetResource();

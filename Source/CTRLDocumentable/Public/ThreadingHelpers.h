@@ -15,15 +15,25 @@ namespace CTRLDocumentable
 	template < typename TLambda >
 	inline auto RunOnGameThread(TLambda Func) -> void
 	{
-		FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady(MoveTemp(Func), TStatId(), nullptr, ENamedThreads::GameThread);
-		FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
+		if (!IsRunningCommandlet())
+		{
+			FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady(MoveTemp(Func), TStatId(), nullptr, ENamedThreads::GameThread);
+			FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
+			return;
+		}
+		Func();
 	}
 
 	template < typename TLambda >
 	inline auto RunDetached(TLambda Func) -> void
 	{
-		FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady(MoveTemp(Func), TStatId(), nullptr, ENamedThreads::AnyThread);
-		FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
+		if (!IsRunningCommandlet())
+		{
+			FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady(MoveTemp(Func), TStatId(), nullptr, ENamedThreads::AnyThread);
+			FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
+			return;
+		}
+		Func();
 	}
 
 	template < typename TLambda, typename... TArgs >
@@ -36,10 +46,13 @@ namespace CTRLDocumentable
 		{
 			Result = Func(Args...);
 		};
-
-		FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady(NullaryFunc, TStatId(), nullptr, ENamedThreads::GameThread);
-		FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
-
+		if (!IsRunningCommandlet())
+		{
+			FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady(NullaryFunc, TStatId(), nullptr, ENamedThreads::GameThread);
+			FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
+			return Result;
+		}
+		NullaryFunc();
 		return Result;
 	}
 

@@ -41,21 +41,24 @@ void FTaskProcessor::QueueTask(FGenerationSettings const& Settings)
 	TSharedPtr< FGenTask > NewTask = MakeShareable(new FGenTask());
 	NewTask->Settings = Settings;
 
-	FNotificationInfo Info(LOCTEXT("DocGenWaiting", "Documentation generation waiting"));
-	Info.Image = nullptr;
-	Info.FadeInDuration = 0.2f;
-	Info.ExpireDuration = 5.0f;
-	Info.FadeOutDuration = 1.0f;
-	Info.bUseThrobber = true;
-	Info.bUseSuccessFailIcons = true;
-	Info.bUseLargeFont = true;
-	Info.bFireAndForget = false;
-	FSimpleDelegate CancelDelegate;
-	CancelDelegate.BindRaw(this, &FTaskProcessor::Stop);
-	const FNotificationButtonInfo CancelBtn(FText::FromString("Cancel"), FText::FromString("Cancel"), CancelDelegate, SNotificationItem::CS_Pending);
-	Info.ButtonDetails.Add(CancelBtn);
-	NewTask->Notification = FSlateNotificationManager::Get().AddNotification(Info);
-	NewTask->Notification->SetCompletionState(SNotificationItem::CS_Pending);
+	if (!IsRunningCommandlet())
+	{
+		FNotificationInfo Info(LOCTEXT("DocGenWaiting", "Documentation generation waiting"));
+		Info.Image = nullptr;
+		Info.FadeInDuration = 0.2f;
+		Info.ExpireDuration = 5.0f;
+		Info.FadeOutDuration = 1.0f;
+		Info.bUseThrobber = true;
+		Info.bUseSuccessFailIcons = true;
+		Info.bUseLargeFont = true;
+		Info.bFireAndForget = false;
+		FSimpleDelegate CancelDelegate;
+		CancelDelegate.BindRaw(this, &FTaskProcessor::Stop);
+		const FNotificationButtonInfo CancelBtn(FText::FromString("Cancel"), FText::FromString("Cancel"), CancelDelegate, SNotificationItem::CS_Pending);
+		Info.ButtonDetails.Add(CancelBtn);
+		NewTask->Notification = FSlateNotificationManager::Get().AddNotification(Info);
+		NewTask->Notification->SetCompletionState(SNotificationItem::CS_Pending);
+	}
 
 	Waiting.Enqueue(NewTask);
 }
@@ -126,20 +129,20 @@ uint32 FTaskProcessor::Run()
 		}
 	}
 	
+	UE_LOG(LogTemp, Warning, TEXT("Leaving iterator"));
+	
 	FJsonObject* ObjectMeta = new FJsonObject;
 	ObjectMeta->SetArrayField("Classes", Classes);
 	FString JsonString;
 	FJsonSerializer::Serialize(Classes, TJsonWriterFactory<>::Create(&JsonString, 0));
 	FFileHelper::SaveStringToFile(JsonString, *(FPaths::ProjectSavedDir() + "/dump.json"));
-	// Create a read and write pipe for the child process
-	void* PipeRead = nullptr;
-	void* PipeWrite = nullptr;
-	verify(FPlatformProcess::CreatePipe(PipeRead, PipeWrite));
 	
 	while(!bTerminationRequest && Waiting.Dequeue(Next))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Next"));
 		ProcessTask(Next);
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Save and exit"));
 
 	return 0;
 }
@@ -151,11 +154,15 @@ void FTaskProcessor::Exit()
 
 void FTaskProcessor::Stop()
 {
-	Current->Task->Notification->SetText(LOCTEXT("DocGenerationCancelled", "Generation cancelled!"));
-	Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Fail);
-	Current->Task->Notification->SetExpireDuration(2.0f);
+	if (!IsRunningCommandlet())
+	{
+		Current->Task->Notification->SetText(LOCTEXT("DocGenerationCancelled", "Generation cancelled!"));
+		Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Fail);
+		Current->Task->Notification->SetExpireDuration(2.0f);
 
-	Current->Task->Notification->ExpireAndFadeout();
+		Current->Task->Notification->ExpireAndFadeout();
+	}
+
 	bTerminationRequest = true;
 }
 
@@ -189,7 +196,8 @@ bool FTaskProcessor::ProcessClass(UClass* Class)
 	}
 
 	ProcessedClasses.Add(Class);
-	
+	UE_LOG(LogTemp, Warning, TEXT("Processed class: %s"), *Class->GetName());
+
 	return true;
 }
 
@@ -278,9 +286,12 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	
 	auto GameThread_InitDocGen = [this](FString const& DocTitle, FString const& IntermediateDir) -> bool
 	{
-		Current->Task->Notification->SetExpireDuration(2.0f);
-		Current->Task->Notification->SetText(LOCTEXT("DocGenInProgress", "Generation in progress..."));
-
+		if (!IsRunningCommandlet())
+		{
+			Current->Task->Notification->SetExpireDuration(2.0f);
+			Current->Task->Notification->SetText(LOCTEXT("DocGenInProgress", "Generation in progress..."));
+		}
+		
 		return Current->DocGen->GT_Init(DocTitle, IntermediateDir, Current->Task->Settings.BlueprintContextClass);
 	};
 
@@ -389,24 +400,24 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	Current->Task = InTask;
 
 	FString IntermediateDir = FPaths::ProjectIntermediateDir() / TEXT("CTRLDocumentable") / Current->Task->Settings.DocumentationTitle;
-
+	
 	CTRLDocumentable::RunOnGameThread(GameThread_EnqueueEnumerators);	
 
 	// Initialize the doc generator
 	Current->DocGen = MakeUnique< FDocumentationGenerator >();
-
+	
 	if(!CTRLDocumentable::RunOnGameThreadRetVal(GameThread_InitDocGen, Current->Task->Settings.DocumentationTitle, IntermediateDir))
 	{
 		UE_LOG(LogCTRLDocumentable, Error, TEXT("Failed to initialize generator!"));
 		return;
 	}
-
+	
 	bool const bCleanIntermediate = true;
 	if(bCleanIntermediate)
 	{
 		IFileManager::Get().DeleteDirectory(*IntermediateDir, false, true);
 	}
-
+	
 	int SuccessfulNodeCount = 0;
 	while(Current->Enumerators.Dequeue(Current->CurrentEnumerator))
 	{
@@ -476,14 +487,17 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 
 	if(SuccessfulNodeCount == 0)
 	{
-		UE_LOG(LogCTRLDocumentable, Error, TEXT("No nodes were found to document!"));
-
-		CTRLDocumentable::RunOnGameThread([this]
+		UE_LOG(LogCTRLDocumentable, Warning, TEXT("No nodes were found to document!"));
+		if (!IsRunningCommandlet())
+		{
+			CTRLDocumentable::RunOnGameThread([this]
 			{
 				Current->Task->Notification->SetText(LOCTEXT("DocFinalizationFailed", "Generation failed - No nodes found"));
 				Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Fail);
 				Current->Task->Notification->ExpireAndFadeout();
 			});
+		}
+
 		//GEditor->PlayEditorSound(CompileSuccessSound);
 		return;
 	}
@@ -502,11 +516,15 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 			FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web");
 			if (!FPaths::DirectoryExists(FPaths::Combine(WorkingDir, "node_modules")))
 			{
-				CTRLDocumentable::RunOnGameThread([this]
+				if(!IsRunningCommandlet())
 				{
-					Current->Task->Notification->SetText(FText::FromString("Installing node modules"));
-					Current->Task->Notification->SetExpireDuration(3600);
-				});
+					CTRLDocumentable::RunOnGameThread([this]
+					{
+						Current->Task->Notification->SetText(FText::FromString("Installing node modules"));
+						Current->Task->Notification->SetExpireDuration(3600);
+					});
+				}
+
 				void* PipeWrite = nullptr;
 				FProcHandle Proc = FPlatformProcess::CreateProc(
 					*Cmd,
@@ -545,12 +563,15 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 				PipeWrite
 			);
 		}
-		CTRLDocumentable::RunOnGameThread([this]
+		if (!IsRunningCommandlet())
 		{
-			Current->Task->Notification->SetText(LOCTEXT("DocConversionSuccessful", "Generation complete!"));
-			Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Success);
-			Current->Task->Notification->ExpireAndFadeout();
-		});
+			CTRLDocumentable::RunOnGameThread([this]
+			{
+				Current->Task->Notification->SetText(LOCTEXT("DocConversionSuccessful", "Generation complete!"));
+				Current->Task->Notification->SetCompletionState(SNotificationItem::CS_Success);
+				Current->Task->Notification->ExpireAndFadeout();
+			});
+		}
 		Current.Reset();
 	});
 

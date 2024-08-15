@@ -75,8 +75,31 @@ void FCTRLDocumentableModule::GenerateDocs(FGenerationSettings const& Settings)
 
 	if (!Processor->IsRunning())
 	{
-		FRunnableThread::Create(Processor.Get(), TEXT("CTRLDocumentableProcessorThread"), 0, TPri_BelowNormal);
+		if (!IsRunningCommandlet())
+		{
+			FRunnableThread::Create(Processor.Get(), TEXT("CTRLDocumentableProcessorThread"), 0, TPri_BelowNormal);
+		}
+		else
+		{
+			Processor->Run();
+		}
 	}
+}
+
+FRunnableThread* FCTRLDocumentableModule::GenerateDocsThread(FGenerationSettings const& Settings)
+{
+	if (!Processor.IsValid())
+	{
+		Processor = MakeUnique< FTaskProcessor >();
+	}
+
+	Processor->QueueTask(Settings);
+
+	if (!Processor->IsRunning())
+	{
+		return FRunnableThread::Create(Processor.Get(), TEXT("CTRLDocumentableProcessorThread"), 0, TPri_BelowNormal);
+	}
+	return nullptr;
 }
 
 void FCTRLDocumentableModule::ProcessIntermediateDocs(FString const& IntermediateDir, FString const& OutputDir, FString const& DocTitle, bool bCleanOutput)

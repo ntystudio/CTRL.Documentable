@@ -27,6 +27,12 @@ void FContentPathEnumerator::Prepass(FName const& Path)
 	auto& AssetRegistryModule = FModuleManager::GetModuleChecked< FAssetRegistryModule >("AssetRegistry");
 	auto& AssetRegistry = AssetRegistryModule.Get();
 
+	AssetRegistry.SearchAllAssets(true);
+	while (AssetRegistry.IsLoadingAssets())
+	{
+		AssetRegistry.Tick(1.0f);
+	}
+
 	FARFilter Filter;
 	Filter.bRecursiveClasses = true;
 	//Filter.ClassNames.Add(UBlueprint::StaticClass()->GetFName());
@@ -38,8 +44,8 @@ void FContentPathEnumerator::Prepass(FName const& Path)
 	Filter.RecursiveClassPathsExclusionSet.Add(UControlRigBlueprint::StaticClass()->GetClassPathName());
 	Filter.RecursiveClassPathsExclusionSet.Add(URigVMBlueprint::StaticClass()->GetClassPathName());
 
-
-	AssetRegistry.GetAssetsByPath(Path, AssetList, true);
+	UE_LOG(LogTemp, Warning, TEXT("Getting assets in: %s"), *Path.ToString());
+	AssetRegistry.GetAssetsByPath(Path, AssetList, true, true);
 	AssetRegistry.RunAssetsThroughFilter(AssetList, Filter);
 }
 

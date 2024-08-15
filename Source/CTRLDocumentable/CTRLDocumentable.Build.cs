@@ -60,7 +60,9 @@ public class CTRLDocumentable : ModuleRules
 				"CoreUObject",
 				"Engine",
 				"Slate",
-				"SlateCore",
+				"RHI",
+				"RenderCore",
+				"SlateCore", "StandaloneRenderer", "NetcodeUnitTest"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
