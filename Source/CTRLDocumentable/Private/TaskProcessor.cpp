@@ -496,7 +496,16 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
 	CTRLDocumentable::RunDetached([this]
 	{
-	    FString Cmd = FWindowsPlatformMisc::GetEnvironmentVariable(*FString("COMSPEC"));
+		#if PLATFORM_WINDOWS
+		FString Cmd = FWindowsPlatformMisc::GetEnvironmentVariable(*FString("COMSPEC"));
+		#endif
+
+		#if PLATFORM_LINUX
+		FString Cmd = "/bin/sh";
+		#endif
+
+		// TODO: check if NPM is installed on user's computer before attempting to start the server
+
 		if (Current->Task->Settings.StartNodeServer == true)
 		{
 			FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web");

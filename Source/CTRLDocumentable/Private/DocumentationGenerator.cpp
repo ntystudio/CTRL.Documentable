@@ -4,8 +4,6 @@
 
 // Copyright (C) 2023-2024 NTY.studio. All Rights Reserved.
 
-#pragma once
-
 #include "DocumentationGenerator.h"
 #include "CTRLDocumentableLog.h"
 #include "SGraphNode.h"

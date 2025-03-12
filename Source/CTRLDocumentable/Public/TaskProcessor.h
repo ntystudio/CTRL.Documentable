@@ -13,10 +13,9 @@
 #include "UObject/WeakObjectPtrTemplates.h"
 #include "Containers/Queue.h"
 #include "CoreMinimal.h"
-
+#include "DocumentationGenerator.h"
 
 class ISourceObjectEnumerator;
-class FDocumentationGenerator;
 
 class UBlueprintNodeSpawner;
 
