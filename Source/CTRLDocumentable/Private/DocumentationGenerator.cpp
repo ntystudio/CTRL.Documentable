@@ -248,7 +248,7 @@ bool FDocumentationGenerator::GenerateNodeImage(UEdGraphNode* Node, FNodeProcess
 
 	const FString ClassNamePath = State.AssociatedClass->GetName() + "/";
 
-	const FString ImageBasePath = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web/public/") / TEXT("img/") / ClassNamePath;
+	const FString ImageBasePath = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/web/public/") / TEXT("img/") / ClassNamePath;
 
 	
 	if (!FPaths::DirectoryExists(ImageBasePath))

@@ -1,9 +1,9 @@
 
-ThirdParty/Web/.idea/Web.iml
-ThirdParty/Web/public/img
-ThirdParty/Web/.idea/vcs.xml
-ThirdParty/Web/.idea/modules.xml
+web/.idea/Web.iml
+web/public/img
+web/.idea/vcs.xml
+web/.idea/modules.xml
+web/.idea
 /Binaries
 /Intermediate
 /Source/.idea
-/ThirdParty/Web/.idea

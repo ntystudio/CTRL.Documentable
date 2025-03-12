@@ -493,7 +493,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 	Nodes->SetArrayField("nodes", Classes);
 	FJsonSerializer::Serialize(MakeShared<FJsonObject>(*Nodes), TJsonWriterFactory<>::Create(&JsonString, 0));
 
-	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() +"/ThirdParty/Web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
+	FFileHelper::SaveStringToFile(JsonString, *(FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() +"/web/src/data") + "/nodes.json"), FFileHelper::EEncodingOptions::ForceUTF8);
 	CTRLDocumentable::RunDetached([this]
 	{
 		#if PLATFORM_WINDOWS
@@ -508,7 +508,7 @@ void FTaskProcessor::ProcessTask(TSharedPtr< FGenTask > InTask)
 
 		if (Current->Task->Settings.StartNodeServer == true)
 		{
-			FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/ThirdParty/Web");
+			FString WorkingDir = FPaths::Combine(IPluginManager::Get().FindPlugin("CTRLDocumentable")->GetBaseDir() + "/web");
 			if (!FPaths::DirectoryExists(FPaths::Combine(WorkingDir, "node_modules")))
 			{
 				CTRLDocumentable::RunOnGameThread([this]
@@ -575,7 +575,7 @@ FTaskProcessor::EIntermediateProcessingResult FTaskProcessor::ProcessIntermediat
 		return EIntermediateProcessingResult::UnknownError;
 	}
 
-	const FString DocGenToolBinPath = Plugin->GetBaseDir() / TEXT("ThirdParty") / TEXT("DocProcessor") / TEXT("bin");
+	const FString DocGenToolBinPath = Plugin->GetBaseDir() / TEXT("web") / TEXT("DocProcessor") / TEXT("bin");
 	const FString DocGenToolExeName = TEXT("DocProcessor.exe");
 	const FString DocGenToolPath = DocGenToolBinPath / DocGenToolExeName;
 
