@@ -55,6 +55,7 @@ export interface TreeItemConfig {
     properties: Array<PropertyConfig>;
     functions: Array<FunctionConfig>;
     nodes?: Array<NodeConfig>;
+    classHierarchy?: string[];
 }
 
 export type ITreeData = Array<TreeItemConfig>;
@@ -62,6 +63,7 @@ export type ITreeData = Array<TreeItemConfig>;
 // Main Class Interface
 export interface ObjectConfig {
     className: string;
+    classHierarchy: string[];
     path: IPath;
     properties: Array<PropertyConfig>;
     functions: Array<FunctionConfig>;

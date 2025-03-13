@@ -10,6 +10,7 @@ const createTreeItem = (id: string, name: string, path: string): TreeItemConfig 
     functions: [],
     properties: [],
     nodes: [],
+    classHierarchy: [],
 });
 
 // Function to process each class config item
@@ -39,6 +40,7 @@ const processItem = (item: ObjectConfig, topLevelRoutes: Map<string, TreeItemCon
             functions: item.functions,
             properties: item.properties,
             nodes: item.nodes,
+            classHierarchy: item.classHierarchy,
         });
     }
 };
