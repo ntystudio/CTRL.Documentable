@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelectedClass } from '../../providers/SelectedClassContextProvider';
 import { TreeItemConfig } from '../../types/types';
@@ -6,14 +6,7 @@ import { FunctionList } from './FunctionList';
 import { NodeList } from './NodeList';
 import { PropertyList } from './PropertyList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator
-} from "../ui/breadcrumb";
+import { ArrowRight, Dot } from 'lucide-react';
 
 export const Class = () => {
     const params = useParams();
@@ -77,30 +70,28 @@ export const Class = () => {
     }
 
     return (
-        <div className="relative p-4 pb-16">
-            <Breadcrumb className="mb-8">
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/">Classes</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href={`/class/${selectedClass.name}`}>{selectedClass.name}</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>
-                            {currentTab.charAt(0).toUpperCase() + currentTab.slice(1)}
-                        </BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
-            <div>
-                <p className="font-bold mb-6 text-4xl">
-                    Class - {selectedClass?.name}
+        <div className="relative pb-16">
+            <div className="p-4 bg-sidebar border-b">
+                <span className="text-sm text-muted-foreground uppercase">Class</span>
+                <p className="text-2xl -mt-1">
+                    {selectedClass?.name}
                 </p>
+                <div className="flex flex-col mt-2">
+                    <div className="mt-1 flex items-center flex-wrap">
+                        {selectedClass?.classHierarchy?.map((item, index) => (
+                            <div key={item} className="flex items-center text-muted-foreground">
+                                <span className="text-sm">{item}</span>
+                                {index < (selectedClass.classHierarchy?.length || 0) - 1 && (
+                                    <span className="mx-1 text-muted-foreground"><Dot className="size-4" /></span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div className="p-4">
                 <Tabs defaultValue={defaultTab} value={currentTab} onValueChange={(value) => setCurrentTab(value)}>
-                    <TabsList className="grid w-full mb-4 max-w-[700px] " style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
+                    <TabsList className="mb-4">
                         {tabs.map(tab => (
                             <TabsTrigger key={tab.id} value={tab.id}>
                                 {tab.label} ({tab.count})
