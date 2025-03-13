@@ -2,10 +2,16 @@ import { PropsWithChildren } from 'react';
 import { Separator } from "../ui/separator";
 import { AppSidebar } from '../app-sidebar';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '../ui/sidebar';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '../ui/breadcrumb';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb';
 import { ThemeSwitcher } from 'src/components/ui/ThemeSwitcher';
+import { useSelectedClass } from '../../providers/SelectedClassContextProvider';
+import { useNavigate } from 'react-router-dom';
+import { handleHomeClick } from 'src/lib/utils';
 
 const MainLayout = ({ children }: PropsWithChildren) => {
+    const { selectedClass, setSelectedClass } = useSelectedClass();
+    const navigate = useNavigate();
+
     return (
         <main className="flex w-full h-screen overflow-hidden">
             <SidebarProvider>
@@ -15,19 +21,27 @@ const MainLayout = ({ children }: PropsWithChildren) => {
                         <div className="flex items-center gap-2 px-3">
                             <SidebarTrigger />
                             <Separator orientation="vertical" className="mr-2 h-4" />
-                            <Breadcrumb>
-                                <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
-                                        <BreadcrumbLink href="#">
-                                            Building Your Application
-                                        </BreadcrumbLink>
-                                    </BreadcrumbItem>
-                                    <BreadcrumbSeparator className="hidden md:block" />
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                                    </BreadcrumbItem>
-                                </BreadcrumbList>
-                            </Breadcrumb>
+                            {selectedClass !== null ? (
+                                <Breadcrumb>
+                                    <BreadcrumbList>
+                                        <BreadcrumbItem>
+                                            <BreadcrumbLink onClick={(e) => handleHomeClick(e, setSelectedClass, navigate)} href="/">Classes</BreadcrumbLink>
+                                        </BreadcrumbItem>
+                                        <BreadcrumbSeparator />
+                                        <BreadcrumbItem>
+                                            <BreadcrumbLink href={`/class/${selectedClass.path}`}>{selectedClass.name}</BreadcrumbLink>
+                                        </BreadcrumbItem>
+                                    </BreadcrumbList>
+                                </Breadcrumb>
+                            ) : (
+                                <Breadcrumb>
+                                    <BreadcrumbList>
+                                        <BreadcrumbItem>
+                                            <BreadcrumbLink onClick={(e) => handleHomeClick(e, setSelectedClass, navigate)} href="/">Classes</BreadcrumbLink>
+                                        </BreadcrumbItem>
+                                    </BreadcrumbList>
+                                </Breadcrumb>
+                            )}
                         </div>
                         <ThemeSwitcher />
                     </header>
