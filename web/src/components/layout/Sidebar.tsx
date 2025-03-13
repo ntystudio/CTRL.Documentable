@@ -1,6 +1,6 @@
 import {TreeViewer} from "../TreeViewer";
 import {GitHubLogoIcon} from "@radix-ui/react-icons";
-import {ThemeSwitcher} from "../../components/ui/themeSwitcher";
+import {ThemeSwitcher} from "src/components/ui/ThemeSwitcher";
 
 const Sidebar = () => {
     return (

@@ -1,4 +1,4 @@
-import {ThemeSwitcher} from '../ui/themeSwitcher';
+import {ThemeSwitcher} from 'src/components/ui/ThemeSwitcher';
 import {GitHubLogoIcon} from "@radix-ui/react-icons";
 
 const Navbar = () => {
