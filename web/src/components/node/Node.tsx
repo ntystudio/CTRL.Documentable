@@ -1,4 +1,3 @@
-import React from 'react';
 import {PinInput} from './PinInput';
 import {PinOutput} from './PinOutput';
 import {useSelectedClass} from '../../providers/SelectedClassContextProvider';
